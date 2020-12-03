@@ -6,47 +6,58 @@
 
     <androidx.cardview.widget.CardView
             android:layout_width="0dp"
-            android:layout_height="120dp"
+            android:layout_height="150dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:elevation="8dp"
+            android:elevation="15dp"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp">
+            android:layout_marginEnd="8dp" android:background="@drawable/border_radius_white"
+            android:layout_marginTop="3dp" app:cardCornerRadius="10dp">
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
             <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="0dp" app:srcCompat="@mipmap/ic_launcher" android:id="@+id/propertyPicture"
+                    android:layout_width="176dp"
+                    android:layout_height="0dp"
+                    android:elevation="8dp"
+                    app:srcCompat="@mipmap/ic_launcher" android:id="@+id/propertyPicture"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp" android:layout_marginBottom="8dp"/>
+                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="8dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"/>
             <TextView
                     android:text="TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" android:id="@+id/propertyType"
-                    app:layout_constraintTop_toTopOf="@+id/propertyPicture"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/propertyPicture"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp" android:layout_marginTop="16dp"/>
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/special_elite" android:textSize="24sp"
+                    android:shadowColor="@color/colorGold" android:background="@drawable/underline_small"
+                    android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/propertyTown"/>
             <TextView
                     android:text="TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" android:id="@+id/propertyTown"
                     app:layout_constraintTop_toBottomOf="@+id/propertyType"
-                    app:layout_constraintStart_toEndOf="@+id/propertyPicture" android:layout_marginStart="16dp"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"/>
+                    app:layout_constraintStart_toEndOf="@+id/propertyPicture" android:layout_marginStart="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp" android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@+id/propertyPrice"/>
             <TextView
                     android:text="TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" android:id="@+id/propertyPrice"
                     app:layout_constraintTop_toBottomOf="@+id/propertyTown"
                     app:layout_constraintStart_toEndOf="@+id/propertyPicture"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp" android:layout_marginTop="8dp"/>
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="24dp"
+                    android:layout_marginEnd="16dp" android:layout_marginTop="8dp" android:textSize="24sp"
+                    android:textColor="@color/colorGold"
+            />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
