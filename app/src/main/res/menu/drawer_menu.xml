@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+            android:id="@+id/add_property"
+            android:enabled="true"
+            android:icon="@drawable/add_property"
+            android:title="@string/add_property"
+            app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/map"
+            android:enabled="true"
+            android:icon="@drawable/map"
+            android:title="@string/map"
+            app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/all_property"
+            android:enabled="true"
+            android:icon="@drawable/all_property"
+            android:title="@string/all_property"
+            app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/my_property"
+            android:enabled="true"
+            android:icon="@drawable/property"
+            android:title="@string/property"
+            app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/logout"
+            android:enabled="true"
+            android:icon="@drawable/logout"
+            android:title="@string/logout"
+            app:showAsAction="ifRoom" />
+
+</menu>

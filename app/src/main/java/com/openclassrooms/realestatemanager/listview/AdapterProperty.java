@@ -9,6 +9,8 @@ import com.bumptech.glide.Glide;
 import com.openclassrooms.realestatemanager.databinding.ItemPropertyBinding;
 import com.openclassrooms.realestatemanager.models.Property;
 
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.List;
 
 public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.PropertyViewHolder> {
@@ -30,8 +32,12 @@ public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.Proper
 
         Property property = propertyList.get(position);
 
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setMaximumFractionDigits(0);
+        format.setCurrency(Currency.getInstance("USD"));
+
         holder.binding.propertyType.setText(property.getTypeOfProperty());
-        holder.binding.propertyPrice.setText(String.valueOf(property.getPriceOfProperty()));
+        holder.binding.propertyPrice.setText(format.format(property.getPriceOfProperty()));
         holder.binding.propertyTown.setText(property.getAddressTown());
         Glide.with(holder.binding.propertyPicture.getContext())
                 .load(property.getUrlsPictures().get(0))
