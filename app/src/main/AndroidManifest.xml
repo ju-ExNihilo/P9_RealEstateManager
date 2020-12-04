@@ -11,10 +11,9 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".addproperty.AddProperty">
-        </activity>
+
         <activity
-                android:name=".MainActivity"
+                android:name=".login.LoginActivity"
                 android:theme="@style/AppTheme1">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -22,9 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
-                android:name=".SecondActivity"
+                android:name=".home.HomeActivity"
                 android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+                android:name=".addproperty.AddProperty"
+                android:theme="@style/AppTheme.NoActionBar"
+                android:parentActivityName=".home.HomeActivity"/>
 
         <meta-data
                 android:name="preloaded_fonts"

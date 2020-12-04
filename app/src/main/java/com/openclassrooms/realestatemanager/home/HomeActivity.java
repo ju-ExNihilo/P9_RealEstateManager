@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager;
+package com.openclassrooms.realestatemanager.home;
 
 import android.content.Intent;
 import android.view.MenuItem;
@@ -14,17 +14,19 @@ import androidx.fragment.app.FragmentActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
-import com.openclassrooms.realestatemanager.databinding.ActivitySecondBinding;
+import com.openclassrooms.realestatemanager.R;
+import com.openclassrooms.realestatemanager.addproperty.AddProperty;
+import com.openclassrooms.realestatemanager.databinding.ActivityHomeBinding;
+import com.openclassrooms.realestatemanager.login.LoginActivity;
 
-public class SecondActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    ActivitySecondBinding binding;
+    private ActivityHomeBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySecondBinding.inflate(getLayoutInflater());
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
         setSupportActionBar(binding.toolbarMain);
@@ -46,6 +48,7 @@ public class SecondActivity extends AppCompatActivity implements NavigationView.
         int id = item.getItemId();
         switch (id){
             case R.id.add_property:
+                AddProperty.navigate(this);
                 break;
             case R.id.map:
                 break;
@@ -66,7 +69,7 @@ public class SecondActivity extends AppCompatActivity implements NavigationView.
     private void logout(){
         AuthUI.getInstance()
                 .signOut(this)
-                .addOnSuccessListener(aVoid -> MainActivity.navigate(this));
+                .addOnSuccessListener(aVoid -> LoginActivity.navigate(this));
     }
 
     private void initDrawerLayout(){
@@ -91,7 +94,7 @@ public class SecondActivity extends AppCompatActivity implements NavigationView.
 
     /** Used to navigate to this activity **/
     public static void navigate(FragmentActivity activity) {
-        Intent intent = new Intent(activity, SecondActivity.class);
+        Intent intent = new Intent(activity, HomeActivity.class);
         ActivityCompat.startActivity(activity, intent, null);
     }
 }
