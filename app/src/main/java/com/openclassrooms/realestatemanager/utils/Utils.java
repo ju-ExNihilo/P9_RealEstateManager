@@ -1,11 +1,19 @@
 package com.openclassrooms.realestatemanager.utils;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.net.wifi.WifiManager;
+import android.os.Build;
+import androidx.core.app.NotificationCompat;
+import com.openclassrooms.realestatemanager.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 /**
  * Created by Philippe on 21/02/2018.
@@ -42,5 +50,26 @@ public class Utils {
     public static Boolean isInternetAvailable(Context context){
         WifiManager wifi = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         return wifi.isWifiEnabled();
+    }
+
+    /**
+     * Display Notification
+    **/
+    public static void displayNotification(String title, String desc, Context context) {
+        NotificationManager manager =
+                (NotificationManager) context.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("realEstateManager", "realEstateManager", NotificationManager.IMPORTANCE_DEFAULT);
+            manager.createNotificationChannel(channel);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context.getApplicationContext(), "realEstateManager")
+                .setContentTitle(title)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(desc))
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setSmallIcon(R.mipmap.ic_launcher);
+
+        manager.notify(1, builder.build());
     }
 }
