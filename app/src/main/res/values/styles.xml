@@ -26,6 +26,13 @@
         <item name="color">@color/colorGold</item>
     </style>
 
+    <style name="myDatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorGold</item>
+        <item name="colorControlActivated">@color/colorGold</item>
+        <item name="android:textColorPrimary">@color/colorGold</item>
+        <item name="android:textColorSecondary">@color/colorGold</item>
+    </style>
+
     <style name="NavigationDrawerStyle">
 
         <item name="android:textSize">24sp</item><!-- text size in menu-->
