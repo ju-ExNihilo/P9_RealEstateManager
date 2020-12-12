@@ -36,6 +36,23 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar_main"/>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:srcCompat="@drawable/add_property"
+                android:id="@+id/floatingActionButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                app:backgroundTint="@color/colorGold"
+                app:tint="@color/colorWhite"
+                app:maxImageSize="32dp"
+                app:useCompatPadding="true" app:fabCustomSize="75dp"
+                android:baselineAlignBottom="true"
+                android:textAlignment="center"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Container for contents of drawer - use NavigationView to make configuration easier -->

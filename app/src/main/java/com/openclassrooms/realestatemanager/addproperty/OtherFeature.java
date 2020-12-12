@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -29,6 +30,7 @@ public class OtherFeature extends Fragment {
 
     private FragmentOtherFeatureBinding binding;
     private NavController navController;
+    private String propertyId;
     private String[] pointOfInterest = new String[]{"School", "Parc", "Hospital", "Mall", "Shopping", "Medecin"};
     private List<String> dataset = new LinkedList<>(Arrays.asList("Free", "Sale"));
     private DatePickerDialog pickerDate;
@@ -46,18 +48,20 @@ public class OtherFeature extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+        propertyId = OtherFeatureArgs.fromBundle(getArguments()).getPropertyId();
         this.onClickBackBtn();
         this.onClickValidateBtn();
-        binding.pointInterestTags.setTagList(pointOfInterest);
-        binding.pointInterestTags.setTagBackgroundColor(Color.parseColor("#c8a97e"));
-        binding.pointInterestTags.setTagTextColor(Color.WHITE);
+//        binding.pointInterestTags.setTagList(pointOfInterest);
+//        binding.pointInterestTags.setTagBackgroundColor(Color.parseColor("#c8a97e"));
+//        binding.pointInterestTags.setTagTextColor(Color.WHITE);
         binding.statusSpinner.attachDataSource(dataset);
         this.datePicker(binding.dateEditText);
     }
 
     private void onClickBackBtn(){
         binding.backBtn.setOnClickListener(v -> {
-            NavDirections action = OtherFeatureDirections.actionOtherFeatureToAddressFeature();
+            OtherFeatureDirections.ActionOtherFeatureToAddressFeature action = OtherFeatureDirections.actionOtherFeatureToAddressFeature();
+            action.setPropertyId(propertyId);
             navController.navigate(action);
         });
     }

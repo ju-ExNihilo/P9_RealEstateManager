@@ -6,5 +6,6 @@
     <color name="colorGold">#c8a97e</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorGray">#757575</color>
+    <color name="colorGrayDark">#212121</color>
     <color name="grayTransparent">#E6595c5d</color>
 </resources>

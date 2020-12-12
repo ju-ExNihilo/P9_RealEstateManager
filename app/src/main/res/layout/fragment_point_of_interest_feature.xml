@@ -12,7 +12,7 @@
             android:layout_height="match_parent">
 
         <TextView
-                android:text="Add an Address"
+                android:text="Other Feature"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView4"
@@ -38,80 +38,96 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/underline"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/number_address_input"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <TextView
+                android:id="@+id/point_interest_title"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Add proximity point of interest"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" android:layout_marginTop="32dp" android:textColor="@color/colorGold"
+                android:textSize="18sp" android:background="@drawable/underline_small"/>
+
+        <com.skyhope.materialtagview.TagView
+                android:id="@+id/point_interest_tags"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:tag_background_color="@color/colorGold"
+                app:tag_text_color="@color/colorWhite"
+                app:tag_separator="AT_SEPARATOR"
+                app:layout_constraintTop_toBottomOf="@+id/point_interest_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5"
-                android:layout_marginTop="70dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp">
+                android:layout_marginEnd="16dp"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/number_address_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Number" android:inputType="number"/>
-        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+                android:id="@+id/status_title"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Status of Property"
+                app:layout_constraintTop_toBottomOf="@+id/point_interest_tags"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="32dp"
+                android:textColor="@color/colorGold"
+                android:textSize="18sp" android:background="@drawable/underline_small"/>
+
+
+        <org.angmarch.views.NiceSpinner
+                android:id="@+id/status_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/status_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/way_address_input"
+                android:id="@+id/date_input"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/number_address_input"
+                app:layout_constraintTop_toBottomOf="@+id/status_spinner"
                 android:layout_marginTop="32dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/way_address_edit_text"
+                    android:id="@+id/date_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Way"/>
+                    android:hint="Entrance date of Property "/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/postcode_address_input"
+                android:id="@+id/description_input"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/way_address_input"
+                app:layout_constraintTop_toBottomOf="@+id/date_input"
+                app:layout_constraintBottom_toTopOf="@+id/next_btn"
                 android:layout_marginTop="32dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp">
+                android:layout_marginEnd="16dp" android:layout_marginBottom="70dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/postcode_address_edit_text"
+                    android:id="@+id/description_edit_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="PostCode" android:inputType="number"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="match_parent"
+                    android:hint="Description"
+                    android:singleLine="false"
+                    android:inputType="textMultiLine"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/additional_address_fields_input"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/postcode_address_input"
-                android:layout_marginTop="32dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/additional_address_fields_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Additionnal address fields"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.cardview.widget.CardView
@@ -122,9 +138,9 @@
                 android:layout_marginStart="24dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/additional_address_fields_input"
-                android:layout_marginTop="70dp"
-                app:layout_constraintEnd_toStartOf="@+id/next_btn">
+                app:layout_constraintTop_toBottomOf="@+id/description_input"
+                android:layout_marginTop="32dp"
+                app:layout_constraintEnd_toStartOf="@+id/validate_btn">
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -150,7 +166,7 @@
         <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="70dp"
-                android:id="@+id/next_btn"
+                android:id="@+id/validate_btn"
                 app:layout_constraintStart_toEndOf="@+id/back_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="24dp"
@@ -165,10 +181,10 @@
                     android:layout_height="match_parent">
 
                 <TextView
-                        android:text="Next"
+                        android:text="Validate"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/next_text"
+                        android:id="@+id/validate_text"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

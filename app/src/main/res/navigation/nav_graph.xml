@@ -16,6 +16,7 @@
                 app:popUpToInclusive="true"
                 app:enterAnim="@anim/fragment_fade_enter"
                 app:exitAnim="@anim/fragment_fade_exit"/>
+        <argument android:name="propertyId" app:argType="string" android:defaultValue="null"/>
     </fragment>
 
     <fragment android:id="@+id/addressFeature"
@@ -38,6 +39,7 @@
                 app:popUpToInclusive="true"
                 app:enterAnim="@anim/fragment_fade_enter"
                 app:exitAnim="@anim/fragment_fade_exit"/>
+        <argument android:name="propertyId" app:argType="string" android:defaultValue="null"/>
     </fragment>
 
     <fragment android:id="@+id/otherFeature"
@@ -51,6 +53,7 @@
                 app:popUpToInclusive="true"
                 app:enterAnim="@anim/fragment_fade_enter"
                 app:exitAnim="@anim/fragment_fade_exit"/>
+        <argument android:name="propertyId" app:argType="string" android:defaultValue="null"/>
     </fragment>
 
 </navigation>
