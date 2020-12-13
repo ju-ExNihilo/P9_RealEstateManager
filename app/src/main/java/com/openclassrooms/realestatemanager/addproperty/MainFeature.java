@@ -66,7 +66,7 @@ public class MainFeature extends Fragment {
         if (!propertyId.equals("null")){
             this.initFormFields();
         }else {
-            propertyId = PropertyDataRepository.getPropertyId();
+            propertyId = propertyViewModel.getPropertyId();
         }
         binding.addImageBtn.setOnClickListener(v -> this.onClickAddFile());
         binding.typeSpinner.attachDataSource(propertyTypeList);

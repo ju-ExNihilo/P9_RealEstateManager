@@ -7,7 +7,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
 import com.openclassrooms.realestatemanager.models.Address;
+import com.openclassrooms.realestatemanager.models.PointOfInterest;
 import com.openclassrooms.realestatemanager.models.Property;
+import com.openclassrooms.realestatemanager.models.PropertyFeature;
 
 import java.util.List;
 
@@ -15,6 +17,8 @@ public class PropertyDataRepository {
 
     private final String COLLECTION_PROPERTY = "property";
     private final String COLLECTION_ADDRESS = "address";
+    private final String COLLECTION_FEATURE = "propertyFeature";
+    private final String COLLECTION_POINT_OF_INTEREST = "pointOfInterest";
 
 
 
@@ -32,20 +36,36 @@ public class PropertyDataRepository {
         return FirebaseFirestore.getInstance().collection(COLLECTION_PROPERTY).document(propertyId).collection(COLLECTION_ADDRESS);
     }
 
+    private CollectionReference getFeatureCollection(String propertyId){
+        return FirebaseFirestore.getInstance().collection(COLLECTION_PROPERTY).document(propertyId).collection(COLLECTION_FEATURE);
+    }
+
+    private CollectionReference getPointOfInterestCollection(String propertyId){
+        return FirebaseFirestore.getInstance().collection(COLLECTION_PROPERTY).document(propertyId).collection(COLLECTION_POINT_OF_INTEREST);
+    }
+
+    /** ***************************** **/
+    /** ******* Get Id Method  ****** **/
+    /** ***************************** **/
+
+    public String getPropertyId(){
+        DocumentReference reference = getPropertyCollection().document();
+        return reference.getId();
+    }
+
+    public String getAddressId(String propertyId){
+        DocumentReference reference = getAddressCollection(propertyId).document();
+        return reference.getId();
+    }
+
+    public String getPropertyFeatureId(String propertyId){
+        DocumentReference reference = getFeatureCollection(propertyId).document();
+        return reference.getId();
+    }
+
     /** ***************************** **/
     /** ******* Create Method  ****** **/
     /** ***************************** **/
-
-    public static String getPropertyId(){
-        DocumentReference reference = FirebaseFirestore.getInstance().collection("property").document();
-        return reference.getId();
-    }
-
-    public static String getAddressId(String propertyId){
-        DocumentReference reference = FirebaseFirestore.getInstance().collection("property")
-                .document(propertyId).collection("address").document();
-        return reference.getId();
-    }
 
     public Task<Void> createProperty(Property property){
         return getPropertyCollection().document(property.getPropertyId()).set(property);
@@ -53,6 +73,14 @@ public class PropertyDataRepository {
 
     public Task<Void> insertAddressToProperty(String propertyId, Address address){
         return getAddressCollection(propertyId).document(address.getAddressId()).set(address);
+    }
+
+    public Task<Void> insertFeatureToProperty(String propertyId, PropertyFeature propertyFeature){
+        return getFeatureCollection(propertyId).document(propertyFeature.getPropertyFeatureId()).set(propertyFeature);
+    }
+
+    public Task<Void> insertPointOfInterestToProperty(String propertyId, PointOfInterest pointOfInterest){
+        return getPointOfInterestCollection(propertyId).document(pointOfInterest.getPointOfInterestId()).set(pointOfInterest);
     }
 
     /** ***************************** **/
@@ -96,5 +124,50 @@ public class PropertyDataRepository {
                     }})
                 .addOnFailureListener(e -> addressLiveData.setValue(null));
         return addressLiveData;
+    }
+
+    public MutableLiveData<PropertyFeature> getPropertyFeatureById(String propertyId){
+        MutableLiveData<PropertyFeature> propertyLiveData = new MutableLiveData<>();
+        getFeatureCollection(propertyId).whereEqualTo("propertyId", propertyId).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        propertyLiveData.setValue(queryDocumentSnapshots.getDocuments().get(0).toObject(PropertyFeature.class));
+                    }else {
+                        propertyLiveData.setValue(null);
+                    }})
+                .addOnFailureListener(e -> propertyLiveData.setValue(null));
+        return propertyLiveData;
+    }
+
+    public MutableLiveData<List<PointOfInterest>> getPointOfInterestById(String propertyId){
+        MutableLiveData<List<PointOfInterest>> pointOfInterestLiveData = new MutableLiveData<>();
+        getPointOfInterestCollection(propertyId).whereEqualTo("propertyId", propertyId).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        pointOfInterestLiveData.setValue(queryDocumentSnapshots.toObjects(PointOfInterest.class));
+                    }else {
+                        pointOfInterestLiveData.setValue(null);
+                    }})
+                .addOnFailureListener(e -> pointOfInterestLiveData.setValue(null));
+        return pointOfInterestLiveData;
+    }
+
+    /** ***************************** **/
+    /** ****** DELETE Method  ******* **/
+    /** ***************************** **/
+
+    private Task<Void> deletePointOfInterest(String propertyId, String pointOfInterestId){
+        return getPointOfInterestCollection(propertyId).document(pointOfInterestId).delete();
+    }
+
+    public void resetPointOfInterest(String propertyId){
+        getPointOfInterestCollection(propertyId).whereEqualTo("propertyId", propertyId).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        for (PointOfInterest pointOfInterest : task.getResult().toObjects(PointOfInterest.class)){
+                            deletePointOfInterest(propertyId, pointOfInterest.getPointOfInterestId());
+                        }
+                    }
+                });
     }
 }

@@ -77,7 +77,7 @@ public class AddressFeature extends Fragment {
                 binding.additionalAddressFieldsEditText.setText(address.getAdditionalAddressField());
                 addressId = address.getAddressId();
             }else {
-                addressId = PropertyDataRepository.getAddressId(propertyId);
+                addressId = propertyViewModel.getAddressId(propertyId);
             }
         });
     }
@@ -88,7 +88,7 @@ public class AddressFeature extends Fragment {
             String way = binding.wayAddressEditText.getText().toString();
             String postCode = binding.postcodeAddressEditText.getText().toString();
             String additionalAddressField = binding.additionalAddressFieldsEditText.getText().toString();
-            if (!numberOfWay.isEmpty() && !way.isEmpty() && !postCode.isEmpty() && !additionalAddressField.isEmpty()){
+            if (!numberOfWay.isEmpty() && !way.isEmpty() && !postCode.isEmpty()){
                 Address address = new Address();
                 address.setAddressId(addressId);
                 address.setNumberOfWay(Integer.parseInt(numberOfWay));
