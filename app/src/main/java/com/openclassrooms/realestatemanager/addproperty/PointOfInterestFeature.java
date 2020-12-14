@@ -60,13 +60,10 @@ public class PointOfInterestFeature extends Fragment {
     private void initFormFields(){
         propertyViewModel.getPointOfInterestById(propertyId).observe(getViewLifecycleOwner(), pointOfInterests -> {
             if (pointOfInterests != null){
-
                 for (PointOfInterest pointOfInterest : pointOfInterests){
                     if (pointOfInterestItemsList.contains(pointOfInterest.getGetPointOfInterestName())){
                         int i = pointOfInterestItemsList.indexOf(pointOfInterest.getGetPointOfInterestName());
                         binding.pointInterestTags.onGetSelectTag(i, pointOfInterest.getGetPointOfInterestName());
-
-
                     }else {
                         binding.customEditText.setText(pointOfInterest.getGetPointOfInterestName());
                     }
@@ -89,8 +86,28 @@ public class PointOfInterestFeature extends Fragment {
     /** ***** Navigation Form Method ***** **/
     /** ********************************* **/
 
+    private void savePointOfInterest(){
+        List<TagModel> pointOfInterestSelected = binding.pointInterestTags.getSelectedTags();
+        TagModel tagModelCustom = new TagModel();
+        String customPointOfInterest = binding.customEditText.getText().toString();
+        if (!customPointOfInterest.isEmpty()){
+            tagModelCustom.setTagText(customPointOfInterest);
+            pointOfInterestSelected.add(tagModelCustom);
+        }
+        for (TagModel tagModel : pointOfInterestSelected){
+            PointOfInterest pointOfInterest = new PointOfInterest();
+            pointOfInterest.setPropertyId(propertyId);
+            pointOfInterest.setGetPointOfInterestName(tagModel.getTagText());
+            pointOfInterest.setPointOfInterestId(tagModel.getTagText() + "Id");
+            propertyViewModel.insertPointOfInterestToProperty(propertyId, pointOfInterest);
+        }
+    }
+
     private void onClickBackBtn(){
         binding.backBtn.setOnClickListener(v -> {
+            //Insert
+            this.savePointOfInterest();
+            //Navigation
             PointOfInterestFeatureDirections.ActionPointOfInterestFeatureToOtherFeature action =
                     PointOfInterestFeatureDirections.actionPointOfInterestFeatureToOtherFeature();
             action.setPropertyId(propertyId);
@@ -100,21 +117,13 @@ public class PointOfInterestFeature extends Fragment {
 
     private void onClickNextBtn(){
         binding.nextBtn.setOnClickListener(v -> {
-            List<TagModel> pointOfInterestSelected = binding.pointInterestTags.getSelectedTags();
-            TagModel tagModelCustom = new TagModel();
-            String customPointOfInterest = binding.customEditText.getText().toString();
-            if (!customPointOfInterest.isEmpty()){
-                tagModelCustom.setTagText(customPointOfInterest);
-                pointOfInterestSelected.add(tagModelCustom);
-            }
-            for (TagModel tagModel : pointOfInterestSelected){
-                PointOfInterest pointOfInterest = new PointOfInterest();
-                pointOfInterest.setPropertyId(propertyId);
-                pointOfInterest.setGetPointOfInterestName(tagModel.getTagText());
-                pointOfInterest.setPointOfInterestId(tagModel.getTagText() + "Id");
-                //Insert
-                propertyViewModel.insertPointOfInterestToProperty(propertyId, pointOfInterest);
-            }
+            //Insert
+            this.savePointOfInterest();
+            //Navigation
+            PointOfInterestFeatureDirections.ActionPointOfInterestFeatureToImagesFeature action =
+                    PointOfInterestFeatureDirections.actionPointOfInterestFeatureToImagesFeature();
+            action.setPropertyId(propertyId);
+            navController.navigate(action);
         });
     }
 }

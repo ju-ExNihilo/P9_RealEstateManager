@@ -2,10 +2,8 @@ package com.openclassrooms.realestatemanager.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import com.openclassrooms.realestatemanager.models.Address;
-import com.openclassrooms.realestatemanager.models.PointOfInterest;
-import com.openclassrooms.realestatemanager.models.Property;
-import com.openclassrooms.realestatemanager.models.PropertyFeature;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.openclassrooms.realestatemanager.models.*;
 import com.openclassrooms.realestatemanager.repository.PropertyDataRepository;
 import java.util.List;
 
@@ -29,6 +27,8 @@ public class PropertyViewModel extends ViewModel {
 
     public LiveData<List<PointOfInterest>> getPointOfInterestById(String propertyId){return propertyDataRepository.getPointOfInterestById(propertyId);}
 
+    public FirestoreRecyclerOptions<PropertyImage> getAllImagesByPropertyId(String propertyId){return propertyDataRepository.getAllImagesByPropertyId(propertyId);}
+
     /** INSERT **/
 
     public void createProperty(Property property){propertyDataRepository.createProperty(property);}
@@ -38,6 +38,8 @@ public class PropertyViewModel extends ViewModel {
     public void insertFeatureToProperty(String propertyId, PropertyFeature propertyFeature){propertyDataRepository.insertFeatureToProperty(propertyId, propertyFeature);}
 
     public void insertPointOfInterestToProperty(String propertyId, PointOfInterest pointOfInterest){propertyDataRepository.insertPointOfInterestToProperty(propertyId, pointOfInterest);}
+
+    public void insertImageToProperty(String propertyId, PropertyImage propertyImage){propertyDataRepository.insertImageToProperty(propertyId, propertyImage);}
 
     /** GET ID **/
 
@@ -50,4 +52,6 @@ public class PropertyViewModel extends ViewModel {
     /** DELETE **/
 
     public void resetPointOfInterest(String propertyId){propertyDataRepository.resetPointOfInterest(propertyId);}
+
+    public void deleteImage(String propertyId, String propertyImageId){propertyDataRepository.deleteImage(propertyId, propertyImageId);}
 }
