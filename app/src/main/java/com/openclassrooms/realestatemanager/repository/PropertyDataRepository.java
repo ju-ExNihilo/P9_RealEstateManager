@@ -1,10 +1,13 @@
 package com.openclassrooms.realestatemanager.repository;
 
+import android.util.Log;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
 import com.openclassrooms.realestatemanager.models.*;
+import fr.juju.googlemaplibrary.repository.GooglePlaceRepository;
 
 import java.util.List;
 
@@ -15,10 +18,16 @@ public class PropertyDataRepository {
     private final String COLLECTION_FEATURE = "propertyFeature";
     private final String COLLECTION_POINT_OF_INTEREST = "pointOfInterest";
     private final String COLLECTION_IMAGE = "propertyImage";
+    private final GooglePlaceRepository googlePlaceRepository;
+    private final LifecycleOwner owner;
 
 
 
-    public PropertyDataRepository() {}
+
+    public PropertyDataRepository(GooglePlaceRepository googlePlaceRepository, LifecycleOwner owner) {
+        this.googlePlaceRepository = googlePlaceRepository;
+        this.owner = owner;
+    }
 
     /** ***************************** **/
     /** ** Get Collection Method  *** **/
@@ -175,5 +184,29 @@ public class PropertyDataRepository {
                         }
                     }
                 });
+    }
+
+    /** ***************************** **/
+    /** ******* Update Method  ****** **/
+    /** ***************************** **/
+
+    /** ******** Update LatLn  ****** **/
+    public Task<Void> updateLongitude(String propertyId, double longitude) {
+        return getPropertyCollection().document(propertyId).update("longitude", longitude);
+    }
+    public Task<Void> updateLatitude(String propertyId, double latitude) {
+        return getPropertyCollection().document(propertyId).update("latitude", latitude);
+    }
+
+    public void updateLatLng(String propertyId, String addressCompact){
+        Log.i("DEBUGGG", addressCompact);
+        googlePlaceRepository.getGeocodePlaceByAddress(addressCompact).observe(owner, geocodePlace -> {
+            Log.i("DEBUGGG", "inside");
+            Log.i("DEBUGGG", String.valueOf(geocodePlace.getLng() +','+ geocodePlace.getLat()));
+            this.updateLongitude(propertyId, geocodePlace.getLng());
+            this.updateLatitude(propertyId, geocodePlace.getLat());
+            Log.i("DEBUGGG", "finish");
+        });
+
     }
 }

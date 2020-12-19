@@ -54,4 +54,13 @@ public class PropertyViewModel extends ViewModel {
     public void resetPointOfInterest(String propertyId){propertyDataRepository.resetPointOfInterest(propertyId);}
 
     public void deleteImage(String propertyId, String propertyImageId){propertyDataRepository.deleteImage(propertyId, propertyImageId);}
+
+    /** UPDATE **/
+
+    public void updateLongitude(String propertyId, double longitude){ propertyDataRepository.updateLongitude(propertyId, longitude);}
+
+    public void updateLatitude(String propertyId, double latitude){ propertyDataRepository.updateLatitude(propertyId, latitude);}
+
+    public void updateLatLng(String propertyId, String addressCompact){propertyDataRepository.updateLatLng(propertyId, addressCompact);}
+
 }

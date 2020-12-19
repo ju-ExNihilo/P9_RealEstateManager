@@ -121,7 +121,7 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     /** ********************************* **/
 
     private void initPropertyViewModel(){
-        ViewModelFactory viewModelFactory = Injection.providePropertyViewModelFactory();
+        ViewModelFactory viewModelFactory = Injection.providePropertyViewModelFactory(getViewLifecycleOwner(), this.getContext());
         propertyViewModel = new ViewModelProvider(this, viewModelFactory).get(PropertyViewModel.class);
     }
 

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -58,6 +59,7 @@ public class OtherFeature extends Fragment {
         binding.statusSpinner.attachDataSource(statusItemsList);
         this.datePicker(binding.dateEditText);
         this.initFromFields();
+        this.updateLocation();
     }
 
     private void initFromFields(){
@@ -81,12 +83,19 @@ public class OtherFeature extends Fragment {
         });
     }
 
+    private void updateLocation(){
+        propertyViewModel.getPropertyAddressById(propertyId).observe(getViewLifecycleOwner(), address -> {
+            String addressCompact = String.valueOf(address.getNumberOfWay()) + ' ' + address.getWay() + ' ' + address.getPostCode();
+            propertyViewModel.updateLatLng(propertyId, addressCompact.toLowerCase().replace(" ", "+"));
+        });
+    }
+
     /** *********************************** **/
     /** ****** init ViewModel Method ***** **/
     /** ********************************* **/
 
     private void initPropertyViewModel(){
-        ViewModelFactory viewModelFactory = Injection.providePropertyViewModelFactory();
+        ViewModelFactory viewModelFactory = Injection.providePropertyViewModelFactory(getViewLifecycleOwner(), this.getContext());
         propertyViewModel = new ViewModelProvider(this, viewModelFactory).get(PropertyViewModel.class);
     }
 

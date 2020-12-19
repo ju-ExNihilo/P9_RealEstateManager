@@ -9,16 +9,20 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentAddressFeatureBinding;
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.Address;
 import com.openclassrooms.realestatemanager.repository.PropertyDataRepository;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
+import fr.juju.googlemaplibrary.model.FinalPlace;
+import fr.juju.googlemaplibrary.repository.GooglePlaceRepository;
 
 public class AddressFeature extends Fragment {
 
@@ -52,7 +56,7 @@ public class AddressFeature extends Fragment {
     /** ********************************* **/
 
     private void initPropertyViewModel(){
-        ViewModelFactory viewModelFactory = Injection.providePropertyViewModelFactory();
+        ViewModelFactory viewModelFactory = Injection.providePropertyViewModelFactory(getViewLifecycleOwner(), getContext());
         propertyViewModel = new ViewModelProvider(this, viewModelFactory).get(PropertyViewModel.class);
     }
 

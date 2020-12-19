@@ -1,7 +1,9 @@
 package com.openclassrooms.realestatemanager.addproperty;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,6 +26,7 @@ import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.Property;
 import com.openclassrooms.realestatemanager.repository.PropertyDataRepository;
+import com.openclassrooms.realestatemanager.utils.AlertDialogUtils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -35,17 +38,21 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 
 
-public class MainFeature extends Fragment {
+public class MainFeature extends Fragment implements AlertDialogUtils.OnClickButtonAlertDialog {
 
     private FragmentMainFeatureBinding binding;
     private NavController navController;
     private String uriImageSelected;
     private String propertyId;
     private PropertyViewModel propertyViewModel;
+    private AlertDialogUtils alertDialogUtils;
     private List<String> propertyTypeList = new LinkedList<>(Arrays.asList("Flat", "House", "Loft", "manor", "castle", "studio apartment"));
     private static final String PERMS = Manifest.permission.READ_EXTERNAL_STORAGE;
+    private static final String PERMS_CAMERA = Manifest.permission.CAMERA;
     private static final int RC_IMAGE_PERMS = 100;
+    private static final int RC_CAMERA_PERMS = 101;
     private static final int RC_CHOOSE_PHOTO = 200;
+    private static final int RC_CAMERA_RESULT = 201;
 
     public MainFeature newInstance() {return new MainFeature();}
 
@@ -62,6 +69,7 @@ public class MainFeature extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
         this.initPropertyViewModel();
+        alertDialogUtils = new AlertDialogUtils(this);
         propertyId = MainFeatureArgs.fromBundle(getArguments()).getPropertyId();
         if (!propertyId.equals("null")){
             this.initFormFields();
@@ -89,7 +97,7 @@ public class MainFeature extends Fragment {
     /** ********************************* **/
 
     private void initPropertyViewModel(){
-        ViewModelFactory viewModelFactory = Injection.providePropertyViewModelFactory();
+        ViewModelFactory viewModelFactory = Injection.providePropertyViewModelFactory(getViewLifecycleOwner(), this.getContext());
         propertyViewModel = new ViewModelProvider(this, viewModelFactory).get(PropertyViewModel.class);
     }
 
@@ -119,17 +127,42 @@ public class MainFeature extends Fragment {
             } else {
                 Toast.makeText(this.getActivity(), getString(R.string.toast_title_no_image_chosen), Toast.LENGTH_SHORT).show();
             }
+        } else if (requestCode == RC_CAMERA_RESULT) {
+            if (resultCode == RESULT_OK) {
+                Bitmap bit= (Bitmap) data.getExtras().get("data");
+                binding.imageView3.setImageBitmap(bit);
+
+                Toast.makeText(this.getActivity(), getString(R.string.toast_title_image_chosen), Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(this.getActivity(), getString(R.string.toast_title_no_image_chosen), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    @AfterPermissionGranted(RC_IMAGE_PERMS)
+
     public void onClickAddFile() {
+        choiceDialog();
+    }
+
+    @AfterPermissionGranted(RC_IMAGE_PERMS)
+    private void onGallerySelect(){
         if (!EasyPermissions.hasPermissions(this.getActivity(), PERMS)) {
             EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), RC_IMAGE_PERMS, PERMS);
             return;
         }
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, RC_CHOOSE_PHOTO);
+    }
+
+    @AfterPermissionGranted(RC_CAMERA_PERMS)
+    private void onCameraSelect(){
+        if (!EasyPermissions.hasPermissions(this.getActivity(), PERMS_CAMERA)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), RC_CAMERA_PERMS, PERMS_CAMERA);
+            return;
+        }
+        Intent mediaChooser =  new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(mediaChooser, RC_CAMERA_RESULT);
     }
 
     /** *********************************** **/
@@ -157,5 +190,26 @@ public class MainFeature extends Fragment {
                 Toast.makeText(this.getActivity(), "Please add all fields", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /** ********************************* **/
+    /** ***** Alert Dialog Method  ***** **/
+    /** ******************************* **/
+
+    private void choiceDialog(){
+        alertDialogUtils.showAlertDialog(this.getContext(),"Get image choice", "how do you want get image",
+                "GALLERY", "CAMERA", R.drawable.border_radius_white, R.drawable.camera, 1);
+    }
+
+    @Override
+    public void positiveButtonDialogClicked(DialogInterface dialog, int dialogIdForSwitch) {
+        onGallerySelect();
+        dialog.dismiss();
+    }
+
+    @Override
+    public void negativeButtonDialogClicked(DialogInterface dialog, int dialogIdForSwitch) {
+        onCameraSelect();
+        dialog.dismiss();
     }
 }

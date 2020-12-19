@@ -8,6 +8,7 @@ public class Property {
     private String propertyLocatedCity;
     private float propertyPrice;
     private String propertyPreviewImageUrl;
+    private double latitude, longitude;
 
     public Property() {}
 
@@ -59,6 +60,22 @@ public class Property {
         this.propertyPreviewImageUrl = propertyPreviewImageUrl;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
     @Override
     public String toString() {
         return "Property{" +
@@ -68,6 +85,8 @@ public class Property {
                 ", propertyLocatedCity='" + propertyLocatedCity + '\'' +
                 ", propertyPrice=" + propertyPrice +
                 ", propertyPreviewImageUrl='" + propertyPreviewImageUrl + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
                 '}';
     }
 }
