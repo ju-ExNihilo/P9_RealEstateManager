@@ -28,7 +28,7 @@ public class PropertyImageAdapter extends FirestoreRecyclerAdapter<PropertyImage
         Glide.with(holder.binding.propertyImage.getContext())
                 .load(model.getImageUrl())
                 .into(holder.binding.propertyImage);
-
+        holder.binding.propertyDescription.setText(model.getImageDescription());
         holder.binding.deleteBtn.setOnClickListener(v -> onClearBtnClicked.onClickedClearBtn(model.getPropertyImageId()));
     }
 

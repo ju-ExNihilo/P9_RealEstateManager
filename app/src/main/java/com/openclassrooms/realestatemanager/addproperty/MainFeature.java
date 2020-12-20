@@ -4,12 +4,16 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentMainFeatureBinding;
@@ -31,9 +36,12 @@ import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -46,6 +54,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
     private String propertyId;
     private PropertyViewModel propertyViewModel;
     private AlertDialogUtils alertDialogUtils;
+    private Uri photoUri = null;
     private List<String> propertyTypeList = new LinkedList<>(Arrays.asList("Flat", "House", "Loft", "manor", "castle", "studio apartment"));
     private static final String PERMS = Manifest.permission.READ_EXTERNAL_STORAGE;
     private static final String PERMS_CAMERA = Manifest.permission.CAMERA;
@@ -79,6 +88,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
         binding.addImageBtn.setOnClickListener(v -> this.onClickAddFile());
         binding.typeSpinner.attachDataSource(propertyTypeList);
         this.onClickNextBtn();
+        this.choosePanelBtnLister();
     }
 
     private void initFormFields(){
@@ -121,18 +131,19 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
         if (requestCode == RC_CHOOSE_PHOTO) {
             if (resultCode == RESULT_OK) {
                 uriImageSelected = data.getData().toString();
-
-                Toast.makeText(this.getActivity(), getString(R.string.toast_title_image_chosen), Toast.LENGTH_SHORT).show();
+                binding.choosePicPanel.setVisibility(View.VISIBLE);
+                Glide.with(binding.choosenPic.getContext())
+                        .load(uriImageSelected)
+                        .into(binding.choosenPic);
 
             } else {
                 Toast.makeText(this.getActivity(), getString(R.string.toast_title_no_image_chosen), Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == RC_CAMERA_RESULT) {
             if (resultCode == RESULT_OK) {
-                Bitmap bit= (Bitmap) data.getExtras().get("data");
-                binding.imageView3.setImageBitmap(bit);
-
-                Toast.makeText(this.getActivity(), getString(R.string.toast_title_image_chosen), Toast.LENGTH_SHORT).show();
+                Bitmap bit= BitmapFactory.decodeFile(uriImageSelected);
+                binding.choosePicPanel.setVisibility(View.VISIBLE);
+                binding.choosenPic.setImageBitmap(bit);
 
             } else {
                 Toast.makeText(this.getActivity(), getString(R.string.toast_title_no_image_chosen), Toast.LENGTH_SHORT).show();
@@ -141,13 +152,21 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
     }
 
 
-    public void onClickAddFile() {
+    private void onClickAddFile() {
         choiceDialog();
+    }
+
+    private void choosePanelBtnLister(){
+        binding.changePicBtn.setOnClickListener(v -> binding.choosePicPanel.setVisibility(View.GONE));
+        binding.validatPicBtn.setOnClickListener(v -> {
+            binding.choosePicPanel.setVisibility(View.GONE);
+            Toast.makeText(this.getActivity(), getString(R.string.toast_title_image_chosen), Toast.LENGTH_SHORT).show();
+        });
     }
 
     @AfterPermissionGranted(RC_IMAGE_PERMS)
     private void onGallerySelect(){
-        if (!EasyPermissions.hasPermissions(this.getActivity(), PERMS)) {
+        if (!EasyPermissions.hasPermissions(this.getContext(), PERMS)) {
             EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), RC_IMAGE_PERMS, PERMS);
             return;
         }
@@ -156,13 +175,22 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
     }
 
     @AfterPermissionGranted(RC_CAMERA_PERMS)
-    private void onCameraSelect(){
-        if (!EasyPermissions.hasPermissions(this.getActivity(), PERMS_CAMERA)) {
+    private void onCameraSelect() throws IOException {
+        if (!EasyPermissions.hasPermissions(this.getContext(), PERMS_CAMERA)) {
             EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), RC_CAMERA_PERMS, PERMS_CAMERA);
             return;
         }
         Intent mediaChooser =  new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(mediaChooser, RC_CAMERA_RESULT);
+        if (mediaChooser.resolveActivity(getActivity().getPackageManager()) != null){
+            String uuid = UUID.randomUUID().toString();
+            File photoDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File photoFile = File.createTempFile(uuid, ".png", photoDir);
+            uriImageSelected = photoFile.getAbsolutePath();
+            photoUri = FileProvider.getUriForFile(getActivity().getApplicationContext(),
+                    getActivity().getApplicationContext().getPackageName()+".provider", photoFile);
+            mediaChooser.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            startActivityForResult(mediaChooser, RC_CAMERA_RESULT);
+        }
     }
 
     /** *********************************** **/
@@ -183,6 +211,12 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
                 property.setPropertyPreviewImageUrl(uriImageSelected);
                 property.setAgentId(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 propertyViewModel.createProperty(property);
+                if (photoUri != null){
+                    propertyViewModel.uploadImageInFirebase(propertyId, photoUri);
+                }else {
+                    Uri uri = Uri.parse(uriImageSelected);
+                    propertyViewModel.uploadImageInFirebase(propertyId, uri);
+                }
                 MainFeatureDirections.ActionMainFeatureToAddressFeature action = MainFeatureDirections.actionMainFeatureToAddressFeature();
                 action.setPropertyId(propertyId);
                 navController.navigate(action);
@@ -208,7 +242,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
     }
 
     @Override
-    public void negativeButtonDialogClicked(DialogInterface dialog, int dialogIdForSwitch) {
+    public void negativeButtonDialogClicked(DialogInterface dialog, int dialogIdForSwitch) throws IOException {
         onCameraSelect();
         dialog.dismiss();
     }

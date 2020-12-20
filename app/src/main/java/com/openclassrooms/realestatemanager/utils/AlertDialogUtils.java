@@ -8,6 +8,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.IOException;
+
 public class AlertDialogUtils {
 
     private OnClickButtonAlertDialog onClickButtonAlertDialog;
@@ -15,7 +17,7 @@ public class AlertDialogUtils {
 
     public interface OnClickButtonAlertDialog {
         void positiveButtonDialogClicked(DialogInterface dialog, int dialogIdForSwitch);
-        void negativeButtonDialogClicked(DialogInterface dialog, int dialogIdForSwitch);
+        void negativeButtonDialogClicked(DialogInterface dialog, int dialogIdForSwitch) throws IOException;
     }
 
     public interface OnClickButtonInpuDialog {
@@ -45,7 +47,13 @@ public class AlertDialogUtils {
         dialogBuilder.setTitle(dialogTitle);
         dialogBuilder.setMessage(dialogMessage);
         dialogBuilder.setPositiveButton(positiveButtonText, (dialog, which) -> onClickButtonAlertDialog.positiveButtonDialogClicked(dialog, dialogIdForSwitch));
-        dialogBuilder.setNegativeButton(negativeButtonText, (dialog, which) -> onClickButtonAlertDialog.negativeButtonDialogClicked(dialog, dialogIdForSwitch));
+        dialogBuilder.setNegativeButton(negativeButtonText, (dialog, which) -> {
+            try {
+                onClickButtonAlertDialog.negativeButtonDialogClicked(dialog, dialogIdForSwitch);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         alertBody(context, dialogDrawableBackground, dialogDrawableIcon, dialogBuilder);
     }
 
@@ -56,7 +64,13 @@ public class AlertDialogUtils {
         dialogBuilder.setTitle(dialogTitle);
         dialogBuilder.setMessage(dialogMessage);
         dialogBuilder.setCancelable(true);
-        dialogBuilder.setPositiveButton(negativeButtonText, (dialog, which) -> onClickButtonAlertDialog.negativeButtonDialogClicked(dialog, dialogIdForSwitch));
+        dialogBuilder.setPositiveButton(negativeButtonText, (dialog, which) -> {
+            try {
+                onClickButtonAlertDialog.negativeButtonDialogClicked(dialog, dialogIdForSwitch);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         alertBody(context, dialogDrawableBackground, dialogDrawableIcon, dialogBuilder);
     }
 

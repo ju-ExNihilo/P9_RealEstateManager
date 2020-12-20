@@ -4,7 +4,7 @@ public class PointOfInterest {
 
     private String pointOfInterestId;
     private String propertyId;
-    private String getPointOfInterestName;
+    private String pointOfInterestName;
 
     public PointOfInterest() {}
 
@@ -24,12 +24,12 @@ public class PointOfInterest {
         this.propertyId = propertyId;
     }
 
-    public String getGetPointOfInterestName() {
-        return getPointOfInterestName;
+    public String getPointOfInterestName() {
+        return pointOfInterestName;
     }
 
-    public void setGetPointOfInterestName(String getPointOfInterestName) {
-        this.getPointOfInterestName = getPointOfInterestName;
+    public void setPointOfInterestName(String pointOfInterestName) {
+        this.pointOfInterestName = pointOfInterestName;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class PointOfInterest {
         return "PointOfInterest{" +
                 "pointOfInterestId='" + pointOfInterestId + '\'' +
                 ", propertyId='" + propertyId + '\'' +
-                ", getPointOfInterestName='" + getPointOfInterestName + '\'' +
+                ", getPointOfInterestName='" + pointOfInterestName + '\'' +
                 '}';
     }
 }

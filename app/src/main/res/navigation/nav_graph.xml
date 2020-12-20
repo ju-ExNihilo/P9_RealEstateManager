@@ -53,27 +53,32 @@
                 app:popUpToInclusive="true"
                 app:enterAnim="@anim/fragment_fade_enter"
                 app:exitAnim="@anim/fragment_fade_exit"/>
+
         <argument android:name="propertyId" app:argType="string" android:defaultValue="null"/>
-        <action android:id="@+id/action_otherFeature_to_pointOfInterestFeature"
-                app:destination="@id/pointOfInterestFeature" app:enterAnim="@anim/fragment_fade_enter"
+
+        <action android:id="@+id/action_otherFeature_to_imagesFeature"
+                app:destination="@id/imagesFeature"
+                app:launchSingleTop="true"
+                app:popUpTo="@+id/main_nav_graph"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/fragment_fade_enter"
                 app:exitAnim="@anim/fragment_fade_exit"/>
+
     </fragment>
-    <fragment android:id="@+id/pointOfInterestFeature"
-              android:name="com.openclassrooms.realestatemanager.addproperty.PointOfInterestFeature"
-              android:label="PointOfInterestFeature">
-        <action android:id="@+id/action_pointOfInterestFeature_to_otherFeature" app:destination="@id/otherFeature"
-                app:enterAnim="@anim/fragment_fade_enter" app:exitAnim="@anim/fragment_fade_exit"/>
-        <argument android:name="propertyId" app:argType="string" android:defaultValue="null"/>
-        <action android:id="@+id/action_pointOfInterestFeature_to_imagesFeature" app:destination="@id/imagesFeature"
-                app:enterAnim="@anim/fragment_fade_enter" app:exitAnim="@anim/fragment_fade_exit"/>
-    </fragment>
+
     <fragment android:id="@+id/imagesFeature"
               android:name="com.openclassrooms.realestatemanager.addproperty.ImagesFeature"
               android:label="fragment_images_feature" tools:layout="@layout/fragment_images_feature">
-        <action android:id="@+id/action_imagesFeature_to_pointOfInterestFeature"
-                app:destination="@id/pointOfInterestFeature" app:enterAnim="@anim/fragment_fade_enter"
-                app:exitAnim="@anim/fragment_fade_exit"/>
+
         <argument android:name="propertyId" app:argType="string" android:defaultValue="null"/>
+
+        <action android:id="@+id/action_imagesFeature_to_otherFeature"
+                app:destination="@id/otherFeature"
+                app:launchSingleTop="true"
+                app:popUpTo="@+id/main_nav_graph"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/fragment_fade_enter"
+                app:exitAnim="@anim/fragment_fade_exit"/>
     </fragment>
 
 </navigation>

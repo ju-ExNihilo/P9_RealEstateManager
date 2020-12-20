@@ -32,7 +32,7 @@
                     android:paddingTop="3dp"
                     android:paddingBottom="3dp"/>
             <TextView
-                    android:text="TextView"
+                    tools:text="Flat"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" android:id="@+id/propertyType"
                     app:layout_constraintTop_toTopOf="parent"
@@ -44,7 +44,7 @@
                     android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toTopOf="@+id/propertyTown"/>
             <TextView
-                    android:text="TextView"
+                    tools:text="New York"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" android:id="@+id/propertyTown"
                     app:layout_constraintTop_toBottomOf="@+id/propertyType"
@@ -53,7 +53,7 @@
                     android:layout_marginEnd="16dp" android:textSize="16sp"
                     app:layout_constraintBottom_toTopOf="@+id/propertyPrice"/>
             <TextView
-                    android:text="TextView"
+                    tools:text="1 000 000 $"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/propertyPrice"

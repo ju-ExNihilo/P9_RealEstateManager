@@ -1,9 +1,11 @@
 package com.openclassrooms.realestatemanager.addproperty;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,12 +18,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.DocumentReference;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentImagesFeatureBinding;
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.home.HomeActivity;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.PropertyImage;
+import com.openclassrooms.realestatemanager.utils.AlertDialogUtils;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -30,13 +35,15 @@ import pub.devrel.easypermissions.EasyPermissions;
 import static android.app.Activity.RESULT_OK;
 
 
-public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDataChange, PropertyImageAdapter.OnClearBtnClicked{
+public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDataChange, PropertyImageAdapter.OnClearBtnClicked, AlertDialogUtils.OnClickButtonInpuDialog{
 
     private FragmentImagesFeatureBinding binding;
     private NavController navController;
     private PropertyViewModel propertyViewModel;
     private String propertyId;
     private PropertyImageAdapter adapter;
+    private AlertDialogUtils alertDialogUtils;
+    PropertyImage propertyImage = new PropertyImage();
     private static final String PERMS = Manifest.permission.READ_EXTERNAL_STORAGE;
     private static final int RC_IMAGE_PERMS = 100;
     private static final int RC_CHOOSE_PHOTO = 200;
@@ -56,11 +63,13 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
         propertyId = OtherFeatureArgs.fromBundle(getArguments()).getPropertyId();
+        alertDialogUtils = new AlertDialogUtils(this);
         this.initPropertyViewModel();
         this.initRecyclerView();
         binding.addImageBtn.setOnClickListener(v -> this.onClickAddFile());
         this.onClickValidateBtn();
         this.onClickBackBtn();
+        this.insertPointOfInterest();
     }
 
     @Override
@@ -73,6 +82,13 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     public void onStop() {
         super.onStop();
         adapter.stopListening();
+    }
+
+    private void insertPointOfInterest(){
+        propertyViewModel.getAPropertyById(propertyId).observe(getViewLifecycleOwner(), property -> {
+            String location = property.getLatitude() + "," + property.getLongitude();
+            propertyViewModel.getProximityPointOfInterest(location, propertyId);
+        });
     }
 
     /** *********************************** **/
@@ -95,9 +111,12 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
         if (requestCode == RC_CHOOSE_PHOTO) {
             if (resultCode == RESULT_OK) {
                 String uriImageSelected = data.getData().toString();
-                PropertyImage propertyImage = new PropertyImage();
+                inputDialog();
                 propertyImage.setImageUrl(uriImageSelected);
                 propertyImage.setPropertyId(propertyId);
+                propertyImage.setImageDescription("");
+                String id = propertyViewModel.getPropertyImageId(propertyId);
+                propertyImage.setPropertyImageId(id);
                 propertyViewModel.insertImageToProperty(propertyId,propertyImage);
                 Toast.makeText(this.getActivity(), getString(R.string.toast_title_image_chosen), Toast.LENGTH_SHORT).show();
             } else {
@@ -148,7 +167,7 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
 
     private void onClickBackBtn(){
         binding.backBtn.setOnClickListener(v -> {
-            ImagesFeatureDirections.ActionImagesFeatureToPointOfInterestFeature action = ImagesFeatureDirections.actionImagesFeatureToPointOfInterestFeature();
+            ImagesFeatureDirections.ActionImagesFeatureToOtherFeature action = ImagesFeatureDirections.actionImagesFeatureToOtherFeature();
             action.setPropertyId(propertyId);
             navController.navigate(action);
         });
@@ -162,5 +181,26 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     @Override
     public void onClickedClearBtn(String propertyImageId) {
         propertyViewModel.deleteImage(propertyId, propertyImageId);
+    }
+
+    /** ********************************* **/
+    /** ***** Alert Dialog Method  ***** **/
+    /** ******************************* **/
+
+    private void inputDialog(){
+        alertDialogUtils.showAlertInputDialog(this.getContext(),"Description", "Write image description",
+                "Add", "Cancel","Description", InputType.TYPE_CLASS_TEXT, R.drawable.border_radius_white, R.drawable.description, 1);
+    }
+
+    @Override
+    public void onClickedPositiveButtonInputDialog(DialogInterface dialog, TextInputEditText textInputEditText, int dialogIdForSwitch) {
+        String imageDescription = textInputEditText.getText().toString();
+        propertyViewModel.updateImageDescription(propertyId, propertyImage.getPropertyImageId(), imageDescription);
+        dialog.dismiss();
+    }
+
+    @Override
+    public void onClickedNegativeButtonInputDialog(DialogInterface dialog) {
+        dialog.dismiss();
     }
 }

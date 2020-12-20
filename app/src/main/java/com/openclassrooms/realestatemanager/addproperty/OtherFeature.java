@@ -124,7 +124,7 @@ public class OtherFeature extends Fragment {
             propertyViewModel.insertFeatureToProperty(propertyId,
                     initPropertyFeature(numberOfRooms, numberOfBathrooms, numberOfBedRooms, entranceDate, isSale, propertySurface , propertyDescription));
             //navigation
-            OtherFeatureDirections.ActionOtherFeatureToPointOfInterestFeature action = OtherFeatureDirections.actionOtherFeatureToPointOfInterestFeature();
+            OtherFeatureDirections.ActionOtherFeatureToImagesFeature action = OtherFeatureDirections.actionOtherFeatureToImagesFeature();
             action.setPropertyId(propertyId);
             navController.navigate(action);
 

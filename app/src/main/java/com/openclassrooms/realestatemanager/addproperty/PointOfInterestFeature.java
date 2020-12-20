@@ -49,7 +49,6 @@ public class PointOfInterestFeature extends Fragment {
         navController = Navigation.findNavController(view);
         propertyId = OtherFeatureArgs.fromBundle(getArguments()).getPropertyId();
         this.initPropertyViewModel();
-        this.initFormFields();
         binding.pointInterestTags.setTagList(pointOfInterestItemsList);
         binding.pointInterestTags.setTagBackgroundColor(Color.parseColor("#c8a97e"));
         binding.pointInterestTags.setTagTextColor(Color.WHITE);
@@ -57,21 +56,7 @@ public class PointOfInterestFeature extends Fragment {
         this.onClickNextBtn();
     }
 
-    private void initFormFields(){
-        propertyViewModel.getPointOfInterestById(propertyId).observe(getViewLifecycleOwner(), pointOfInterests -> {
-            if (pointOfInterests != null){
-                for (PointOfInterest pointOfInterest : pointOfInterests){
-                    if (pointOfInterestItemsList.contains(pointOfInterest.getGetPointOfInterestName())){
-                        int i = pointOfInterestItemsList.indexOf(pointOfInterest.getGetPointOfInterestName());
-                        binding.pointInterestTags.onGetSelectTag(i, pointOfInterest.getGetPointOfInterestName());
-                    }else {
-                        binding.customEditText.setText(pointOfInterest.getGetPointOfInterestName());
-                    }
-                }
-            }
-        });
-        propertyViewModel.resetPointOfInterest(propertyId);
-    }
+
 
     /** *********************************** **/
     /** ****** init ViewModel Method ***** **/
@@ -97,7 +82,7 @@ public class PointOfInterestFeature extends Fragment {
         for (TagModel tagModel : pointOfInterestSelected){
             PointOfInterest pointOfInterest = new PointOfInterest();
             pointOfInterest.setPropertyId(propertyId);
-            pointOfInterest.setGetPointOfInterestName(tagModel.getTagText());
+            pointOfInterest.setPointOfInterestName(tagModel.getTagText());
             pointOfInterest.setPointOfInterestId(tagModel.getTagText() + "Id");
             propertyViewModel.insertPointOfInterestToProperty(propertyId, pointOfInterest);
         }
@@ -107,11 +92,7 @@ public class PointOfInterestFeature extends Fragment {
         binding.backBtn.setOnClickListener(v -> {
             //Insert
             this.savePointOfInterest();
-            //Navigation
-            PointOfInterestFeatureDirections.ActionPointOfInterestFeatureToOtherFeature action =
-                    PointOfInterestFeatureDirections.actionPointOfInterestFeatureToOtherFeature();
-            action.setPropertyId(propertyId);
-            navController.navigate(action);
+
         });
     }
 
@@ -119,11 +100,7 @@ public class PointOfInterestFeature extends Fragment {
         binding.nextBtn.setOnClickListener(v -> {
             //Insert
             this.savePointOfInterest();
-            //Navigation
-            PointOfInterestFeatureDirections.ActionPointOfInterestFeatureToImagesFeature action =
-                    PointOfInterestFeatureDirections.actionPointOfInterestFeatureToImagesFeature();
-            action.setPropertyId(propertyId);
-            navController.navigate(action);
+
         });
     }
 }

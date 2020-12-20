@@ -1,15 +1,22 @@
 package com.openclassrooms.realestatemanager.repository;
 
+import android.net.Uri;
 import android.util.Log;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.*;
 import fr.juju.googlemaplibrary.repository.GooglePlaceRepository;
 
+import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 public class PropertyDataRepository {
 
@@ -60,6 +67,11 @@ public class PropertyDataRepository {
         return reference.getId();
     }
 
+    public String getPropertyImageId(String propertyId){
+        DocumentReference reference = getSubCollection(propertyId, COLLECTION_IMAGE).document();
+        return reference.getId();
+    }
+
     /** ***************************** **/
     /** ******* Create Method  ****** **/
     /** ***************************** **/
@@ -81,10 +93,41 @@ public class PropertyDataRepository {
     }
 
     public Task<Void> insertImageToProperty(String propertyId, PropertyImage propertyImage){
-        DocumentReference reference = getPropertyCollection().document();
-        String id = reference.getId();
-        propertyImage.setPropertyImageId(id);
-        return getSubCollection(propertyId, COLLECTION_IMAGE).document(id).set(propertyImage);
+        return getSubCollection(propertyId, COLLECTION_IMAGE).document(propertyImage.getPropertyImageId()).set(propertyImage);
+    }
+
+    public void uploadImageInFirebase(String propertyId, Uri uriImage){
+        String uuid = UUID.randomUUID().toString();
+        StorageReference mImageRef = FirebaseStorage.getInstance().getReference(uuid);
+        UploadTask uploadTask = mImageRef.putFile(uriImage);
+        uploadTask.continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                throw task.getException();
+            }
+            return mImageRef.getDownloadUrl();
+        }).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Uri downloadUri = task.getResult();
+                updateImageUrl(propertyId, downloadUri.toString());
+            }
+        });
+    }
+
+    public void getProximityPointOfInterest(String location, String propertyId){
+        AgentRepository agentRepository = Injection.provideAgentRepository();
+        agentRepository.getAgentFromFirestore().observe(owner, agent -> {
+            for (String pointOfInterest : agent.getProximityPointOfInterestChoice()){
+                googlePlaceRepository.getPlace(location, 2000, pointOfInterest, "none").observe(owner, finalPlaces -> {
+                    if (finalPlaces.size() > 0){
+                        PointOfInterest pointOfInterest1 = new PointOfInterest();
+                        pointOfInterest1.setPointOfInterestName(pointOfInterest);
+                        pointOfInterest1.setPropertyId(propertyId);
+                        pointOfInterest1.setPointOfInterestId(pointOfInterest +"Id");
+                        insertPointOfInterestToProperty(propertyId, pointOfInterest1);
+                    }
+                });
+            }
+        });
     }
 
     /** ***************************** **/
@@ -167,23 +210,8 @@ public class PropertyDataRepository {
     /** ****** DELETE Method  ******* **/
     /** ***************************** **/
 
-    private Task<Void> deletePointOfInterest(String propertyId, String pointOfInterestId){
-        return getSubCollection(propertyId, COLLECTION_POINT_OF_INTEREST).document(pointOfInterestId).delete();
-    }
-
     public Task<Void> deleteImage(String propertyId, String propertyImageId){
         return getSubCollection(propertyId, COLLECTION_IMAGE).document(propertyImageId).delete();
-    }
-
-    public void resetPointOfInterest(String propertyId){
-        getSubCollection(propertyId, COLLECTION_POINT_OF_INTEREST).whereEqualTo("propertyId", propertyId).get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()){
-                        for (PointOfInterest pointOfInterest : task.getResult().toObjects(PointOfInterest.class)){
-                            deletePointOfInterest(propertyId, pointOfInterest.getPointOfInterestId());
-                        }
-                    }
-                });
     }
 
     /** ***************************** **/
@@ -191,11 +219,19 @@ public class PropertyDataRepository {
     /** ***************************** **/
 
     /** ******** Update LatLn  ****** **/
-    public Task<Void> updateLongitude(String propertyId, double longitude) {
+    private Task<Void> updateLongitude(String propertyId, double longitude) {
         return getPropertyCollection().document(propertyId).update("longitude", longitude);
     }
-    public Task<Void> updateLatitude(String propertyId, double latitude) {
+    private Task<Void> updateLatitude(String propertyId, double latitude) {
         return getPropertyCollection().document(propertyId).update("latitude", latitude);
+    }
+
+    public Task<Void> updateImageUrl(String propertyId, String imageUrl) {
+        return getPropertyCollection().document(propertyId).update("propertyPreviewImageUrl", imageUrl);
+    }
+
+    public Task<Void> updateImageDescription(String propertyId, String propertyImageId, String description) {
+        return getSubCollection(propertyId, COLLECTION_IMAGE).document(propertyImageId).update("imageDescription", description);
     }
 
     public void updateLatLng(String propertyId, String addressCompact){
@@ -207,6 +243,5 @@ public class PropertyDataRepository {
             this.updateLatitude(propertyId, geocodePlace.getLat());
             Log.i("DEBUGGG", "finish");
         });
-
     }
 }

@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.viewmodel;
 
+import android.net.Uri;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -49,18 +50,22 @@ public class PropertyViewModel extends ViewModel {
 
     public String getPropertyFeatureId(String propertyId){return propertyDataRepository.getPropertyFeatureId(propertyId);}
 
-    /** DELETE **/
+    public String getPropertyImageId(String propertyId){return propertyDataRepository.getPropertyImageId(propertyId);}
 
-    public void resetPointOfInterest(String propertyId){propertyDataRepository.resetPointOfInterest(propertyId);}
+    /** DELETE **/
 
     public void deleteImage(String propertyId, String propertyImageId){propertyDataRepository.deleteImage(propertyId, propertyImageId);}
 
     /** UPDATE **/
 
-    public void updateLongitude(String propertyId, double longitude){ propertyDataRepository.updateLongitude(propertyId, longitude);}
-
-    public void updateLatitude(String propertyId, double latitude){ propertyDataRepository.updateLatitude(propertyId, latitude);}
+    public void uploadImageInFirebase(String propertyId, Uri uriImage){ propertyDataRepository.uploadImageInFirebase(propertyId, uriImage);}
 
     public void updateLatLng(String propertyId, String addressCompact){propertyDataRepository.updateLatLng(propertyId, addressCompact);}
+
+    public void getProximityPointOfInterest(String location, String propertyId){propertyDataRepository.getProximityPointOfInterest(location, propertyId);}
+
+    public void updateImageDescription(String propertyId, String propertyImageId, String description){
+        propertyDataRepository.updateImageDescription(propertyId, propertyImageId, description);
+    }
 
 }

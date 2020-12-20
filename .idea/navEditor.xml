@@ -43,6 +43,15 @@
                             <option name="y" value="79" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_imagesFeature_to_otherFeature">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -83,7 +92,7 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_otherFeature_to_pointOfInterestFeature">
+                            <entry key="action_otherFeature_to_imagesFeature">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -98,18 +107,9 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-59" />
-                            <option name="y" value="79" />
+                            <option name="x" value="-100" />
+                            <option name="y" value="-242" />
                           </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_pointOfInterestFeature_to_otherFeature">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
