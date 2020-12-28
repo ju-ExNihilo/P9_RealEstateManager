@@ -35,6 +35,12 @@ public class AlertDialogUtils {
         this.onClickButtonInputDialog = onClickButtonInputDialog;
     }
 
+    /** Construct **/
+    public AlertDialogUtils(OnClickButtonAlertDialog onClickButtonAlertDialog, OnClickButtonInpuDialog onClickButtonInputDialog) {
+        this.onClickButtonInputDialog = onClickButtonInputDialog;
+        this.onClickButtonAlertDialog = onClickButtonAlertDialog;
+    }
+
     /** *************************************** **/
     /** ******** Alert Dialog Method  ******** **/
     /** ************************************* **/

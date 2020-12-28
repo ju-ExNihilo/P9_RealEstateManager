@@ -1,14 +1,16 @@
 package com.openclassrooms.realestatemanager.addproperty;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.firestore.DocumentReference;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentImagesFeatureBinding;
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
@@ -32,10 +33,17 @@ import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import static android.app.Activity.RESULT_OK;
 
 
-public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDataChange, PropertyImageAdapter.OnClearBtnClicked, AlertDialogUtils.OnClickButtonInpuDialog{
+public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDataChange, PropertyImageAdapter.OnClearBtnClicked,
+        AlertDialogUtils.OnClickButtonInpuDialog, AlertDialogUtils.OnClickButtonAlertDialog{
 
     private FragmentImagesFeatureBinding binding;
     private NavController navController;
@@ -43,10 +51,10 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     private String propertyId;
     private PropertyImageAdapter adapter;
     private AlertDialogUtils alertDialogUtils;
-    PropertyImage propertyImage = new PropertyImage();
-    private static final String PERMS = Manifest.permission.READ_EXTERNAL_STORAGE;
-    private static final int RC_IMAGE_PERMS = 100;
-    private static final int RC_CHOOSE_PHOTO = 200;
+    private Uri photoUri = null;
+    private String uriImageSelected;
+    private List<PropertyImage> imageList = new ArrayList<>();
+
 
     public ImagesFeature newInstance() {return new ImagesFeature();}
 
@@ -63,7 +71,7 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
         propertyId = OtherFeatureArgs.fromBundle(getArguments()).getPropertyId();
-        alertDialogUtils = new AlertDialogUtils(this);
+        alertDialogUtils = new AlertDialogUtils(this, this);
         this.initPropertyViewModel();
         this.initRecyclerView();
         binding.addImageBtn.setOnClickListener(v -> this.onClickAddFile());
@@ -86,8 +94,10 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
 
     private void insertPointOfInterest(){
         propertyViewModel.getAPropertyById(propertyId).observe(getViewLifecycleOwner(), property -> {
-            String location = property.getLatitude() + "," + property.getLongitude();
-            propertyViewModel.getProximityPointOfInterest(location, propertyId);
+            if (property.getLongitude() != 0.0 && property.getLatitude() != 0.0){
+                String location = property.getLatitude() + "," + property.getLongitude();
+                propertyViewModel.getProximityPointOfInterest(location, propertyId);
+            }
         });
     }
 
@@ -108,31 +118,47 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     }
 
     private void handleResponse(int requestCode, int resultCode, Intent data){
-        if (requestCode == RC_CHOOSE_PHOTO) {
+        if (requestCode == Utils.RC_CHOOSE_PHOTO || requestCode == Utils.RC_CAMERA_RESULT) {
             if (resultCode == RESULT_OK) {
-                String uriImageSelected = data.getData().toString();
+                uriImageSelected = data.getData().toString();
                 inputDialog();
-                propertyImage.setImageUrl(uriImageSelected);
-                propertyImage.setPropertyId(propertyId);
-                propertyImage.setImageDescription("");
-                String id = propertyViewModel.getPropertyImageId(propertyId);
-                propertyImage.setPropertyImageId(id);
-                propertyViewModel.insertImageToProperty(propertyId,propertyImage);
-                Toast.makeText(this.getActivity(), getString(R.string.toast_title_image_chosen), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this.getActivity(), getString(R.string.toast_title_no_image_chosen), Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    @AfterPermissionGranted(RC_IMAGE_PERMS)
-    public void onClickAddFile() {
-        if (!EasyPermissions.hasPermissions(this.getActivity(), PERMS)) {
-            EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), RC_IMAGE_PERMS, PERMS);
+    private void onClickAddFile() {
+        choiceDialog();
+    }
+
+
+    @AfterPermissionGranted(Utils.RC_IMAGE_PERMS)
+    private void onGallerySelect(){
+        if (!EasyPermissions.hasPermissions(this.getContext(), Utils.PERMS)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), Utils.RC_IMAGE_PERMS, Utils.PERMS);
             return;
         }
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(i, RC_CHOOSE_PHOTO);
+        startActivityForResult(i, Utils.RC_CHOOSE_PHOTO);
+    }
+
+    @AfterPermissionGranted(Utils.RC_CAMERA_PERMS)
+    private void onCameraSelect() throws IOException {
+        if (!EasyPermissions.hasPermissions(this.getContext(), Utils.PERMS_CAMERA)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_camera_access), Utils.RC_CAMERA_PERMS, Utils.PERMS_CAMERA);
+            return;
+        }
+        Intent mediaChooser =  new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (mediaChooser.resolveActivity(getActivity().getPackageManager()) != null){
+            String uuid = UUID.randomUUID().toString();
+            File photoDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File photoFile = File.createTempFile(uuid, ".png", photoDir);
+            photoUri = FileProvider.getUriForFile(getActivity().getApplicationContext(),
+                    getActivity().getApplicationContext().getPackageName()+".provider", photoFile);
+            mediaChooser.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            startActivityForResult(mediaChooser, Utils.RC_CAMERA_RESULT);
+        }
     }
 
     /** *********************************** **/
@@ -160,7 +186,10 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
 
     private void onClickValidateBtn(){
         binding.validateBtn.setOnClickListener(v -> {
-            Utils.displayNotification("Property Added", "The property has been added correctly", getContext());
+            for (PropertyImage propertyImage : imageList){
+                propertyViewModel.uploadImageInFirebase(propertyId, propertyImage);
+            }
+            Utils.displayNotification(getString(R.string.property_added), getString(R.string.added_correctly), getContext());
             HomeActivity.navigate(getActivity());
         });
     }
@@ -174,9 +203,7 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     }
 
     @Override
-    public void onDataChanged() {
-
-    }
+    public void onDataChanged() {}
 
     @Override
     public void onClickedClearBtn(String propertyImageId) {
@@ -188,19 +215,48 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     /** ******************************* **/
 
     private void inputDialog(){
-        alertDialogUtils.showAlertInputDialog(this.getContext(),"Description", "Write image description",
-                "Add", "Cancel","Description", InputType.TYPE_CLASS_TEXT, R.drawable.border_radius_white, R.drawable.description, 1);
+        alertDialogUtils.showAlertInputDialog(this.getContext(),getString(R.string.description), getString(R.string.description_dialogue_text),
+                getString(R.string.add), getString(R.string.cancel),getString(R.string.description), InputType.TYPE_CLASS_TEXT, R.drawable.border_radius_white,
+                R.drawable.description, 1);
+    }
+
+    private void choiceDialog(){
+        alertDialogUtils.showAlertDialog(this.getContext(),getString(R.string.image_choise_dialog_title), getString(R.string.image_choise_dialog_text),
+                getString(R.string.gallery), getString(R.string.camera), R.drawable.border_radius_white, R.drawable.camera, 2);
     }
 
     @Override
     public void onClickedPositiveButtonInputDialog(DialogInterface dialog, TextInputEditText textInputEditText, int dialogIdForSwitch) {
         String imageDescription = textInputEditText.getText().toString();
-        propertyViewModel.updateImageDescription(propertyId, propertyImage.getPropertyImageId(), imageDescription);
+        PropertyImage propertyImage = new PropertyImage();
+        if (photoUri != null){
+            propertyImage.setImageUrl(photoUri.toString());
+        }else {
+            propertyImage.setImageUrl(uriImageSelected);
+        }
+        propertyImage.setPropertyId(propertyId);
+        propertyImage.setImageDescription(imageDescription);
+        String propertyImageId = propertyViewModel.getPropertyImageId(propertyId);
+        propertyImage.setPropertyImageId(propertyImageId);
+        propertyViewModel.insertImageToProperty(propertyId,propertyImage);
+        imageList.add(propertyImage);
+        photoUri = null;
         dialog.dismiss();
     }
 
     @Override
-    public void onClickedNegativeButtonInputDialog(DialogInterface dialog) {
+    public void onClickedNegativeButtonInputDialog(DialogInterface dialog) { dialog.dismiss();}
+
+
+    @Override
+    public void positiveButtonDialogClicked(DialogInterface dialog, int dialogIdForSwitch) {
+        onGallerySelect();
+        dialog.dismiss();
+    }
+
+    @Override
+    public void negativeButtonDialogClicked(DialogInterface dialog, int dialogIdForSwitch) throws IOException {
+        onCameraSelect();
         dialog.dismiss();
     }
 }

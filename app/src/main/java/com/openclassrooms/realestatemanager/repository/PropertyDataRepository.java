@@ -12,6 +12,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.*;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import fr.juju.googlemaplibrary.repository.GooglePlaceRepository;
 
 import java.net.URI;
@@ -97,7 +98,7 @@ public class PropertyDataRepository {
     }
 
     public void uploadImageInFirebase(String propertyId, Uri uriImage){
-        String uuid = UUID.randomUUID().toString();
+        String uuid = Utils.randomUUID();
         StorageReference mImageRef = FirebaseStorage.getInstance().getReference(uuid);
         UploadTask uploadTask = mImageRef.putFile(uriImage);
         uploadTask.continueWithTask(task -> {
@@ -108,7 +109,27 @@ public class PropertyDataRepository {
         }).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Uri downloadUri = task.getResult();
+
                 updateImageUrl(propertyId, downloadUri.toString());
+            }
+        });
+    }
+
+    public void uploadImageInFirebase(String propertyId, PropertyImage propertyImage){
+        String uuid = Utils.randomUUID();
+        StorageReference mImageRef = FirebaseStorage.getInstance().getReference(uuid);
+        Uri uriImage = Uri.parse(propertyImage.getImageUrl());
+        UploadTask uploadTask = mImageRef.putFile(uriImage);
+        uploadTask.continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                throw task.getException();
+            }
+            return mImageRef.getDownloadUrl();
+        }).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Uri downloadUri = task.getResult();
+                propertyImage.setImageUrl(downloadUri.toString());
+                insertImageToProperty(propertyId, propertyImage);
             }
         });
     }
@@ -235,13 +256,15 @@ public class PropertyDataRepository {
     }
 
     public void updateLatLng(String propertyId, String addressCompact){
-        Log.i("DEBUGGG", addressCompact);
         googlePlaceRepository.getGeocodePlaceByAddress(addressCompact).observe(owner, geocodePlace -> {
-            Log.i("DEBUGGG", "inside");
-            Log.i("DEBUGGG", String.valueOf(geocodePlace.getLng() +','+ geocodePlace.getLat()));
-            this.updateLongitude(propertyId, geocodePlace.getLng());
-            this.updateLatitude(propertyId, geocodePlace.getLat());
-            Log.i("DEBUGGG", "finish");
+            if (geocodePlace != null){
+                this.updateLongitude(propertyId, geocodePlace.getLng());
+                this.updateLatitude(propertyId, geocodePlace.getLat());
+            }else {
+                this.updateLongitude(propertyId, 0.0);
+                this.updateLatitude(propertyId, 0.0);
+            }
+
         });
     }
 }

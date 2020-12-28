@@ -73,7 +73,7 @@ dependencies {
     //Easy permissions
     implementation 'pub.devrel:easypermissions:1.1.1'
     //Own Library for google place
-    implementation 'com.github.ju-ExNihilo:googleMapLibrary:0.1.8'
+    implementation 'com.github.ju-ExNihilo:googleMapLibrary:0.2.0'
     // UNIT TEST
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.hamcrest:java-hamcrest:2.0.0.0'

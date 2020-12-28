@@ -12,7 +12,7 @@
             android:layout_height="match_parent">
 
         <TextView
-                android:text="Other Feature"
+                android:text="@string/other_feature"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView4"
@@ -44,7 +44,7 @@
                 android:id="@+id/status_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Status of Property"
+                android:text="@string/status_of_property"
                 app:layout_constraintTop_toBottomOf="@+id/textView5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +70,7 @@
                 android:id="@+id/rooms_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Rooms"
+                android:text="@string/rooms"
                 app:layout_constraintTop_toBottomOf="@+id/status_spinner"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +96,7 @@
                     android:id="@+id/rooms_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Number of Rooms " android:inputType="number"/>
+                    android:hint="@string/number_of_rooms" android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -115,7 +115,7 @@
                     android:id="@+id/bathrooms_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Bathrooms" android:inputType="number"/>
+                    android:hint="@string/bathrooms" android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -131,14 +131,14 @@
                     android:id="@+id/bedrooms_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Bedrooms" android:inputType="number"/>
+                    android:hint="@string/bedrooms" android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
                 android:id="@+id/date_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Date"
+                android:text="@string/date"
                 app:layout_constraintTop_toBottomOf="@+id/bedrooms_input"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -165,14 +165,14 @@
                     android:id="@+id/date_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Entrance date of Property "/>
+                    android:hint="@string/entrance_date_of_property"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
                 android:id="@+id/surface_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Surface"
+                android:text="@string/surface"
                 app:layout_constraintTop_toBottomOf="@+id/date_input"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -199,14 +199,14 @@
                     android:id="@+id/surface_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="surface of property in m²" android:inputType="numberDecimal"/>
+                    android:hint="@string/surface_of_property_in_m" android:inputType="numberDecimal"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
                 android:id="@+id/description_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Description"
+                android:text="@string/description"
                 app:layout_constraintTop_toBottomOf="@+id/surface_input"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -233,7 +233,7 @@
                     android:id="@+id/description_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Description"
+                    android:hint="@string/description"
                     android:singleLine="false"
                     android:inputType="textMultiLine"/>
 
@@ -255,7 +255,7 @@
                     android:layout_height="match_parent">
 
                 <TextView
-                        android:text="Back"
+                        android:text="@string/back"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/back_text"
@@ -290,7 +290,7 @@
                     android:layout_height="match_parent">
 
                 <TextView
-                        android:text="Next"
+                        android:text="@string/next"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/validate_text"

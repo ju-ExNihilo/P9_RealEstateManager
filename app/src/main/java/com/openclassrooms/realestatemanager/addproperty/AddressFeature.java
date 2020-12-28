@@ -107,7 +107,7 @@ public class AddressFeature extends Fragment {
                 action.setPropertyId(propertyId);
                 navController.navigate(action);
             }else {
-                Toast.makeText(this.getActivity(), "Please add all fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.getActivity(), getResources().getString(R.string.need_all_fields), Toast.LENGTH_SHORT).show();
             }
         });
     }

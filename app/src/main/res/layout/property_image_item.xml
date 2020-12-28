@@ -29,7 +29,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/property_image"
                     android:background="@color/grayTransparent" android:alpha="0.7"/>
             <TextView
-                    android:text="TextView"
+                    tools:text="TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" android:id="@+id/property_description"
                     app:layout_constraintTop_toTopOf="parent"

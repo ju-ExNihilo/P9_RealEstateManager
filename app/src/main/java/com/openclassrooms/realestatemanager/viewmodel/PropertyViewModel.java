@@ -60,6 +60,8 @@ public class PropertyViewModel extends ViewModel {
 
     public void uploadImageInFirebase(String propertyId, Uri uriImage){ propertyDataRepository.uploadImageInFirebase(propertyId, uriImage);}
 
+    public void uploadImageInFirebase(String propertyId, PropertyImage propertyImage){ propertyDataRepository.uploadImageInFirebase(propertyId, propertyImage);}
+
     public void updateLatLng(String propertyId, String addressCompact){propertyDataRepository.updateLatLng(propertyId, addressCompact);}
 
     public void getProximityPointOfInterest(String location, String propertyId){propertyDataRepository.getProximityPointOfInterest(location, propertyId);}

@@ -32,6 +32,7 @@ import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.Property;
 import com.openclassrooms.realestatemanager.repository.PropertyDataRepository;
 import com.openclassrooms.realestatemanager.utils.AlertDialogUtils;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -56,12 +57,6 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
     private AlertDialogUtils alertDialogUtils;
     private Uri photoUri = null;
     private List<String> propertyTypeList = new LinkedList<>(Arrays.asList("Flat", "House", "Loft", "manor", "castle", "studio apartment"));
-    private static final String PERMS = Manifest.permission.READ_EXTERNAL_STORAGE;
-    private static final String PERMS_CAMERA = Manifest.permission.CAMERA;
-    private static final int RC_IMAGE_PERMS = 100;
-    private static final int RC_CAMERA_PERMS = 101;
-    private static final int RC_CHOOSE_PHOTO = 200;
-    private static final int RC_CAMERA_RESULT = 201;
 
     public MainFeature newInstance() {return new MainFeature();}
 
@@ -128,7 +123,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
     }
 
     private void handleResponse(int requestCode, int resultCode, Intent data){
-        if (requestCode == RC_CHOOSE_PHOTO) {
+        if (requestCode == Utils.RC_CHOOSE_PHOTO) {
             if (resultCode == RESULT_OK) {
                 uriImageSelected = data.getData().toString();
                 binding.choosePicPanel.setVisibility(View.VISIBLE);
@@ -139,7 +134,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
             } else {
                 Toast.makeText(this.getActivity(), getString(R.string.toast_title_no_image_chosen), Toast.LENGTH_SHORT).show();
             }
-        } else if (requestCode == RC_CAMERA_RESULT) {
+        } else if (requestCode == Utils.RC_CAMERA_RESULT) {
             if (resultCode == RESULT_OK) {
                 Bitmap bit= BitmapFactory.decodeFile(uriImageSelected);
                 binding.choosePicPanel.setVisibility(View.VISIBLE);
@@ -164,20 +159,20 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
         });
     }
 
-    @AfterPermissionGranted(RC_IMAGE_PERMS)
+    @AfterPermissionGranted(Utils.RC_IMAGE_PERMS)
     private void onGallerySelect(){
-        if (!EasyPermissions.hasPermissions(this.getContext(), PERMS)) {
-            EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), RC_IMAGE_PERMS, PERMS);
+        if (!EasyPermissions.hasPermissions(this.getContext(), Utils.PERMS)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), Utils.RC_IMAGE_PERMS, Utils.PERMS);
             return;
         }
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(i, RC_CHOOSE_PHOTO);
+        startActivityForResult(i, Utils.RC_CHOOSE_PHOTO);
     }
 
-    @AfterPermissionGranted(RC_CAMERA_PERMS)
+    @AfterPermissionGranted(Utils.RC_CAMERA_PERMS)
     private void onCameraSelect() throws IOException {
-        if (!EasyPermissions.hasPermissions(this.getContext(), PERMS_CAMERA)) {
-            EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), RC_CAMERA_PERMS, PERMS_CAMERA);
+        if (!EasyPermissions.hasPermissions(this.getContext(), Utils.PERMS_CAMERA)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), Utils.RC_CAMERA_PERMS, Utils.PERMS_CAMERA);
             return;
         }
         Intent mediaChooser =  new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -189,7 +184,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
             photoUri = FileProvider.getUriForFile(getActivity().getApplicationContext(),
                     getActivity().getApplicationContext().getPackageName()+".provider", photoFile);
             mediaChooser.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            startActivityForResult(mediaChooser, RC_CAMERA_RESULT);
+            startActivityForResult(mediaChooser, Utils.RC_CAMERA_RESULT);
         }
     }
 
@@ -221,7 +216,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
                 action.setPropertyId(propertyId);
                 navController.navigate(action);
             }else {
-                Toast.makeText(this.getActivity(), "Please add all fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.getActivity(), getResources().getString(R.string.need_all_fields), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -231,8 +226,8 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
     /** ******************************* **/
 
     private void choiceDialog(){
-        alertDialogUtils.showAlertDialog(this.getContext(),"Get image choice", "how do you want get image",
-                "GALLERY", "CAMERA", R.drawable.border_radius_white, R.drawable.camera, 1);
+        alertDialogUtils.showAlertDialog(this.getContext(),getString(R.string.image_choise_dialog_title), getString(R.string.image_choise_dialog_text),
+                getString(R.string.gallery), getString(R.string.camera), R.drawable.border_radius_white, R.drawable.camera, 2);
     }
 
     @Override
