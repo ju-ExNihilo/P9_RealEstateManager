@@ -6,5 +6,9 @@
     <color name="colorGold">#c8a97e</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorGray">#757575</color>
+<<<<<<< HEAD
+=======
+    <color name="colorGrayDark">#212121</color>
+>>>>>>> addProperty
     <color name="grayTransparent">#E6595c5d</color>
 </resources>

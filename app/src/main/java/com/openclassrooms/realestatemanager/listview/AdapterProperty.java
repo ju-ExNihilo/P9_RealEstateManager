@@ -35,12 +35,20 @@ public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.Proper
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(0);
         format.setCurrency(Currency.getInstance("USD"));
+<<<<<<< HEAD
 
         holder.binding.propertyType.setText(property.getTypeOfProperty());
         holder.binding.propertyPrice.setText(format.format(property.getPriceOfProperty()));
         holder.binding.propertyTown.setText(property.getAddressTown());
+=======
+        String price = format.format(property.getPropertyPrice());
+
+        holder.binding.propertyType.setText(property.getPropertyType());
+        holder.binding.propertyPrice.setText(price.substring(0, price.length()-2));
+        holder.binding.propertyTown.setText(property.getPropertyLocatedCity());
+>>>>>>> addProperty
         Glide.with(holder.binding.propertyPicture.getContext())
-                .load(property.getUrlsPictures().get(0))
+                .load(property.getPropertyPreviewImageUrl())
                 .into(holder.binding.propertyPicture);
     }
 

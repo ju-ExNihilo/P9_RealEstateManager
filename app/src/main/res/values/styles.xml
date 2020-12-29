@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorGold</item>
         <item name="colorPrimaryDark">#BA9D75</item>
@@ -11,7 +11,11 @@
     </style>
 
     <!-- Base application theme. -->
+<<<<<<< HEAD
     <style name="AppTheme1" parent="Theme.AppCompat.Light.NoActionBar">
+=======
+    <style name="AppTheme1" parent="Theme.MaterialComponents.Light.NoActionBar">
+>>>>>>> addProperty
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorGold</item>
         <item name="colorPrimaryDark">#BA9D75</item>
@@ -26,6 +30,16 @@
         <item name="color">@color/colorGold</item>
     </style>
 
+<<<<<<< HEAD
+=======
+    <style name="myDatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorGold</item>
+        <item name="colorControlActivated">@color/colorGold</item>
+        <item name="android:textColorPrimary">@color/colorGold</item>
+        <item name="android:textColorSecondary">@color/colorGold</item>
+    </style>
+
+>>>>>>> addProperty
     <style name="NavigationDrawerStyle">
 
         <item name="android:textSize">24sp</item><!-- text size in menu-->

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/main_nav_graph"
+            app:startDestination="@id/mainFeature">
+
+    <fragment android:id="@+id/mainFeature"
+              android:name="com.openclassrooms.realestatemanager.addproperty.MainFeature"
+              android:label="MainFeature">
+
+        <action android:id="@+id/action_mainFeature_to_addressFeature"
+                app:destination="@id/addressFeature"
+                app:launchSingleTop="true"
+                app:popUpTo="@+id/main_nav_graph"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/fragment_fade_enter"
+                app:exitAnim="@anim/fragment_fade_exit"/>
+        <argument android:name="propertyId" app:argType="string" android:defaultValue="null"/>
+    </fragment>
+
+    <fragment android:id="@+id/addressFeature"
+              android:name="com.openclassrooms.realestatemanager.addproperty.AddressFeature"
+              android:label="fragment_address_feature"
+              tools:layout="@layout/fragment_address_feature">
+
+        <action android:id="@+id/action_addressFeature_to_mainFeature"
+                app:destination="@id/mainFeature"
+                app:launchSingleTop="true"
+                app:popUpTo="@+id/main_nav_graph"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/fragment_fade_enter"
+                app:exitAnim="@anim/fragment_fade_exit"/>
+
+        <action android:id="@+id/action_addressFeature_to_otherFeature"
+                app:destination="@id/otherFeature"
+                app:launchSingleTop="true"
+                app:popUpTo="@+id/main_nav_graph"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/fragment_fade_enter"
+                app:exitAnim="@anim/fragment_fade_exit"/>
+        <argument android:name="propertyId" app:argType="string" android:defaultValue="null"/>
+    </fragment>
+
+    <fragment android:id="@+id/otherFeature"
+              android:name="com.openclassrooms.realestatemanager.addproperty.OtherFeature"
+              android:label="OtherFeature">
+
+        <action android:id="@+id/action_otherFeature_to_addressFeature"
+                app:destination="@id/addressFeature"
+                app:launchSingleTop="true"
+                app:popUpTo="@+id/main_nav_graph"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/fragment_fade_enter"
+                app:exitAnim="@anim/fragment_fade_exit"/>
+
+        <argument android:name="propertyId" app:argType="string" android:defaultValue="null"/>
+
+        <action android:id="@+id/action_otherFeature_to_imagesFeature"
+                app:destination="@id/imagesFeature"
+                app:launchSingleTop="true"
+                app:popUpTo="@+id/main_nav_graph"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/fragment_fade_enter"
+                app:exitAnim="@anim/fragment_fade_exit"/>
+
+    </fragment>
+
+    <fragment android:id="@+id/imagesFeature"
+              android:name="com.openclassrooms.realestatemanager.addproperty.ImagesFeature"
+              android:label="fragment_images_feature" tools:layout="@layout/fragment_images_feature">
+
+        <argument android:name="propertyId" app:argType="string" android:defaultValue="null"/>
+
+        <action android:id="@+id/action_imagesFeature_to_otherFeature"
+                app:destination="@id/otherFeature"
+                app:launchSingleTop="true"
+                app:popUpTo="@+id/main_nav_graph"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/fragment_fade_enter"
+                app:exitAnim="@anim/fragment_fade_exit"/>
+    </fragment>
+
+</navigation>

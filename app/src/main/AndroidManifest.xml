@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.openclassrooms.realestatemanager">
+<<<<<<< HEAD
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+=======
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+>>>>>>> addProperty
 
     <application
             android:allowBackup="true"
@@ -11,10 +24,38 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+<<<<<<< HEAD
         <activity android:name=".addproperty.AddProperty">
         </activity>
         <activity
                 android:name=".MainActivity"
+=======
+
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="@string/google_maps_key"/>
+        <meta-data
+                android:name="com.google.android.gms.version"
+                android:value="@integer/google_play_services_version"/>
+
+        <uses-library
+                android:name="org.apache.http.legacy"
+                android:required="false"/>
+
+        <!-- FileProvider - Expose File -->
+        <provider
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="com.openclassrooms.realestatemanager.provider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/provider_paths" />
+        </provider>
+
+        <activity
+                android:name=".login.LoginActivity"
+>>>>>>> addProperty
                 android:theme="@style/AppTheme1">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -22,10 +63,23 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity
                 android:name=".SecondActivity"
                 android:theme="@style/AppTheme.NoActionBar"/>
 
+=======
+
+        <activity
+                android:name=".home.HomeActivity"
+                android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+                android:name=".addproperty.AddProperty"
+                android:theme="@style/AppTheme.NoActionBar"
+                android:parentActivityName=".home.HomeActivity"/>
+
+>>>>>>> addProperty
         <meta-data
                 android:name="preloaded_fonts"
                 android:resource="@array/preloaded_fonts"/>
