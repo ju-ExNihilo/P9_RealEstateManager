@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -32,13 +31,11 @@ import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import static android.app.Activity.RESULT_OK;
 
 
@@ -77,7 +74,7 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
         binding.addImageBtn.setOnClickListener(v -> this.onClickAddFile());
         this.onClickValidateBtn();
         this.onClickBackBtn();
-        this.insertPointOfInterest();
+        //this.insertPointOfInterest();
     }
 
     @Override

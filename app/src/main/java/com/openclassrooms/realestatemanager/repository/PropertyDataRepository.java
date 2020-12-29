@@ -29,9 +29,6 @@ public class PropertyDataRepository {
     private final GooglePlaceRepository googlePlaceRepository;
     private final LifecycleOwner owner;
 
-
-
-
     public PropertyDataRepository(GooglePlaceRepository googlePlaceRepository, LifecycleOwner owner) {
         this.googlePlaceRepository = googlePlaceRepository;
         this.owner = owner;
@@ -236,7 +233,7 @@ public class PropertyDataRepository {
     }
 
     /** ***************************** **/
-    /** ******* Update Method  ****** **/
+    /** ******* UPDATE Method  ****** **/
     /** ***************************** **/
 
     /** ******** Update LatLn  ****** **/
