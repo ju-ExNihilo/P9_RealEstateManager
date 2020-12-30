@@ -224,6 +224,19 @@ public class PropertyDataRepository {
                 .build();
     }
 
+    public MutableLiveData<List<PropertyImage>> getAllImagesByPropertyIdForDetails(String propertyId){
+        MutableLiveData<List<PropertyImage>> propertyImagesLiveData = new MutableLiveData<>();
+        getSubCollection(propertyId, COLLECTION_IMAGE).whereEqualTo("propertyId", propertyId).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        propertyImagesLiveData.setValue(queryDocumentSnapshots.toObjects(PropertyImage.class));
+                    }else {
+                        propertyImagesLiveData.setValue(null);
+                    }})
+                .addOnFailureListener(e -> propertyImagesLiveData.setValue(null));
+        return propertyImagesLiveData;
+    }
+
     /** ***************************** **/
     /** ****** DELETE Method  ******* **/
     /** ***************************** **/

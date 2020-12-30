@@ -8,16 +8,11 @@ import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.Fragment;
 import com.openclassrooms.realestatemanager.R;
-import pub.devrel.easypermissions.EasyPermissions;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
-
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 /**
  * Created by Philippe on 21/02/2018.

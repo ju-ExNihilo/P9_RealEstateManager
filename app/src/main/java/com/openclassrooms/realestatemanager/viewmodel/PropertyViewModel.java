@@ -28,6 +28,8 @@ public class PropertyViewModel extends ViewModel {
 
     public LiveData<List<PointOfInterest>> getPointOfInterestById(String propertyId){return propertyDataRepository.getPointOfInterestById(propertyId);}
 
+    public LiveData<List<PropertyImage>> getAllImagesByPropertyIdForDetails(String propertyId){return propertyDataRepository.getAllImagesByPropertyIdForDetails(propertyId);}
+
     public FirestoreRecyclerOptions<PropertyImage> getAllImagesByPropertyId(String propertyId){return propertyDataRepository.getAllImagesByPropertyId(propertyId);}
 
     /** INSERT **/
