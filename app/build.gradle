@@ -51,7 +51,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android:flexbox:1.0.0'
-    implementation 'com.github.mahimrocky:TagView:1.0.3'
+    implementation 'com.github.adroitandroid:ChipCloud:2.2.1'
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation 'com.google.firebase:firebase-analytics'

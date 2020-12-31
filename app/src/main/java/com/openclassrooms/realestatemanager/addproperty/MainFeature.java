@@ -74,8 +74,8 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
         navController = Navigation.findNavController(view);
         this.initPropertyViewModel();
         alertDialogUtils = new AlertDialogUtils(this);
-        propertyId = MainFeatureArgs.fromBundle(getArguments()).getPropertyId();
-        if (!propertyId.equals("null")){
+        propertyId = getArguments().getString("propertyId");
+        if (propertyId != null){
             this.initFormFields();
         }else {
             propertyId = propertyViewModel.getPropertyId();
@@ -212,9 +212,9 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
                     Uri uri = Uri.parse(uriImageSelected);
                     propertyViewModel.uploadImageInFirebase(propertyId, uri);
                 }
-                MainFeatureDirections.ActionMainFeatureToAddressFeature action = MainFeatureDirections.actionMainFeatureToAddressFeature();
-                action.setPropertyId(propertyId);
-                navController.navigate(action);
+                Bundle bundle = new Bundle();
+                bundle.putString("propertyId", propertyId);
+                navController.navigate(R.id.addressFeature, bundle);
             }else {
                 Toast.makeText(this.getActivity(), getResources().getString(R.string.need_all_fields), Toast.LENGTH_SHORT).show();
             }

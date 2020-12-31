@@ -35,6 +35,7 @@ public class OtherFeature extends Fragment {
     private PropertyViewModel propertyViewModel;
     private String propertyId;
     private String propertyFeatureId;
+    private Bundle bundle = new Bundle();
 
     private List<String> statusItemsList = new LinkedList<>(Arrays.asList("Free", "Sale"));
     private DatePickerDialog pickerDate;
@@ -52,7 +53,8 @@ public class OtherFeature extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        propertyId = OtherFeatureArgs.fromBundle(getArguments()).getPropertyId();
+        propertyId = getArguments().getString("propertyId");
+        bundle.putString("propertyId", propertyId);
         this.initPropertyViewModel();
         this.onClickBackBtn();
         this.onClickNextBtn();
@@ -85,8 +87,10 @@ public class OtherFeature extends Fragment {
 
     private void updateLocation(){
         propertyViewModel.getPropertyAddressById(propertyId).observe(getViewLifecycleOwner(), address -> {
-            String addressCompact = String.valueOf(address.getNumberOfWay()) + ' ' + address.getWay() + ' ' + address.getPostCode();
-            propertyViewModel.updateLatLng(propertyId, addressCompact.toLowerCase().replace(" ", "+"));
+            if (address != null){
+                String addressCompact = String.valueOf(address.getNumberOfWay()) + ' ' + address.getWay() + ' ' + address.getPostCode();
+                propertyViewModel.updateLatLng(propertyId, addressCompact.toLowerCase().replace(" ", "+"));
+            }
         });
     }
 
@@ -105,9 +109,7 @@ public class OtherFeature extends Fragment {
 
     private void onClickBackBtn(){
         binding.backBtn.setOnClickListener(v -> {
-            OtherFeatureDirections.ActionOtherFeatureToAddressFeature action = OtherFeatureDirections.actionOtherFeatureToAddressFeature();
-            action.setPropertyId(propertyId);
-            navController.navigate(action);
+            navController.navigate(R.id.addressFeature, bundle);
         });
     }
 
@@ -124,9 +126,7 @@ public class OtherFeature extends Fragment {
             propertyViewModel.insertFeatureToProperty(propertyId,
                     initPropertyFeature(numberOfRooms, numberOfBathrooms, numberOfBedRooms, entranceDate, isSale, propertySurface , propertyDescription));
             //navigation
-            OtherFeatureDirections.ActionOtherFeatureToImagesFeature action = OtherFeatureDirections.actionOtherFeatureToImagesFeature();
-            action.setPropertyId(propertyId);
-            navController.navigate(action);
+            navController.navigate(R.id.imagesFeature, bundle);
 
         });
     }
@@ -143,6 +143,7 @@ public class OtherFeature extends Fragment {
         propertyFeature.setEntranceDate(entranceDate);
         if (!propertySurface.isEmpty())
             propertyFeature.setPropertySurface(Float.parseFloat(propertySurface));
+        propertyFeature.setSaleDate("Not Sale");
         propertyFeature.setSale(!isSale.equals("Free"));
         propertyFeature.setPropertyDescription(propertyDescription);
         propertyFeature.setPropertyId(propertyId);
