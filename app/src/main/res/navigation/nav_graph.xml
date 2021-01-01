@@ -103,6 +103,6 @@
     </fragment>
     <fragment android:id="@+id/detailsFragment"
               android:name="com.openclassrooms.realestatemanager.details.DetailsFragment"
-              android:label="" tools:layout="@layout/fragment_details"/>
+              android:label="Real Estate Manager" tools:layout="@layout/fragment_details"/>
 
 </navigation>

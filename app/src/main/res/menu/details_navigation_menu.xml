@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+            android:id="@+id/update_details"
+            android:icon="@drawable/update_logo"
+            android:enabled="true"
+            android:title="UPDATE"
+            app:showAsAction="ifRoom" />
+
+    <item
+            android:id="@+id/set_sale"
+            android:icon="@drawable/sale"
+            android:enabled="true"
+            android:title="FOR SALE"
+            app:showAsAction="ifRoom" />
+
+</menu>

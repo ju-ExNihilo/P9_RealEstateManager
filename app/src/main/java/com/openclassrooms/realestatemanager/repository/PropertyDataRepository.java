@@ -277,4 +277,17 @@ public class PropertyDataRepository {
 
         });
     }
+
+    public void propertySale(String propertyId, String documentId, String saleDate){
+        this.updateSaleProperty(propertyId, documentId);
+        this.updateSaleDate(propertyId, documentId, saleDate);
+    }
+
+    private Task<Void> updateSaleProperty(String propertyId, String documentId){
+        return getSubCollection(propertyId, COLLECTION_FEATURE).document(documentId).update("sale", true);
+    }
+
+    private Task<Void> updateSaleDate(String propertyId, String documentId, String saleDate){
+        return getSubCollection(propertyId, COLLECTION_FEATURE).document(documentId).update("saleDate", saleDate);
+    }
 }

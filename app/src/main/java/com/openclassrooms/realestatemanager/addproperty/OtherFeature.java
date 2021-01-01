@@ -36,7 +36,6 @@ public class OtherFeature extends Fragment {
     private String propertyId;
     private String propertyFeatureId;
     private Bundle bundle = new Bundle();
-
     private List<String> statusItemsList = new LinkedList<>(Arrays.asList("Free", "Sale"));
     private DatePickerDialog pickerDate;
 

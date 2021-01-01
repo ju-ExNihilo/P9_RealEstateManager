@@ -68,6 +68,8 @@ public class PropertyViewModel extends ViewModel {
 
     public void getProximityPointOfInterest(String location, String propertyId){propertyDataRepository.getProximityPointOfInterest(location, propertyId);}
 
+    public void propertySale(String propertyId, String documentId, String saleDate){propertyDataRepository.propertySale(propertyId, documentId, saleDate);}
+
     public void updateImageDescription(String propertyId, String propertyImageId, String description){
         propertyDataRepository.updateImageDescription(propertyId, propertyImageId, description);
     }

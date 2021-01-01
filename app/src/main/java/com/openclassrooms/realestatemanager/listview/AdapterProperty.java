@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.openclassrooms.realestatemanager.databinding.ItemPropertyBinding;
 import com.openclassrooms.realestatemanager.models.Property;
+import com.openclassrooms.realestatemanager.utils.Utils;
+
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.List;
@@ -34,13 +36,9 @@ public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.Proper
 
         Property property = propertyList.get(position);
 
-        NumberFormat format = NumberFormat.getCurrencyInstance();
-        format.setMaximumFractionDigits(0);
-        format.setCurrency(Currency.getInstance("USD"));
-        String price = format.format(property.getPropertyPrice());
 
         holder.binding.propertyType.setText(property.getPropertyType());
-        holder.binding.propertyPrice.setText(price.substring(0, price.length()-2));
+        holder.binding.propertyPrice.setText(Utils.formatPrice(property.getPropertyPrice(), "USD"));
         holder.binding.propertyTown.setText(property.getPropertyLocatedCity());
         Glide.with(holder.binding.propertyPicture.getContext())
                 .load(property.getPropertyPreviewImageUrl())

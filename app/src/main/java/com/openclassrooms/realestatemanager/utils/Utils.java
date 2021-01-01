@@ -10,7 +10,9 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 import com.openclassrooms.realestatemanager.R;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Currency;
 import java.util.Date;
 import java.util.UUID;
 
@@ -81,5 +83,14 @@ public class Utils {
 
     public static String randomUUID(){
         return UUID.randomUUID().toString();
+    }
+
+    public static String formatPrice(float price, String currency){
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setMaximumFractionDigits(0);
+        format.setCurrency(Currency.getInstance(currency));
+        String formatPrice = format.format(price);
+
+        return formatPrice.substring(0, formatPrice.length()-2);
     }
 }

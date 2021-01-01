@@ -75,7 +75,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
         this.initPropertyViewModel();
         alertDialogUtils = new AlertDialogUtils(this);
         propertyId = getArguments().getString("propertyId");
-        if (propertyId != null){
+        if (!propertyId.equals("null")){
             this.initFormFields();
         }else {
             propertyId = propertyViewModel.getPropertyId();
