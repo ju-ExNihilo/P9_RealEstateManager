@@ -48,21 +48,7 @@ public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.Proper
                     .into(holder.binding.propertyPicture);
         }
 
-<<<<<<< HEAD
-        NumberFormat format = NumberFormat.getCurrencyInstance();
-        format.setMaximumFractionDigits(0);
-        format.setCurrency(Currency.getInstance("USD"));
-        String price = format.format(property.getPropertyPrice());
-
-        holder.binding.propertyType.setText(property.getPropertyType());
-        holder.binding.propertyPrice.setText(price.substring(0, price.length()-2));
-        holder.binding.propertyTown.setText(property.getPropertyLocatedCity());
-        Glide.with(holder.binding.propertyPicture.getContext())
-                .load(property.getPropertyPreviewImageUrl())
-                .into(holder.binding.propertyPicture);
-=======
         holder.itemView.setOnClickListener(v -> onPropertyClicked.onClickedProperty(property.getPropertyId()));
->>>>>>> DetailsProperty
     }
 
     @Override

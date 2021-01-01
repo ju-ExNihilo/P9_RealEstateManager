@@ -34,10 +34,6 @@
     <string name="next">Next</string>
     <string name="property_added">Property Added</string>
     <string name="added_correctly">The property has been added correctly</string>
-<<<<<<< HEAD
-    <string name="description">Description</string>
-=======
->>>>>>> DetailsProperty
     <string name="description_dialogue_text">write the description of the image or leave blank</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
@@ -68,8 +64,6 @@
     <string name="entrance_date_of_property">Entrance date of Property</string>
     <string name="surface">Surface</string>
     <string name="surface_of_property_in_m">surface of property in m²</string>
-<<<<<<< HEAD
-=======
 
     <!-- Details property -->
     <string name="default_image_url">android.resource://com.openclassrooms.realestatemanager/</string>
@@ -108,5 +102,4 @@
     <string name="update_maj">UPDATE</string>
     <string name="for_sale_maj">FOR SALE</string>
 
->>>>>>> DetailsProperty
 </resources>

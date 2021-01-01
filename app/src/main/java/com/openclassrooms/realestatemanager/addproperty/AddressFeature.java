@@ -31,10 +31,7 @@ public class AddressFeature extends Fragment {
     private String propertyId;
     private String addressId;
     private PropertyViewModel propertyViewModel;
-<<<<<<< HEAD
-=======
     private Bundle bundle = new Bundle();
->>>>>>> DetailsProperty
 
     public AddressFeature newInstance() {return new AddressFeature();}
 
@@ -48,12 +45,8 @@ public class AddressFeature extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-<<<<<<< HEAD
-        propertyId = AddressFeatureArgs.fromBundle(getArguments()).getPropertyId();
-=======
         propertyId = getArguments().getString("propertyId");
         bundle.putString("propertyId", propertyId);
->>>>>>> DetailsProperty
         this.initPropertyViewModel();
         this.initFormFields();
         this.onClickBackBtn();
@@ -75,13 +68,7 @@ public class AddressFeature extends Fragment {
 
     private void onClickBackBtn(){
         binding.backBtn.setOnClickListener(v -> {
-<<<<<<< HEAD
-            AddressFeatureDirections.ActionAddressFeatureToMainFeature action = AddressFeatureDirections.actionAddressFeatureToMainFeature();
-            action.setPropertyId(propertyId);
-            navController.navigate(action);
-=======
             navController.navigate(R.id.mainFeature, bundle);
->>>>>>> DetailsProperty
         });
     }
 
@@ -116,13 +103,7 @@ public class AddressFeature extends Fragment {
                 //insert
                 propertyViewModel.insetAddressToProperty(propertyId, address);
                 //navigation
-<<<<<<< HEAD
-                AddressFeatureDirections.ActionAddressFeatureToOtherFeature action = AddressFeatureDirections.actionAddressFeatureToOtherFeature();
-                action.setPropertyId(propertyId);
-                navController.navigate(action);
-=======
                 navController.navigate(R.id.otherFeature, bundle);
->>>>>>> DetailsProperty
             }else {
                 Toast.makeText(this.getActivity(), getResources().getString(R.string.need_all_fields), Toast.LENGTH_SHORT).show();
             }

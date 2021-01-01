@@ -224,8 +224,6 @@ public class PropertyDataRepository {
                 .build();
     }
 
-<<<<<<< HEAD
-=======
     public MutableLiveData<List<PropertyImage>> getAllImagesByPropertyIdForDetails(String propertyId){
         MutableLiveData<List<PropertyImage>> propertyImagesLiveData = new MutableLiveData<>();
         getSubCollection(propertyId, COLLECTION_IMAGE).whereEqualTo("propertyId", propertyId).get()
@@ -239,7 +237,6 @@ public class PropertyDataRepository {
         return propertyImagesLiveData;
     }
 
->>>>>>> DetailsProperty
     /** ***************************** **/
     /** ****** DELETE Method  ******* **/
     /** ***************************** **/
@@ -280,8 +277,6 @@ public class PropertyDataRepository {
 
         });
     }
-<<<<<<< HEAD
-=======
 
     public void propertySale(String propertyId, String documentId, String saleDate){
         this.updateSaleProperty(propertyId);
@@ -295,5 +290,4 @@ public class PropertyDataRepository {
     private Task<Void> updateSaleDate(String propertyId, String documentId, String saleDate){
         return getSubCollection(propertyId, COLLECTION_FEATURE).document(documentId).update("saleDate", saleDate);
     }
->>>>>>> DetailsProperty
 }

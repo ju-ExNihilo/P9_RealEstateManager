@@ -51,10 +51,7 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     private Uri photoUri = null;
     private String uriImageSelected;
     private List<PropertyImage> imageList = new ArrayList<>();
-<<<<<<< HEAD
-=======
     private Bundle bundle = new Bundle();
->>>>>>> DetailsProperty
 
 
     public ImagesFeature newInstance() {return new ImagesFeature();}
@@ -71,12 +68,8 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-<<<<<<< HEAD
-        propertyId = OtherFeatureArgs.fromBundle(getArguments()).getPropertyId();
-=======
         propertyId = getArguments().getString("propertyId");
         bundle.putString("propertyId", propertyId);
->>>>>>> DetailsProperty
         alertDialogUtils = new AlertDialogUtils(this, this);
         this.initPropertyViewModel();
         this.initRecyclerView();
@@ -202,13 +195,7 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
 
     private void onClickBackBtn(){
         binding.backBtn.setOnClickListener(v -> {
-<<<<<<< HEAD
-            ImagesFeatureDirections.ActionImagesFeatureToOtherFeature action = ImagesFeatureDirections.actionImagesFeatureToOtherFeature();
-            action.setPropertyId(propertyId);
-            navController.navigate(action);
-=======
             navController.navigate(R.id.otherFeature, bundle);
->>>>>>> DetailsProperty
         });
     }
 

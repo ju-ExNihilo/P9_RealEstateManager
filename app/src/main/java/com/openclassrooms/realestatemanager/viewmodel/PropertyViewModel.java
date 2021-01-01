@@ -28,11 +28,8 @@ public class PropertyViewModel extends ViewModel {
 
     public LiveData<List<PointOfInterest>> getPointOfInterestById(String propertyId){return propertyDataRepository.getPointOfInterestById(propertyId);}
 
-<<<<<<< HEAD
-=======
     public LiveData<List<PropertyImage>> getAllImagesByPropertyIdForDetails(String propertyId){return propertyDataRepository.getAllImagesByPropertyIdForDetails(propertyId);}
 
->>>>>>> DetailsProperty
     public FirestoreRecyclerOptions<PropertyImage> getAllImagesByPropertyId(String propertyId){return propertyDataRepository.getAllImagesByPropertyId(propertyId);}
 
     /** INSERT **/
@@ -71,11 +68,8 @@ public class PropertyViewModel extends ViewModel {
 
     public void getProximityPointOfInterest(String location, String propertyId){propertyDataRepository.getProximityPointOfInterest(location, propertyId);}
 
-<<<<<<< HEAD
-=======
     public void propertySale(String propertyId, String documentId, String saleDate){propertyDataRepository.propertySale(propertyId, documentId, saleDate);}
 
->>>>>>> DetailsProperty
     public void updateImageDescription(String propertyId, String propertyImageId, String description){
         propertyDataRepository.updateImageDescription(propertyId, propertyImageId, description);
     }

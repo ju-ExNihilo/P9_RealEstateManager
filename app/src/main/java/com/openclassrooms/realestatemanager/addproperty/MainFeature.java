@@ -74,11 +74,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
         navController = Navigation.findNavController(view);
         this.initPropertyViewModel();
         alertDialogUtils = new AlertDialogUtils(this);
-<<<<<<< HEAD
-        propertyId = MainFeatureArgs.fromBundle(getArguments()).getPropertyId();
-=======
         propertyId = getArguments().getString("propertyId");
->>>>>>> DetailsProperty
         if (!propertyId.equals("null")){
             this.initFormFields();
         }else {
@@ -208,10 +204,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
                 property.setPropertyPrice(Float.parseFloat(propertyPrice));
                 property.setPropertyType(propertyType);
                 property.setPropertyPreviewImageUrl(uriImageSelected);
-<<<<<<< HEAD
-=======
                 property.setSale(false);
->>>>>>> DetailsProperty
                 property.setAgentId(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 propertyViewModel.createProperty(property);
                 if (photoUri != null){
@@ -220,15 +213,9 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
                     Uri uri = Uri.parse(uriImageSelected);
                     propertyViewModel.uploadImageInFirebase(propertyId, uri);
                 }
-<<<<<<< HEAD
-                MainFeatureDirections.ActionMainFeatureToAddressFeature action = MainFeatureDirections.actionMainFeatureToAddressFeature();
-                action.setPropertyId(propertyId);
-                navController.navigate(action);
-=======
                 Bundle bundle = new Bundle();
                 bundle.putString("propertyId", propertyId);
                 navController.navigate(R.id.addressFeature, bundle);
->>>>>>> DetailsProperty
             }else {
                 Toast.makeText(this.getActivity(), getResources().getString(R.string.need_all_fields), Toast.LENGTH_SHORT).show();
             }
