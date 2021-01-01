@@ -2,6 +2,8 @@ package com.openclassrooms.realestatemanager.listview;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -29,6 +31,7 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
     private FragmentPropertyListViewBinding binding;
     private PropertyViewModel propertyViewModel;
     private NavController navController;
+    private Animation fadeInAnim;
 
     public PropertyListView newInstance() {
         return new PropertyListView();
@@ -46,6 +49,8 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+        fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
+        binding.listLayout.setAnimation(fadeInAnim);
         this.initPropertyViewModel();
         this.initRecyclerView();
         this.getAllProperty();

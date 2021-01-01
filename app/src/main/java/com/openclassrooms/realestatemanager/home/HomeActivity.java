@@ -5,6 +5,8 @@ import android.content.res.ColorStateList;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -41,6 +43,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        this.setSelectedNavigationItem(0);
+    }
+
+    @Override
     public void onBackPressed() {
         if (binding.layoutDrawer.isDrawerOpen(GravityCompat.START)){
             binding.layoutDrawer.closeDrawer(GravityCompat.START);
@@ -49,6 +57,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void setSelectedNavigationItem(int id){
+        switch (id){
+            case 0:
+                binding.navView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGold)));
+                binding.navView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGray)));
+                binding.navView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGray)));
+                break;
+            case 1:
+                binding.navView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGray)));
+                binding.navView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGold)));
+                binding.navView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGray)));
+                break;
+            case 2:
+                binding.navView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGray)));
+                binding.navView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGray)));
+                binding.navView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGold)));
+                break;
+        }
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -57,9 +84,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.home:
                 navController.navigateUp();
                 break;
+            case R.id.all_property:
+                navController.navigate(R.id.propertyListView);
+                this.setSelectedNavigationItem(0);
+                break;
             case R.id.map:
+                navController.navigate(R.id.mapFragment);
+                this.setSelectedNavigationItem(2);
                 break;
             case R.id.my_property:
+                this.setSelectedNavigationItem(1);
                 break;
             case R.id.logout:
                 this.logout();
@@ -87,7 +121,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void iniNavigationView(){
         binding.navView.setNavigationItemSelectedListener(this);
         binding.navView.setItemIconTintList(null);
-        binding.navView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGold)));
         View header = binding.navView.getHeaderView(0);
         TextView name = (TextView) header.findViewById(R.id.user_name);
         if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName() != null){

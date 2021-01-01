@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.*;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +49,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
     private LatLng latLng;
     private SupportMapFragment mapFragment;
     private DatePickerDialog pickerDate;
+    private Animation fadeInAnim;
 
     public DetailsFragment() {}
 
@@ -63,6 +66,8 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
         propertyId = getArguments().getString("propertyId");
+        fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        binding.detailsView.setAnimation(fadeInAnim);
         this.initPropertyViewModel();
         this.initMainFeature();
         this.initPicture();
@@ -277,13 +282,15 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
 
     private void animate(View card, TextView title){
         if (card.getVisibility() == View.VISIBLE){
-            card.setVisibility(View.GONE);
+            Utils.collapse( card);
             title.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.arrow_down), null );
         }else {
-            card.setVisibility(View.VISIBLE);
+            Utils.expand( card);
             title.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.arrow_up), null);
         }
     }
+
+
 
     private void showSnackBar(View view, String message){
         Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();

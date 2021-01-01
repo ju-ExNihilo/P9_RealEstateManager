@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -37,6 +39,7 @@ public class OtherFeature extends Fragment {
     private String propertyFeatureId;
     private Bundle bundle = new Bundle();
     private DatePickerDialog pickerDate;
+    private Animation fadeInAnim;
 
     public OtherFeature newInstance() {return new OtherFeature();}
 
@@ -53,6 +56,8 @@ public class OtherFeature extends Fragment {
         navController = Navigation.findNavController(view);
         propertyId = getArguments().getString("propertyId");
         bundle.putString("propertyId", propertyId);
+        fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        binding.otherFeatureLayout.setAnimation(fadeInAnim);
         this.initPropertyViewModel();
         this.onClickBackBtn();
         this.onClickNextBtn();
