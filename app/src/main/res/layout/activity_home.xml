@@ -15,7 +15,11 @@
             android:layout_height="match_parent">
 
         <androidx.appcompat.widget.Toolbar
+<<<<<<< HEAD
                 android:id="@+id/toolbar_main"
+=======
+                android:id="@+id/toolbar"
+>>>>>>> DetailsProperty
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorWhite"
@@ -26,6 +30,7 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
         <fragment
+<<<<<<< HEAD
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="15dp"
@@ -52,6 +57,20 @@
                 app:useCompatPadding="true" app:fabCustomSize="75dp"
                 android:baselineAlignBottom="true"
                 android:textAlignment="center"/>
+=======
+                android:id="@+id/nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/nav_graph"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+>>>>>>> DetailsProperty
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

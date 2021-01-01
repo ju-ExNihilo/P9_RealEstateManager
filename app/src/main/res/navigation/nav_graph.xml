@@ -3,11 +3,19 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/main_nav_graph"
+<<<<<<< HEAD
             app:startDestination="@id/mainFeature">
 
     <fragment android:id="@+id/mainFeature"
               android:name="com.openclassrooms.realestatemanager.addproperty.MainFeature"
               android:label="MainFeature">
+=======
+            app:startDestination="@id/propertyListView">
+
+    <fragment android:id="@+id/mainFeature"
+              android:name="com.openclassrooms.realestatemanager.addproperty.MainFeature"
+              android:label="">
+>>>>>>> DetailsProperty
 
         <action android:id="@+id/action_mainFeature_to_addressFeature"
                 app:destination="@id/addressFeature"
@@ -21,7 +29,11 @@
 
     <fragment android:id="@+id/addressFeature"
               android:name="com.openclassrooms.realestatemanager.addproperty.AddressFeature"
+<<<<<<< HEAD
               android:label="fragment_address_feature"
+=======
+              android:label=""
+>>>>>>> DetailsProperty
               tools:layout="@layout/fragment_address_feature">
 
         <action android:id="@+id/action_addressFeature_to_mainFeature"
@@ -44,7 +56,11 @@
 
     <fragment android:id="@+id/otherFeature"
               android:name="com.openclassrooms.realestatemanager.addproperty.OtherFeature"
+<<<<<<< HEAD
               android:label="OtherFeature">
+=======
+              android:label="">
+>>>>>>> DetailsProperty
 
         <action android:id="@+id/action_otherFeature_to_addressFeature"
                 app:destination="@id/addressFeature"
@@ -68,7 +84,11 @@
 
     <fragment android:id="@+id/imagesFeature"
               android:name="com.openclassrooms.realestatemanager.addproperty.ImagesFeature"
+<<<<<<< HEAD
               android:label="fragment_images_feature" tools:layout="@layout/fragment_images_feature">
+=======
+              android:label="" tools:layout="@layout/fragment_images_feature">
+>>>>>>> DetailsProperty
 
         <argument android:name="propertyId" app:argType="string" android:defaultValue="null"/>
 
@@ -81,4 +101,31 @@
                 app:exitAnim="@anim/fragment_fade_exit"/>
     </fragment>
 
+<<<<<<< HEAD
+=======
+    <fragment android:id="@+id/propertyListView"
+              android:name="com.openclassrooms.realestatemanager.listview.PropertyListView"
+              android:label="Real Estate Manager" tools:layout="@layout/fragment_property_list_view">
+
+        <action android:id="@+id/action_propertyListView_to_detailsFragment"
+                app:destination="@id/detailsFragment"
+                app:launchSingleTop="true"
+                app:popUpTo="@+id/main_nav_graph"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/fragment_fade_enter"
+                app:exitAnim="@anim/fragment_fade_exit"/>
+
+        <action android:id="@+id/action_propertyListView_to_mainFeature"
+                app:destination="@id/mainFeature"
+                app:launchSingleTop="true"
+                app:popUpTo="@+id/main_nav_graph"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/fragment_fade_enter"
+                app:exitAnim="@anim/fragment_fade_exit"/>
+    </fragment>
+    <fragment android:id="@+id/detailsFragment"
+              android:name="com.openclassrooms.realestatemanager.details.DetailsFragment"
+              android:label="Real Estate Manager" tools:layout="@layout/fragment_details"/>
+
+>>>>>>> DetailsProperty
 </navigation>

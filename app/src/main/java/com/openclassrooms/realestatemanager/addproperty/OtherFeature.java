@@ -35,8 +35,12 @@ public class OtherFeature extends Fragment {
     private PropertyViewModel propertyViewModel;
     private String propertyId;
     private String propertyFeatureId;
+<<<<<<< HEAD
 
     private List<String> statusItemsList = new LinkedList<>(Arrays.asList("Free", "Sale"));
+=======
+    private Bundle bundle = new Bundle();
+>>>>>>> DetailsProperty
     private DatePickerDialog pickerDate;
 
     public OtherFeature newInstance() {return new OtherFeature();}
@@ -52,11 +56,19 @@ public class OtherFeature extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+<<<<<<< HEAD
         propertyId = OtherFeatureArgs.fromBundle(getArguments()).getPropertyId();
         this.initPropertyViewModel();
         this.onClickBackBtn();
         this.onClickNextBtn();
         binding.statusSpinner.attachDataSource(statusItemsList);
+=======
+        propertyId = getArguments().getString("propertyId");
+        bundle.putString("propertyId", propertyId);
+        this.initPropertyViewModel();
+        this.onClickBackBtn();
+        this.onClickNextBtn();
+>>>>>>> DetailsProperty
         this.datePicker(binding.dateEditText);
         this.initFromFields();
         this.updateLocation();
@@ -71,11 +83,14 @@ public class OtherFeature extends Fragment {
                 binding.dateEditText.setText(propertyFeature.getEntranceDate());
                 binding.surfaceEditText.setText(String.valueOf(propertyFeature.getPropertySurface()));
                 binding.descriptionEditText.setText(propertyFeature.getPropertyDescription());
+<<<<<<< HEAD
                 if (propertyFeature.isSale()){
                     binding.statusSpinner.setSelectedIndex(1);
                 }else {
                     binding.statusSpinner.setSelectedIndex(0);
                 }
+=======
+>>>>>>> DetailsProperty
                 propertyFeatureId = propertyFeature.getPropertyFeatureId();
             }else {
                 propertyFeatureId = propertyViewModel.getPropertyFeatureId(propertyId);
@@ -85,8 +100,15 @@ public class OtherFeature extends Fragment {
 
     private void updateLocation(){
         propertyViewModel.getPropertyAddressById(propertyId).observe(getViewLifecycleOwner(), address -> {
+<<<<<<< HEAD
             String addressCompact = String.valueOf(address.getNumberOfWay()) + ' ' + address.getWay() + ' ' + address.getPostCode();
             propertyViewModel.updateLatLng(propertyId, addressCompact.toLowerCase().replace(" ", "+"));
+=======
+            if (address != null){
+                String addressCompact = String.valueOf(address.getNumberOfWay()) + ' ' + address.getWay() + ' ' + address.getPostCode();
+                propertyViewModel.updateLatLng(propertyId, addressCompact.toLowerCase().replace(" ", "+"));
+            }
+>>>>>>> DetailsProperty
         });
     }
 
@@ -105,9 +127,13 @@ public class OtherFeature extends Fragment {
 
     private void onClickBackBtn(){
         binding.backBtn.setOnClickListener(v -> {
+<<<<<<< HEAD
             OtherFeatureDirections.ActionOtherFeatureToAddressFeature action = OtherFeatureDirections.actionOtherFeatureToAddressFeature();
             action.setPropertyId(propertyId);
             navController.navigate(action);
+=======
+            navController.navigate(R.id.addressFeature, bundle);
+>>>>>>> DetailsProperty
         });
     }
 
@@ -117,22 +143,35 @@ public class OtherFeature extends Fragment {
             String numberOfBathrooms = binding.bathroomsEditText.getText().toString();
             String numberOfBedRooms = binding.bedroomsEditText.getText().toString();
             String entranceDate = binding.dateEditText.getText().toString();
+<<<<<<< HEAD
             String isSale = binding.statusSpinner.getSelectedItem().toString();
+=======
+>>>>>>> DetailsProperty
             String propertySurface = binding.surfaceEditText.getText().toString();
             String propertyDescription = binding.descriptionEditText.getText().toString();
             //insert
             propertyViewModel.insertFeatureToProperty(propertyId,
+<<<<<<< HEAD
                     initPropertyFeature(numberOfRooms, numberOfBathrooms, numberOfBedRooms, entranceDate, isSale, propertySurface , propertyDescription));
             //navigation
             OtherFeatureDirections.ActionOtherFeatureToImagesFeature action = OtherFeatureDirections.actionOtherFeatureToImagesFeature();
             action.setPropertyId(propertyId);
             navController.navigate(action);
+=======
+                    initPropertyFeature(numberOfRooms, numberOfBathrooms, numberOfBedRooms, entranceDate, propertySurface , propertyDescription));
+            //navigation
+            navController.navigate(R.id.imagesFeature, bundle);
+>>>>>>> DetailsProperty
 
         });
     }
 
     private PropertyFeature initPropertyFeature(String numberOfRooms, String numberOfBathrooms, String numberOfBedRooms,
+<<<<<<< HEAD
                                                 String entranceDate, String isSale, String propertySurface , String propertyDescription){
+=======
+                                                String entranceDate, String propertySurface , String propertyDescription){
+>>>>>>> DetailsProperty
         PropertyFeature propertyFeature = new PropertyFeature();
         if (!numberOfRooms.isEmpty())
             propertyFeature.setNumberOfRooms(Integer.parseInt(numberOfRooms));
@@ -143,7 +182,11 @@ public class OtherFeature extends Fragment {
         propertyFeature.setEntranceDate(entranceDate);
         if (!propertySurface.isEmpty())
             propertyFeature.setPropertySurface(Float.parseFloat(propertySurface));
+<<<<<<< HEAD
         propertyFeature.setSale(!isSale.equals("Free"));
+=======
+        propertyFeature.setSaleDate("Not Sale");
+>>>>>>> DetailsProperty
         propertyFeature.setPropertyDescription(propertyDescription);
         propertyFeature.setPropertyId(propertyId);
         propertyFeature.setPropertyFeatureId(propertyFeatureId);

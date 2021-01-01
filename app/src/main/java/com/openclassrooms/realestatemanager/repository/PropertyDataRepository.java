@@ -224,6 +224,22 @@ public class PropertyDataRepository {
                 .build();
     }
 
+<<<<<<< HEAD
+=======
+    public MutableLiveData<List<PropertyImage>> getAllImagesByPropertyIdForDetails(String propertyId){
+        MutableLiveData<List<PropertyImage>> propertyImagesLiveData = new MutableLiveData<>();
+        getSubCollection(propertyId, COLLECTION_IMAGE).whereEqualTo("propertyId", propertyId).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        propertyImagesLiveData.setValue(queryDocumentSnapshots.toObjects(PropertyImage.class));
+                    }else {
+                        propertyImagesLiveData.setValue(null);
+                    }})
+                .addOnFailureListener(e -> propertyImagesLiveData.setValue(null));
+        return propertyImagesLiveData;
+    }
+
+>>>>>>> DetailsProperty
     /** ***************************** **/
     /** ****** DELETE Method  ******* **/
     /** ***************************** **/
@@ -264,4 +280,20 @@ public class PropertyDataRepository {
 
         });
     }
+<<<<<<< HEAD
+=======
+
+    public void propertySale(String propertyId, String documentId, String saleDate){
+        this.updateSaleProperty(propertyId);
+        this.updateSaleDate(propertyId, documentId, saleDate);
+    }
+
+    private Task<Void> updateSaleProperty(String propertyId){
+        return getPropertyCollection().document(propertyId).update("isSale", true);
+    }
+
+    private Task<Void> updateSaleDate(String propertyId, String documentId, String saleDate){
+        return getSubCollection(propertyId, COLLECTION_FEATURE).document(documentId).update("saleDate", saleDate);
+    }
+>>>>>>> DetailsProperty
 }

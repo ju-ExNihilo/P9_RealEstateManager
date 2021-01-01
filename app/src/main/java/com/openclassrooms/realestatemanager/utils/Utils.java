@@ -8,6 +8,7 @@ import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
+<<<<<<< HEAD
 import androidx.fragment.app.Fragment;
 import com.openclassrooms.realestatemanager.R;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -19,6 +20,16 @@ import java.util.UUID;
 
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
+=======
+import com.openclassrooms.realestatemanager.R;
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Currency;
+import java.util.Date;
+import java.util.UUID;
+
+>>>>>>> DetailsProperty
 /**
  * Created by Philippe on 21/02/2018.
  */
@@ -87,4 +98,16 @@ public class Utils {
     public static String randomUUID(){
         return UUID.randomUUID().toString();
     }
+<<<<<<< HEAD
+=======
+
+    public static String formatPrice(float price, String currency){
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setMaximumFractionDigits(0);
+        format.setCurrency(Currency.getInstance(currency));
+        String formatPrice = format.format(price);
+
+        return formatPrice.substring(0, formatPrice.length()-2);
+    }
+>>>>>>> DetailsProperty
 }

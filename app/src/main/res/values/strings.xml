@@ -34,7 +34,10 @@
     <string name="next">Next</string>
     <string name="property_added">Property Added</string>
     <string name="added_correctly">The property has been added correctly</string>
+<<<<<<< HEAD
     <string name="description">Description</string>
+=======
+>>>>>>> DetailsProperty
     <string name="description_dialogue_text">write the description of the image or leave blank</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
@@ -65,4 +68,45 @@
     <string name="entrance_date_of_property">Entrance date of Property</string>
     <string name="surface">Surface</string>
     <string name="surface_of_property_in_m">surface of property in m²</string>
+<<<<<<< HEAD
+=======
+
+    <!-- Details property -->
+    <string name="default_image_url">android.resource://com.openclassrooms.realestatemanager/</string>
+    <string name="not_sale">Not Sale</string>
+    <string name="metric">\" m²\"</string>
+    <string name="sale">Sale</string>
+    <string name="free">Free</string>
+    <string name="usd">USD</string>
+    <string name="congratulation">Congratulation</string>
+    <string name="set_property">Please set property Feature First</string>
+    <string name="select_date">Please select a date</string>
+    <string name="sale_maj">SALE</string>
+    <string name="please_set_address_to_property_for_geolocalisation">Please set Address to property for
+        Geolocalisation
+    </string>
+    <string name="description">Description</string>
+    <string name="main_features">Main Features</string>
+    <string name="type">Type :</string>
+    <string name="price_details">Price :</string>
+    <string name="location_details">Location :</string>
+    <string name="address">Address</string>
+    <string name="number">Number :</string>
+    <string name="postcode">PostCode :</string>
+    <string name="way">Way :</string>
+    <string name="additional">Additional :</string>
+    <string name="other_features">Other Features</string>
+    <string name="status">Status :</string>
+    <string name="surface_details">Surface :</string>
+    <string name="number_of_rooms_details">Number of Rooms :</string>
+    <string name="bedrooms_details">Bedrooms :</string>
+    <string name="bathrooms_details">Bathrooms :</string>
+    <string name="entrance_date">Entrance Date :</string>
+    <string name="sale_date">Sale Date :</string>
+    <string name="point_of_interest">Point Of Interest</string>
+    <string name="geo_localisation">Geo Localisation</string>
+    <string name="update_maj">UPDATE</string>
+    <string name="for_sale_maj">FOR SALE</string>
+
+>>>>>>> DetailsProperty
 </resources>
