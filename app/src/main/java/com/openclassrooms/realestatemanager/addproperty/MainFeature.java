@@ -204,6 +204,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
                 property.setPropertyPrice(Float.parseFloat(propertyPrice));
                 property.setPropertyType(propertyType);
                 property.setPropertyPreviewImageUrl(uriImageSelected);
+                property.setSale(false);
                 property.setAgentId(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 propertyViewModel.createProperty(property);
                 if (photoUri != null){

@@ -9,6 +9,7 @@ public class Property {
     private float propertyPrice;
     private String propertyPreviewImageUrl;
     private double latitude, longitude;
+    private boolean isSale;
 
     public Property() {}
 
@@ -76,6 +77,14 @@ public class Property {
         this.longitude = longitude;
     }
 
+    public boolean isSale() {
+        return isSale;
+    }
+
+    public void setSale(boolean sale) {
+        this.isSale = sale;
+    }
+
     @Override
     public String toString() {
         return "Property{" +
@@ -87,6 +96,7 @@ public class Property {
                 ", propertyPreviewImageUrl='" + propertyPreviewImageUrl + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
+                ", isSale=" + isSale +
                 '}';
     }
 }

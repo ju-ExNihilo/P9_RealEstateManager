@@ -9,7 +9,6 @@ public class PropertyFeature {
     private int numberOfRooms, numberOfBathrooms, numberOfBedrooms;
     private String entranceDate, saleDate;
     private float propertySurface;
-    private boolean isSale;
     private String propertyDescription;
 
     public PropertyFeature() {}
@@ -78,13 +77,6 @@ public class PropertyFeature {
         this.propertySurface = propertySurface;
     }
 
-    public boolean isSale() {
-        return isSale;
-    }
-
-    public void setSale(boolean sale) {
-        isSale = sale;
-    }
 
     public String getPropertyDescription() {
         return propertyDescription;
@@ -105,7 +97,6 @@ public class PropertyFeature {
                 ", entranceDate=" + entranceDate +
                 ", saleDate=" + saleDate +
                 ", propertySurface=" + propertySurface +
-                ", isSale=" + isSale +
                 ", propertyDescription='" + propertyDescription + '\'' +
                 '}';
     }

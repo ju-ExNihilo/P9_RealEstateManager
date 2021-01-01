@@ -39,46 +39,19 @@
                 android:background="@drawable/underline"/>
 
 
-
-        <TextView
-                android:id="@+id/main_feature_title"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="@string/status_of_property"
-                app:layout_constraintTop_toBottomOf="@+id/textView5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="32dp"
-                android:textColor="@color/colorGold"
-                android:textSize="18sp" android:background="@drawable/underline_small"/>
-
-
-        <org.angmarch.views.NiceSpinner
-                android:id="@+id/status_spinner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/main_feature_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-        />
-
         <TextView
                 android:id="@+id/rooms_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/rooms"
-                app:layout_constraintTop_toBottomOf="@+id/status_spinner"
+                app:layout_constraintTop_toBottomOf="@+id/textView5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:textColor="@color/colorGold"
                 android:textSize="18sp"
-                android:background="@drawable/underline_small"/>
+                android:background="@drawable/underline_small" android:layout_marginTop="32dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/rooms_input"

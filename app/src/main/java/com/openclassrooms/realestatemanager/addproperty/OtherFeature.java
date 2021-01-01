@@ -36,7 +36,6 @@ public class OtherFeature extends Fragment {
     private String propertyId;
     private String propertyFeatureId;
     private Bundle bundle = new Bundle();
-    private List<String> statusItemsList = new LinkedList<>(Arrays.asList("Free", "Sale"));
     private DatePickerDialog pickerDate;
 
     public OtherFeature newInstance() {return new OtherFeature();}
@@ -57,7 +56,6 @@ public class OtherFeature extends Fragment {
         this.initPropertyViewModel();
         this.onClickBackBtn();
         this.onClickNextBtn();
-        binding.statusSpinner.attachDataSource(statusItemsList);
         this.datePicker(binding.dateEditText);
         this.initFromFields();
         this.updateLocation();
@@ -72,11 +70,6 @@ public class OtherFeature extends Fragment {
                 binding.dateEditText.setText(propertyFeature.getEntranceDate());
                 binding.surfaceEditText.setText(String.valueOf(propertyFeature.getPropertySurface()));
                 binding.descriptionEditText.setText(propertyFeature.getPropertyDescription());
-                if (propertyFeature.isSale()){
-                    binding.statusSpinner.setSelectedIndex(1);
-                }else {
-                    binding.statusSpinner.setSelectedIndex(0);
-                }
                 propertyFeatureId = propertyFeature.getPropertyFeatureId();
             }else {
                 propertyFeatureId = propertyViewModel.getPropertyFeatureId(propertyId);
@@ -118,12 +111,11 @@ public class OtherFeature extends Fragment {
             String numberOfBathrooms = binding.bathroomsEditText.getText().toString();
             String numberOfBedRooms = binding.bedroomsEditText.getText().toString();
             String entranceDate = binding.dateEditText.getText().toString();
-            String isSale = binding.statusSpinner.getSelectedItem().toString();
             String propertySurface = binding.surfaceEditText.getText().toString();
             String propertyDescription = binding.descriptionEditText.getText().toString();
             //insert
             propertyViewModel.insertFeatureToProperty(propertyId,
-                    initPropertyFeature(numberOfRooms, numberOfBathrooms, numberOfBedRooms, entranceDate, isSale, propertySurface , propertyDescription));
+                    initPropertyFeature(numberOfRooms, numberOfBathrooms, numberOfBedRooms, entranceDate, propertySurface , propertyDescription));
             //navigation
             navController.navigate(R.id.imagesFeature, bundle);
 
@@ -131,7 +123,7 @@ public class OtherFeature extends Fragment {
     }
 
     private PropertyFeature initPropertyFeature(String numberOfRooms, String numberOfBathrooms, String numberOfBedRooms,
-                                                String entranceDate, String isSale, String propertySurface , String propertyDescription){
+                                                String entranceDate, String propertySurface , String propertyDescription){
         PropertyFeature propertyFeature = new PropertyFeature();
         if (!numberOfRooms.isEmpty())
             propertyFeature.setNumberOfRooms(Integer.parseInt(numberOfRooms));
@@ -143,7 +135,6 @@ public class OtherFeature extends Fragment {
         if (!propertySurface.isEmpty())
             propertyFeature.setPropertySurface(Float.parseFloat(propertySurface));
         propertyFeature.setSaleDate("Not Sale");
-        propertyFeature.setSale(!isSale.equals("Free"));
         propertyFeature.setPropertyDescription(propertyDescription);
         propertyFeature.setPropertyId(propertyId);
         propertyFeature.setPropertyFeatureId(propertyFeatureId);

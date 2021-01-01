@@ -5,14 +5,14 @@
             android:id="@+id/update_details"
             android:icon="@drawable/update_logo"
             android:enabled="true"
-            android:title="UPDATE"
+            android:title="@string/update_maj"
             app:showAsAction="ifRoom" />
 
     <item
             android:id="@+id/set_sale"
             android:icon="@drawable/sale"
             android:enabled="true"
-            android:title="FOR SALE"
+            android:title="@string/for_sale_maj"
             app:showAsAction="ifRoom" />
 
 </menu>
