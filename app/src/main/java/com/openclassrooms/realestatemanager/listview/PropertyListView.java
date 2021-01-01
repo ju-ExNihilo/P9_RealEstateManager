@@ -48,7 +48,7 @@ public class PropertyListView extends Fragment {
 
     /** Configure user ViewModel **/
     private void initPropertyViewModel(){
-        ViewModelFactory viewModelFactory = Injection.providePropertyViewModelFactory();
+        ViewModelFactory viewModelFactory = Injection.providePropertyViewModelFactory(getViewLifecycleOwner(), this.getContext());
         propertyViewModel = new ViewModelProvider(this, viewModelFactory).get(PropertyViewModel.class);
     }
 

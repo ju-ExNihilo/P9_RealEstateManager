@@ -13,4 +13,56 @@
     <string name="property">My Property</string>
     <string name="logout">Logout</string>
     <string name="add_property">Add a Property</string>
+
+    <!-- Easy Permissions -->
+    <string name="popup_title_permission_files_access">We need permissions to access your Picture</string>
+    <string name="popup_title_permission_camera_access">We need permissions to access your Camera</string>
+    <string name="popup_title_permission_call">We need your permission to make a phone call</string>
+    <string name="popup_title_permission_location_access">We need permissions to access to your current location
+    </string>
+    <string name="toast_title_no_image_chosen">You don\'t choose any file</string>
+    <string name="toast_title_image_chosen">You image has been added</string>
+
+    <!-- Add property -->
+    <string name="need_all_fields">Please add all fields</string>
+    <string name="add_an_address">Add an Address</string>
+    <string name="number_address">Number</string>
+    <string name="way_address">Way</string>
+    <string name="postcode_address">PostCode</string>
+    <string name="additional_address_fields">Additional address fields</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
+    <string name="property_added">Property Added</string>
+    <string name="added_correctly">The property has been added correctly</string>
+    <string name="description">Description</string>
+    <string name="description_dialogue_text">write the description of the image or leave blank</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="image_choise_dialog_title">Get image choice</string>
+    <string name="image_choise_dialog_text">how do you want get image</string>
+    <string name="gallery">GALLERY</string>
+    <string name="camera">CAMERA</string>
+    <string name="property_images">Property Images</string>
+    <string name="add_new_image">Add new Image</string>
+    <string name="add_a_image">Add a Image</string>
+    <string name="validate">Validate</string>
+    <string name="change">Change</string>
+    <string name="add_a_property">Add a Property</string>
+    <string name="type_of_property">Type of Property</string>
+    <string name="price">Price</string>
+    <string name="price_of_property_in_dollars">Price of property in dollars</string>
+    <string name="location">Location</string>
+    <string name="located_city_name">Located City Name</string>
+    <string name="image">Image</string>
+    <string name="add_a_preview_image">Add a preview Image</string>
+    <string name="other_feature">Other Feature</string>
+    <string name="status_of_property">Status of Property</string>
+    <string name="rooms">Rooms</string>
+    <string name="number_of_rooms">Number of Rooms</string>
+    <string name="bathrooms">Bathrooms</string>
+    <string name="bedrooms">Bedrooms</string>
+    <string name="date">Date</string>
+    <string name="entrance_date_of_property">Entrance date of Property</string>
+    <string name="surface">Surface</string>
+    <string name="surface_of_property_in_m">surface of property in m²</string>
 </resources>
