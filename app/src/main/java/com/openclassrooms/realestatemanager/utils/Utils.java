@@ -5,6 +5,11 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.view.View;
@@ -12,6 +17,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import androidx.core.app.NotificationCompat;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.openclassrooms.realestatemanager.R;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -151,5 +158,38 @@ public class Utils {
         // Collapse speed of 1dp/ms
         a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
+    }
+
+    public static void setSelectedNavigationItem(int id, NavigationView navigationView){
+        switch (id){
+            case 0:
+                navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
+                navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                break;
+            case 1:
+                navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
+                navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                break;
+            case 2:
+                navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
+                break;
+        }
+    }
+
+    public static Bitmap getBitmap(Drawable drawable) {
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+    public static void showSnackBar(View view, String message){
+        Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
     }
 }

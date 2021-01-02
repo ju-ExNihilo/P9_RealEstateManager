@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityHomeBinding;
 import com.openclassrooms.realestatemanager.login.LoginActivity;
+import com.openclassrooms.realestatemanager.utils.Utils;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -43,37 +44,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        this.setSelectedNavigationItem(0);
-    }
-
-    @Override
     public void onBackPressed() {
         if (binding.layoutDrawer.isDrawerOpen(GravityCompat.START)){
             binding.layoutDrawer.closeDrawer(GravityCompat.START);
         }else {
             super.onBackPressed();
-        }
-    }
-
-    private void setSelectedNavigationItem(int id){
-        switch (id){
-            case 0:
-                binding.navView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGold)));
-                binding.navView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGray)));
-                binding.navView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGray)));
-                break;
-            case 1:
-                binding.navView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGray)));
-                binding.navView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGold)));
-                binding.navView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGray)));
-                break;
-            case 2:
-                binding.navView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGray)));
-                binding.navView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGray)));
-                binding.navView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGold)));
-                break;
         }
     }
 
@@ -86,14 +61,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.all_property:
                 navController.navigate(R.id.propertyListView);
-                this.setSelectedNavigationItem(0);
+                Utils.setSelectedNavigationItem(0, binding.navView);
                 break;
             case R.id.map:
                 navController.navigate(R.id.mapFragment);
-                this.setSelectedNavigationItem(2);
+                Utils.setSelectedNavigationItem(2, binding.navView);
                 break;
             case R.id.my_property:
-                this.setSelectedNavigationItem(1);
+                Utils.setSelectedNavigationItem(1, binding.navView);
                 break;
             case R.id.logout:
                 this.logout();
@@ -129,8 +104,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             name.setText("");
         }
     }
-
-
 
     /** Used to navigate to this activity **/
     public static void navigate(FragmentActivity activity) {

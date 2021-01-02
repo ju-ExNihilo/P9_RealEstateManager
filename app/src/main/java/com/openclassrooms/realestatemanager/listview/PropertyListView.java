@@ -1,11 +1,14 @@
 package com.openclassrooms.realestatemanager.listview;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +19,13 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.navigation.NavigationView;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentPropertyListViewBinding;
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.Property;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.List;
@@ -55,6 +60,13 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         this.initRecyclerView();
         this.getAllProperty();
         this.initFabButton();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        NavigationView navigationView = ((AppCompatActivity)getActivity()).findViewById(R.id.nav_view);
+        Utils.setSelectedNavigationItem(0, navigationView);
     }
 
     private void initFabButton(){

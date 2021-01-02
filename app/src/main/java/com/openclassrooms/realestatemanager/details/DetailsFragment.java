@@ -132,7 +132,8 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
             if (propertyFeature != null){
                 if (propertyFeature.getPropertyDescription().isEmpty()){
                     binding.cardDescription.setVisibility(View.GONE);
-                    binding.descriptionTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.arrow_down), null );
+                    binding.descriptionTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null,
+                            getResources().getDrawable(R.drawable.arrow_down, null), null );
                 }
                 binding.descriptionProperty.setText(propertyFeature.getPropertyDescription());
                 binding.otherFeatureSurface.setText(propertyFeature.getPropertySurface() + getString(R.string.metric));
@@ -143,7 +144,8 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
                 binding.otherFeatureSaleDate.setText(propertyFeature.getSaleDate().isEmpty() ? getString(R.string.not_sale) : propertyFeature.getSaleDate());
             }else {
                 binding.cardDescription.setVisibility(View.GONE);
-                binding.descriptionTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.arrow_down), null );
+                binding.descriptionTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null,
+                        getResources().getDrawable(R.drawable.arrow_down, null), null );
             }
         });
     }
@@ -216,14 +218,14 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
                     propertyViewModel.propertySale(propertyId, propertyFeature.getPropertyFeatureId(), saleDate);
                     this.initOtherFeature();
                     this.initMainFeature();
-                    this.showSnackBar(binding.detailsView, getString(R.string.congratulation));
+                    Utils.showSnackBar(binding.detailsView, getString(R.string.congratulation));
                     this.isSale();
                 }else {
-                    this.showSnackBar(binding.detailsView, getString(R.string.set_property));
+                    Utils.showSnackBar(binding.detailsView, getString(R.string.set_property));
                 }
             });
         }else {
-            this.showSnackBar(binding.detailsView, getString(R.string.select_date));
+            Utils.showSnackBar(binding.detailsView, getString(R.string.select_date));
         }
     }
 
@@ -282,17 +284,14 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
 
     private void animate(View card, TextView title){
         if (card.getVisibility() == View.VISIBLE){
-            Utils.collapse( card);
-            title.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.arrow_down), null );
+            Utils.collapse(card);
+            title.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null,
+                    getResources().getDrawable(R.drawable.arrow_down, null), null );
         }else {
-            Utils.expand( card);
-            title.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.arrow_up), null);
+            Utils.expand(card);
+            title.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null,
+                    getResources().getDrawable(R.drawable.arrow_up, null), null);
         }
     }
 
-
-
-    private void showSnackBar(View view, String message){
-        Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
-    }
 }
