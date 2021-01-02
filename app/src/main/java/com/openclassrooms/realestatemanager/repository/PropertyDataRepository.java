@@ -284,7 +284,7 @@ public class PropertyDataRepository {
     }
 
     private Task<Void> updateSaleProperty(String propertyId){
-        return getPropertyCollection().document(propertyId).update("isSale", true);
+        return getPropertyCollection().document(propertyId).update("sale", true);
     }
 
     private Task<Void> updateSaleDate(String propertyId, String documentId, String saleDate){

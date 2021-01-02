@@ -75,6 +75,12 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
         binding.focusBtn.setOnClickListener(v -> mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14)));
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.getCurrentLocation();
+    }
+
     /** *********************************** **/
     /** ****** init ViewModel Method ***** **/
     /** ********************************* **/
@@ -105,36 +111,22 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
 
     /** Get Current User Location **/
     private void getCurrentLocation() {
-        LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        LocationServices.getFusedLocationProviderClient(getActivity())
-                .requestLocationUpdates(locationRequest, new LocationCallback(){
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        super.onLocationResult(locationResult);
-                        LocationServices.getFusedLocationProviderClient(getActivity())
-                                .removeLocationUpdates(this);
-                        if (locationResult != null && locationResult.getLocations().size() >0){
-                            int index = locationResult.getLocations().size() -1 ;
-                            latitude = locationResult.getLocations().get(index).getLatitude();
-                            longitude = locationResult.getLocations().get(index).getLongitude();
-                            latLng = new LatLng(latitude, longitude);
-                            mapFragment.getMapAsync(MapFragment.this::onMapReady);
-                        }else {
-                            Utils.showSnackBar(binding.mapLayout, "Unable to find location. Please try later");
-                        }
-                    }
-
-                    @Override
-                    public void onLocationAvailability(LocationAvailability locationAvailability) {
-                        super.onLocationAvailability(locationAvailability);
-                        Utils.showSnackBar(binding.mapLayout, "Unable to find location. Please try later");
-                    }
-                }, Looper.getMainLooper());
+        LocationServices.getFusedLocationProviderClient(getActivity()).getLastLocation().addOnSuccessListener(location -> {
+            if (location != null){
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                latLng = new LatLng(latitude, longitude);
+                mapFragment.getMapAsync(MapFragment.this::onMapReady);
+            }else {
+                Utils.showSnackBar(binding.mapLayout, "Unable to find location. Please try later");
+            }
+        });
 
     }
 
     private void getProximityProperty(){
+        mMap.clear();
+        addMarker(latLng, FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), R.drawable.person_pin, getString(R.string.my_position));
         propertyViewModel.getAllProperty().observe(getViewLifecycleOwner(), properties -> {
             if (properties != null){
                 for (Property property : properties){
@@ -143,7 +135,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
                     if (distance <= radius){
                         if (property.isSale()){
                             addMarker(new LatLng(property.getLatitude(), property.getLongitude()), property.getPropertyType(),
-                                    R.drawable.location_property_sale, property.getPropertyId());
+                                    R.drawable.location_off, property.getPropertyId());
                         }else {
                             addMarker(new LatLng(property.getLatitude(), property.getLongitude()), property.getPropertyType(),
                                     R.drawable.location_property_free, property.getPropertyId());
@@ -183,7 +175,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
         mMap.setTrafficEnabled(true);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
         mMap.setOnInfoWindowClickListener(this);
-        addMarker(latLng, FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), R.drawable.location_agent, getString(R.string.my_position));
         this.getProximityProperty();
     }
 }

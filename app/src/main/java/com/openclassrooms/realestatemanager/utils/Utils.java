@@ -12,10 +12,13 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.core.app.NotificationCompat;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -190,6 +193,13 @@ public class Utils {
     }
 
     public static void showSnackBar(View view, String message){
-        Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
+        Snackbar mSnackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        View mView = mSnackbar.getView();
+        TextView mTextView = (TextView) mView.findViewById(com.google.android.material.R.id.snackbar_text);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        else
+            mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+        mSnackbar.show();
     }
 }
