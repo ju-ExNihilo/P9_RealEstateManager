@@ -100,9 +100,20 @@
                 app:popUpToInclusive="true"
                 app:enterAnim="@anim/fragment_fade_enter"
                 app:exitAnim="@anim/fragment_fade_exit"/>
+
+        <action android:id="@+id/action_propertyListView_to_mapFragment"
+                app:destination="@id/mapFragment"
+                app:launchSingleTop="true"
+                app:popUpTo="@+id/main_nav_graph"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/fragment_fade_enter"
+                app:exitAnim="@anim/fragment_fade_exit"/>
     </fragment>
     <fragment android:id="@+id/detailsFragment"
               android:name="com.openclassrooms.realestatemanager.details.DetailsFragment"
               android:label="Real Estate Manager" tools:layout="@layout/fragment_details"/>
+
+    <fragment android:id="@+id/mapFragment" android:name="com.openclassrooms.realestatemanager.map.MapFragment"
+              android:label="Real Estate Manager" tools:layout="@layout/fragment_map"/>
 
 </navigation>

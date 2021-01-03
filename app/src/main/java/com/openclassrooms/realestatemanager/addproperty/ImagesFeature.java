@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +54,7 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     private String uriImageSelected;
     private List<PropertyImage> imageList = new ArrayList<>();
     private Bundle bundle = new Bundle();
+    private Animation fadeInAnim;
 
 
     public ImagesFeature newInstance() {return new ImagesFeature();}
@@ -70,6 +73,8 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
         navController = Navigation.findNavController(view);
         propertyId = getArguments().getString("propertyId");
         bundle.putString("propertyId", propertyId);
+        fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        binding.imageFeatureLayout.setAnimation(fadeInAnim);
         alertDialogUtils = new AlertDialogUtils(this, this);
         this.initPropertyViewModel();
         this.initRecyclerView();

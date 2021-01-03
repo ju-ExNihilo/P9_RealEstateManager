@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,6 +59,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
     private AlertDialogUtils alertDialogUtils;
     private Uri photoUri = null;
     private List<String> propertyTypeList = new LinkedList<>(Arrays.asList("Flat", "House", "Loft", "manor", "castle", "studio apartment"));
+    private Animation fadeInAnim;
 
     public MainFeature newInstance() {return new MainFeature();}
 
@@ -72,6 +75,8 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+        fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        binding.mainFeatureLayout.setAnimation(fadeInAnim);
         this.initPropertyViewModel();
         alertDialogUtils = new AlertDialogUtils(this);
         propertyId = getArguments().getString("propertyId");

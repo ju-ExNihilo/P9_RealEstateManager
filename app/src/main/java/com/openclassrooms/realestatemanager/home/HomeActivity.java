@@ -5,6 +5,8 @@ import android.content.res.ColorStateList;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityHomeBinding;
 import com.openclassrooms.realestatemanager.login.LoginActivity;
+import com.openclassrooms.realestatemanager.utils.Utils;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -49,7 +52,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -57,9 +59,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.home:
                 navController.navigateUp();
                 break;
+            case R.id.all_property:
+                navController.navigate(R.id.propertyListView);
+                Utils.setSelectedNavigationItem(0, binding.navView);
+                break;
             case R.id.map:
+                navController.navigate(R.id.mapFragment);
+                Utils.setSelectedNavigationItem(2, binding.navView);
                 break;
             case R.id.my_property:
+                Utils.setSelectedNavigationItem(1, binding.navView);
                 break;
             case R.id.logout:
                 this.logout();
@@ -87,7 +96,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void iniNavigationView(){
         binding.navView.setNavigationItemSelectedListener(this);
         binding.navView.setItemIconTintList(null);
-        binding.navView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(getColor(R.color.colorGold)));
         View header = binding.navView.getHeaderView(0);
         TextView name = (TextView) header.findViewById(R.id.user_name);
         if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName() != null){
@@ -96,8 +104,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             name.setText("");
         }
     }
-
-
 
     /** Used to navigate to this activity **/
     public static void navigate(FragmentActivity activity) {

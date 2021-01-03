@@ -20,6 +20,7 @@ import com.openclassrooms.realestatemanager.home.HomeActivity;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.Agent;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.AgentViewModel;
 
 import java.util.Arrays;
@@ -92,10 +93,10 @@ public class LoginActivity extends AppCompatActivity{
                 this.insertAgentInFireStore();
                 HomeActivity.navigate(this);
             }else {
-                showSnackBar(binding.scrollView, getString(R.string.error_unknown_error));
+                Utils.showSnackBar(binding.scrollView, getString(R.string.error_unknown_error));
             }
         } else {
-            showSnackBar(binding.scrollView, getString(R.string.error_authentication_canceled));
+            Utils.showSnackBar(binding.scrollView, getString(R.string.error_authentication_canceled));
         }
     }
 
@@ -127,10 +128,6 @@ public class LoginActivity extends AppCompatActivity{
 
     /** Get Current User **/
     private FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser();}
-
-    private void showSnackBar(View view, String message){
-        Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
-    }
 
     /** Used to navigate to this activity **/
     public static void navigate(FragmentActivity activity) {

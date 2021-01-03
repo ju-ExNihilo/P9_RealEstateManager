@@ -2,6 +2,8 @@ package com.openclassrooms.realestatemanager.addproperty;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +34,7 @@ public class AddressFeature extends Fragment {
     private String addressId;
     private PropertyViewModel propertyViewModel;
     private Bundle bundle = new Bundle();
+    private Animation fadeInAnim;
 
     public AddressFeature newInstance() {return new AddressFeature();}
 
@@ -47,6 +50,8 @@ public class AddressFeature extends Fragment {
         navController = Navigation.findNavController(view);
         propertyId = getArguments().getString("propertyId");
         bundle.putString("propertyId", propertyId);
+        fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        binding.addressFeatureLayout.setAnimation(fadeInAnim);
         this.initPropertyViewModel();
         this.initFormFields();
         this.onClickBackBtn();
