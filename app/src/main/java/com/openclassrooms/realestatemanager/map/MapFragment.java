@@ -137,8 +137,14 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
                             addMarker(new LatLng(property.getLatitude(), property.getLongitude()), property.getPropertyType(),
                                     R.drawable.location_off, property.getPropertyId());
                         }else {
-                            addMarker(new LatLng(property.getLatitude(), property.getLongitude()), property.getPropertyType(),
-                                    R.drawable.location_property_free, property.getPropertyId());
+                            if (property.getAgentId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                addMarker(new LatLng(property.getLatitude(), property.getLongitude()), property.getPropertyType(),
+                                        R.drawable.location_agent, property.getPropertyId());
+                            }else {
+                                addMarker(new LatLng(property.getLatitude(), property.getLongitude()), property.getPropertyType(),
+                                        R.drawable.location_property_free, property.getPropertyId());
+                            }
+
                         }
 
                     }

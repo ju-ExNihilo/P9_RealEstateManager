@@ -152,15 +152,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
 
     private void initPicture(){
         propertyViewModel.getAllImagesByPropertyIdForDetails(propertyId).observe(getViewLifecycleOwner(), propertyImages -> {
-            if (propertyImages == null){
-                List<PropertyImage> propertyImageList = new ArrayList<>();
-                PropertyImage propertyImage = new PropertyImage();
-                propertyImage.setImageUrl(getString(R.string.default_image_url) + R.drawable.no_image);
-                propertyImageList.add(propertyImage);
-                binding.viewPager.setAdapter(new ImagesPagerAdapter(getContext(), propertyImageList));
-            }else {
-                binding.viewPager.setAdapter(new ImagesPagerAdapter(getContext(), propertyImages));
-            }
+            binding.viewPager.setAdapter(new ImagesPagerAdapter(getContext(), propertyImages));
         });
     }
 

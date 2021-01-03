@@ -1,7 +1,16 @@
 package com.openclassrooms.realestatemanager.models;
 
+import android.content.ContentValues;
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Property {
 
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    private long id;
     private String propertyId;
     private String agentId;
     private String propertyType;
@@ -12,6 +21,14 @@ public class Property {
     private boolean isSale;
 
     public Property() {}
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getPropertyId() {
         return propertyId;
@@ -83,6 +100,21 @@ public class Property {
 
     public void setSale(boolean sale) {
         this.isSale = sale;
+    }
+
+    public static Property fromContentValues(ContentValues contentValues){
+        final Property property = new Property();
+        if (contentValues.containsKey("id")) property.setId(contentValues.getAsLong("id"));
+        if (contentValues.containsKey("propertyId")) property.setPropertyId(contentValues.getAsString("propertyId"));
+        if (contentValues.containsKey("agentId")) property.setAgentId(contentValues.getAsString("agentId"));
+        if (contentValues.containsKey("propertyType")) property.setPropertyType(contentValues.getAsString("propertyType"));
+        if (contentValues.containsKey("propertyLocatedCity")) property.setPropertyLocatedCity(contentValues.getAsString("propertyLocatedCity"));
+        if (contentValues.containsKey("propertyPrice")) property.setPropertyPrice(contentValues.getAsFloat("propertyPrice"));
+        if (contentValues.containsKey("propertyPreviewImageUrl")) property.setPropertyPreviewImageUrl(contentValues.getAsString("propertyPreviewImageUrl"));
+        if (contentValues.containsKey("latitude")) property.setLatitude(contentValues.getAsDouble("latitude"));
+        if (contentValues.containsKey("longitude")) property.setLongitude(contentValues.getAsDouble("longitude"));
+        if (contentValues.containsKey("isSale")) property.setSale(contentValues.getAsBoolean("isSale"));
+        return property;
     }
 
     @Override

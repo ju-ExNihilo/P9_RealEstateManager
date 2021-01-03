@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.repository;
 import android.net.Uri;
 import android.util.Log;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.Task;
@@ -10,6 +11,7 @@ import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.openclassrooms.realestatemanager.dao.PropertyDao;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.*;
 import com.openclassrooms.realestatemanager.utils.Utils;
@@ -18,6 +20,7 @@ import fr.juju.googlemaplibrary.repository.GooglePlaceRepository;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Executor;
 
 public class PropertyDataRepository {
 
@@ -28,10 +31,14 @@ public class PropertyDataRepository {
     private final String COLLECTION_IMAGE = "propertyImage";
     private final GooglePlaceRepository googlePlaceRepository;
     private final LifecycleOwner owner;
+    private final PropertyDao propertyDao;
+    private Executor executor;
 
-    public PropertyDataRepository(GooglePlaceRepository googlePlaceRepository, LifecycleOwner owner) {
+    public PropertyDataRepository(GooglePlaceRepository googlePlaceRepository, LifecycleOwner owner, PropertyDao propertyDao, Executor executor) {
         this.googlePlaceRepository = googlePlaceRepository;
         this.owner = owner;
+        this.propertyDao = propertyDao;
+        this.executor = executor;
     }
 
     /** ***************************** **/
@@ -75,8 +82,10 @@ public class PropertyDataRepository {
     /** ***************************** **/
 
     public Task<Void> createProperty(Property property){
+        executor.execute(() -> propertyDao.insertProperty(property));
         return getPropertyCollection().document(property.getPropertyId()).set(property);
     }
+
 
     public Task<Void> insertAddressToProperty(String propertyId, Address address){
         return getSubCollection(propertyId, COLLECTION_ADDRESS).document(address.getAddressId()).set(address);
@@ -106,8 +115,14 @@ public class PropertyDataRepository {
         }).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Uri downloadUri = task.getResult();
-
                 updateImageUrl(propertyId, downloadUri.toString());
+                executor.execute(() -> propertyDao.updateProperty(propertyId, downloadUri.toString()));
+                PropertyImage propertyImage = new PropertyImage();
+                propertyImage.setImageUrl(downloadUri.toString());
+                propertyImage.setImageDescription("Preview");
+                propertyImage.setPropertyId(propertyId);
+                propertyImage.setPropertyImageId(getPropertyImageId(propertyId));
+                insertImageToProperty(propertyId, propertyImage);
             }
         });
     }
@@ -150,6 +165,12 @@ public class PropertyDataRepository {
 
     /** ***************************** **/
     /** ******** GET Method  ******** **/
+    /** ***************************** **/
+
+    /** *********** Room  *********** **/
+
+    public LiveData<List<Property>> getAllPropertyFromRoom(String agentId){return propertyDao.getAllProperty(agentId);}
+
     /** ***************************** **/
 
     public MutableLiveData<List<Property>> getAllProperty(){
@@ -243,6 +264,11 @@ public class PropertyDataRepository {
 
     public Task<Void> deleteImage(String propertyId, String propertyImageId){
         return getSubCollection(propertyId, COLLECTION_IMAGE).document(propertyImageId).delete();
+    }
+
+    /** ******** Room  ****** **/
+    public void deleteFromRoom(String propertyId){
+        executor.execute(() -> propertyDao.deleteProperty(propertyId));
     }
 
     /** ***************************** **/

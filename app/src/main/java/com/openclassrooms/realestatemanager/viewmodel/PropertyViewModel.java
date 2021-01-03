@@ -7,6 +7,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.openclassrooms.realestatemanager.models.*;
 import com.openclassrooms.realestatemanager.repository.PropertyDataRepository;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 public class PropertyViewModel extends ViewModel {
 
@@ -32,6 +33,10 @@ public class PropertyViewModel extends ViewModel {
 
     public FirestoreRecyclerOptions<PropertyImage> getAllImagesByPropertyId(String propertyId){return propertyDataRepository.getAllImagesByPropertyId(propertyId);}
 
+    /** *********** Room  *********** **/
+    public LiveData<List<Property>> getAllPropertyFromRoom(String agentId){return propertyDataRepository.getAllPropertyFromRoom(agentId);}
+    /** **************************** **/
+
     /** INSERT **/
 
     public void createProperty(Property property){propertyDataRepository.createProperty(property);}
@@ -43,6 +48,8 @@ public class PropertyViewModel extends ViewModel {
     public void insertPointOfInterestToProperty(String propertyId, PointOfInterest pointOfInterest){propertyDataRepository.insertPointOfInterestToProperty(propertyId, pointOfInterest);}
 
     public void insertImageToProperty(String propertyId, PropertyImage propertyImage){propertyDataRepository.insertImageToProperty(propertyId, propertyImage);}
+
+    /** **************************** **/
 
     /** GET ID **/
 
@@ -57,6 +64,8 @@ public class PropertyViewModel extends ViewModel {
     /** DELETE **/
 
     public void deleteImage(String propertyId, String propertyImageId){propertyDataRepository.deleteImage(propertyId, propertyImageId);}
+
+    public void deleteFromRoom(String propertyId){propertyDataRepository.deleteFromRoom(propertyId);}
 
     /** UPDATE **/
 

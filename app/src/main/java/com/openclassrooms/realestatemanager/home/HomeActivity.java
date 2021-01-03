@@ -68,6 +68,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Utils.setSelectedNavigationItem(2, binding.navView);
                 break;
             case R.id.my_property:
+                Bundle bundle = new Bundle();
+                bundle.putString("MyProperty", "MyProperty");
+                navController.navigate(R.id.propertyListView, bundle);
                 Utils.setSelectedNavigationItem(1, binding.navView);
                 break;
             case R.id.logout:

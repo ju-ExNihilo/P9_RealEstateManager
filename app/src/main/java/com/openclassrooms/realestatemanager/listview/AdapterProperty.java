@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.listview;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -49,6 +50,7 @@ public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.Proper
         }
 
         holder.itemView.setOnClickListener(v -> onPropertyClicked.onClickedProperty(property.getPropertyId()));
+        Log.i("DEBUGGG", property.toString());
     }
 
     @Override
