@@ -1,6 +1,5 @@
 package com.openclassrooms.realestatemanager.addproperty;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
@@ -23,7 +21,6 @@ import android.view.ViewGroup;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +29,6 @@ import com.openclassrooms.realestatemanager.databinding.FragmentMainFeatureBindi
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.Property;
-import com.openclassrooms.realestatemanager.repository.PropertyDataRepository;
 import com.openclassrooms.realestatemanager.utils.AlertDialogUtils;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
@@ -209,7 +205,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
                 property.setPropertyPrice(Float.parseFloat(propertyPrice));
                 property.setPropertyType(propertyType);
                 property.setPropertyPreviewImageUrl(uriImageSelected);
-                property.setSale(false);
+                property.setSold(false);
                 property.setAgentId(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 propertyViewModel.createProperty(property);
                 if (photoUri != null){

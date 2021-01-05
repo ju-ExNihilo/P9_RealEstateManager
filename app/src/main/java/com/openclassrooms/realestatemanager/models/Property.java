@@ -3,9 +3,10 @@ package com.openclassrooms.realestatemanager.models;
 import android.content.ContentValues;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(indices = {@Index(value = "propertyId", unique = true)})
 public class Property {
 
     @PrimaryKey(autoGenerate = true)
@@ -18,9 +19,23 @@ public class Property {
     private float propertyPrice;
     private String propertyPreviewImageUrl;
     private double latitude, longitude;
-    private boolean isSale;
+    private boolean isSold;
 
     public Property() {}
+
+    public Property(long id, String propertyId, String agentId, String propertyType, String propertyLocatedCity,
+                    float propertyPrice, String propertyPreviewImageUrl, double latitude, double longitude, boolean isSold) {
+        this.id = id;
+        this.propertyId = propertyId;
+        this.agentId = agentId;
+        this.propertyType = propertyType;
+        this.propertyLocatedCity = propertyLocatedCity;
+        this.propertyPrice = propertyPrice;
+        this.propertyPreviewImageUrl = propertyPreviewImageUrl;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.isSold = isSold;
+    }
 
     public long getId() {
         return id;
@@ -94,12 +109,12 @@ public class Property {
         this.longitude = longitude;
     }
 
-    public boolean isSale() {
-        return isSale;
+    public boolean isSold() {
+        return isSold;
     }
 
-    public void setSale(boolean sale) {
-        this.isSale = sale;
+    public void setSold(boolean sold) {
+        this.isSold = sold;
     }
 
     public static Property fromContentValues(ContentValues contentValues){
@@ -113,7 +128,7 @@ public class Property {
         if (contentValues.containsKey("propertyPreviewImageUrl")) property.setPropertyPreviewImageUrl(contentValues.getAsString("propertyPreviewImageUrl"));
         if (contentValues.containsKey("latitude")) property.setLatitude(contentValues.getAsDouble("latitude"));
         if (contentValues.containsKey("longitude")) property.setLongitude(contentValues.getAsDouble("longitude"));
-        if (contentValues.containsKey("isSale")) property.setSale(contentValues.getAsBoolean("isSale"));
+        if (contentValues.containsKey("isSale")) property.setSold(contentValues.getAsBoolean("isSale"));
         return property;
     }
 
@@ -128,7 +143,7 @@ public class Property {
                 ", propertyPreviewImageUrl='" + propertyPreviewImageUrl + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", isSale=" + isSale +
+                ", isSold=" + isSold +
                 '}';
     }
 }

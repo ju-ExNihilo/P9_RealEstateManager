@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager.repository;
 
 import android.net.Uri;
-import android.util.Log;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,15 +10,13 @@ import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.openclassrooms.realestatemanager.dao.PropertyDao;
+import com.openclassrooms.realestatemanager.database.PropertyDatabase;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.*;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import fr.juju.googlemaplibrary.repository.GooglePlaceRepository;
 
-import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.Executor;
 
 public class PropertyDataRepository {
@@ -31,13 +28,13 @@ public class PropertyDataRepository {
     private final String COLLECTION_IMAGE = "propertyImage";
     private final GooglePlaceRepository googlePlaceRepository;
     private final LifecycleOwner owner;
-    private final PropertyDao propertyDao;
+    private final PropertyDatabase propertyDatabase;
     private Executor executor;
 
-    public PropertyDataRepository(GooglePlaceRepository googlePlaceRepository, LifecycleOwner owner, PropertyDao propertyDao, Executor executor) {
+    public PropertyDataRepository(GooglePlaceRepository googlePlaceRepository, LifecycleOwner owner, PropertyDatabase propertyDatabase, Executor executor) {
         this.googlePlaceRepository = googlePlaceRepository;
         this.owner = owner;
-        this.propertyDao = propertyDao;
+        this.propertyDatabase = propertyDatabase;
         this.executor = executor;
     }
 
@@ -82,24 +79,28 @@ public class PropertyDataRepository {
     /** ***************************** **/
 
     public Task<Void> createProperty(Property property){
-        executor.execute(() -> propertyDao.insertProperty(property));
+        executor.execute(() -> propertyDatabase.propertyDao().insertProperty(property));
         return getPropertyCollection().document(property.getPropertyId()).set(property);
     }
 
 
     public Task<Void> insertAddressToProperty(String propertyId, Address address){
+        executor.execute(() -> propertyDatabase.addressDao().insertAddress(address));
         return getSubCollection(propertyId, COLLECTION_ADDRESS).document(address.getAddressId()).set(address);
     }
 
     public Task<Void> insertFeatureToProperty(String propertyId, PropertyFeature propertyFeature){
+        executor.execute(() -> propertyDatabase.propertyFeatureDao().insertPropertyFeature(propertyFeature));
         return getSubCollection(propertyId, COLLECTION_FEATURE).document(propertyFeature.getPropertyFeatureId()).set(propertyFeature);
     }
 
     public Task<Void> insertPointOfInterestToProperty(String propertyId, PointOfInterest pointOfInterest){
+        executor.execute(() -> propertyDatabase.pointOfInterestDao().insertPointOfInterest(pointOfInterest));
         return getSubCollection(propertyId, COLLECTION_POINT_OF_INTEREST).document(pointOfInterest.getPointOfInterestId()).set(pointOfInterest);
     }
 
     public Task<Void> insertImageToProperty(String propertyId, PropertyImage propertyImage){
+        executor.execute(() -> propertyDatabase.propertyImageDao().insertPropertyImage(propertyImage));
         return getSubCollection(propertyId, COLLECTION_IMAGE).document(propertyImage.getPropertyImageId()).set(propertyImage);
     }
 
@@ -116,7 +117,6 @@ public class PropertyDataRepository {
             if (task.isSuccessful()) {
                 Uri downloadUri = task.getResult();
                 updateImageUrl(propertyId, downloadUri.toString());
-                executor.execute(() -> propertyDao.updateProperty(propertyId, downloadUri.toString()));
                 PropertyImage propertyImage = new PropertyImage();
                 propertyImage.setImageUrl(downloadUri.toString());
                 propertyImage.setImageDescription("Preview");
@@ -169,7 +169,9 @@ public class PropertyDataRepository {
 
     /** *********** Room  *********** **/
 
-    public LiveData<List<Property>> getAllPropertyFromRoom(String agentId){return propertyDao.getAllProperty(agentId);}
+    public LiveData<List<Property>> getAllPropertyFromRoom(String agentId){return propertyDatabase.propertyDao().getAllProperty(agentId);}
+
+    public LiveData<List<Property>> getAllPropertyFromRoomForTest(){return propertyDatabase.propertyDao().getAllPropertyProvider();}
 
     /** ***************************** **/
 
@@ -268,7 +270,7 @@ public class PropertyDataRepository {
 
     /** ******** Room  ****** **/
     public void deleteFromRoom(String propertyId){
-        executor.execute(() -> propertyDao.deleteProperty(propertyId));
+        executor.execute(() -> propertyDatabase.propertyDao().deleteProperty(propertyId));
     }
 
     /** ***************************** **/
@@ -277,18 +279,32 @@ public class PropertyDataRepository {
 
     /** ******** Update LatLn  ****** **/
     private Task<Void> updateLongitude(String propertyId, double longitude) {
+        executor.execute(() -> propertyDatabase.propertyDao().updateLongitude(longitude, propertyId));
         return getPropertyCollection().document(propertyId).update("longitude", longitude);
     }
     private Task<Void> updateLatitude(String propertyId, double latitude) {
+        executor.execute(() -> propertyDatabase.propertyDao().updateLatitude(latitude, propertyId));
         return getPropertyCollection().document(propertyId).update("latitude", latitude);
     }
 
     public Task<Void> updateImageUrl(String propertyId, String imageUrl) {
+        executor.execute(() -> propertyDatabase.propertyDao().updatePreviewImageUrl(imageUrl, propertyId));
         return getPropertyCollection().document(propertyId).update("propertyPreviewImageUrl", imageUrl);
     }
 
     public Task<Void> updateImageDescription(String propertyId, String propertyImageId, String description) {
+        executor.execute(() -> propertyDatabase.propertyImageDao().updateImageDescription(description, propertyId, propertyImageId));
         return getSubCollection(propertyId, COLLECTION_IMAGE).document(propertyImageId).update("imageDescription", description);
+    }
+
+    private Task<Void> updateSoldProperty(String propertyId){
+        executor.execute(() -> propertyDatabase.propertyDao().updateSold(true, propertyId));
+        return getPropertyCollection().document(propertyId).update("sold", true);
+    }
+
+    private Task<Void> updateSoldDate(String propertyId, String documentId, String soldDate){
+        executor.execute(() -> propertyDatabase.propertyFeatureDao().updateSoldDate(soldDate, propertyId, documentId));
+        return getSubCollection(propertyId, COLLECTION_FEATURE).document(documentId).update("soldDate", soldDate);
     }
 
     public void updateLatLng(String propertyId, String addressCompact){
@@ -305,15 +321,7 @@ public class PropertyDataRepository {
     }
 
     public void propertySale(String propertyId, String documentId, String saleDate){
-        this.updateSaleProperty(propertyId);
-        this.updateSaleDate(propertyId, documentId, saleDate);
-    }
-
-    private Task<Void> updateSaleProperty(String propertyId){
-        return getPropertyCollection().document(propertyId).update("sale", true);
-    }
-
-    private Task<Void> updateSaleDate(String propertyId, String documentId, String saleDate){
-        return getSubCollection(propertyId, COLLECTION_FEATURE).document(documentId).update("saleDate", saleDate);
+        this.updateSoldProperty(propertyId);
+        this.updateSoldDate(propertyId, documentId, saleDate);
     }
 }

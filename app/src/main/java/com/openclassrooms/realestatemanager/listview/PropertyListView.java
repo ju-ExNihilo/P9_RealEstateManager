@@ -62,6 +62,7 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
             isMyProperty = getArguments().getString("MyProperty");
         }
         this.initPropertyViewModel();
+
         this.initRecyclerView();
         if (!isMyProperty.equals("MyProperty")){
             this.getAllProperty();

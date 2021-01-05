@@ -8,10 +8,10 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-import com.openclassrooms.realestatemanager.dao.PropertyDao;
-import com.openclassrooms.realestatemanager.models.Property;
+import com.openclassrooms.realestatemanager.dao.*;
+import com.openclassrooms.realestatemanager.models.*;
 
-@Database(entities = Property.class, version = 1, exportSchema = false)
+@Database(entities = {Property.class, Address.class, PropertyFeature.class, PointOfInterest.class, PropertyImage.class}, version = 1, exportSchema = false)
 public abstract class PropertyDatabase extends RoomDatabase {
 
     // --- SINGLETON ---
@@ -19,6 +19,10 @@ public abstract class PropertyDatabase extends RoomDatabase {
 
     // --- DAO ---
     public abstract PropertyDao propertyDao();
+    public abstract AddressDao addressDao();
+    public abstract PropertyFeatureDao propertyFeatureDao();
+    public abstract PointOfInterestDao pointOfInterestDao();
+    public abstract PropertyImageDao propertyImageDao();
 
     // --- INSTANCE ---
     public static PropertyDatabase getInstance(Context context){
@@ -51,7 +55,7 @@ public abstract class PropertyDatabase extends RoomDatabase {
                         "realestatemanager-90248.appspot.com/o/18e7815d-346a-4087-b982-06cbe485e260?alt=media&token=bc8105db-200e-4c0d-af10-5dfdb4c10531");
                 contentValues.put("latitude", 6.46123);
                 contentValues.put("longitude", 43.45668);
-                contentValues.put("isSale", false);
+                contentValues.put("isSold", false);
 
                 db.insert("Property", OnConflictStrategy.IGNORE, contentValues);
             }

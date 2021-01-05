@@ -26,7 +26,7 @@ public class Injection {
         GooglePlaceRepository googlePlaceRepository = new GooglePlaceRepository(owner, context.getString(R.string.google_maps_key));
         PropertyDatabase propertyDatabase = PropertyDatabase.getInstance(context);
         Executor executor = provideExecutor();
-        return new PropertyDataRepository(googlePlaceRepository, owner, propertyDatabase.propertyDao(), executor);
+        return new PropertyDataRepository(googlePlaceRepository, owner, propertyDatabase, executor);
     }
 
     public static Executor provideExecutor(){ return Executors.newSingleThreadExecutor(); }

@@ -1,13 +1,8 @@
 package com.openclassrooms.realestatemanager.map;
 
 import android.Manifest;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Looper;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
@@ -19,11 +14,9 @@ import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import com.bumptech.glide.util.Util;
 import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentMapBinding;
@@ -133,7 +126,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
                     Location.distanceBetween(property.getLatitude(), property.getLongitude(), latitude, longitude, results);
                     int distance = (int)results[0];
                     if (distance <= radius){
-                        if (property.isSale()){
+                        if (property.isSold()){
                             addMarker(new LatLng(property.getLatitude(), property.getLongitude()), property.getPropertyType(),
                                     R.drawable.location_off, property.getPropertyId());
                         }else {
