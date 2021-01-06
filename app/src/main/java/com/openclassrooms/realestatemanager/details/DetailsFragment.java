@@ -19,7 +19,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentDetailsBinding;
@@ -98,10 +97,10 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
             boolean isAgent = property.getAgentId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid());
             binding.typeProperty.setText(property.getPropertyType());
             binding.locationProperty.setText(property.getPropertyLocatedCity());
-            if (property.isSale())
-                this.isSale();
+            if (property.isSold())
+                this.isSold();
             binding.navigationBar.setVisibility(isAgent ? View.VISIBLE : View.GONE);
-            binding.otherFeatureStatus.setText(property.isSale() ? getString(R.string.sale) : getString(R.string.free));
+            binding.otherFeatureStatus.setText(property.isSold() ? getString(R.string.sale) : getString(R.string.free));
             binding.priceProperty.setText(Utils.formatPrice(property.getPropertyPrice(), getString(R.string.usd)));
         });
     }
@@ -141,7 +140,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
                 binding.otherFeatureBedroom.setText(String.valueOf(propertyFeature.getNumberOfBedrooms()));
                 binding.otherFeatureBathroom.setText(String.valueOf(propertyFeature.getNumberOfBathrooms()));
                 binding.otherFeatureEntranceDate.setText(propertyFeature.getEntranceDate());
-                binding.otherFeatureSaleDate.setText(propertyFeature.getSaleDate().isEmpty() ? getString(R.string.not_sale) : propertyFeature.getSaleDate());
+                binding.otherFeatureSaleDate.setText(propertyFeature.getSoldDate().isEmpty() ? getString(R.string.not_sale) : propertyFeature.getSoldDate());
             }else {
                 binding.cardDescription.setVisibility(View.GONE);
                 binding.descriptionTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null,
@@ -219,7 +218,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
                     this.initOtherFeature();
                     this.initMainFeature();
                     Utils.showSnackBar(binding.detailsView, getString(R.string.congratulation));
-                    this.isSale();
+                    this.isSold();
                 }else {
                     Utils.showSnackBar(binding.detailsView, getString(R.string.set_property));
                 }
@@ -231,7 +230,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
 
     private void datePicker(){
         propertyViewModel.getAPropertyById(propertyId).observe(getViewLifecycleOwner(), property -> {
-            if (!property.isSale()){
+            if (!property.isSold()){
                 final Calendar calendar = Calendar.getInstance();
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 int month = calendar.get(Calendar.MONTH);
@@ -265,7 +264,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
                 .streamFor(300, 5000L);
     }
 
-    private void isSale(){
+    private void isSold(){
         binding.navigationBar.getMenu().getItem(1).setTitle(R.string.sale_maj);
         binding.navigationBar.getMenu().getItem(1);
         this.runConfetti();

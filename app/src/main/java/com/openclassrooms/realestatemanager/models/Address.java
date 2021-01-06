@@ -1,8 +1,18 @@
 package com.openclassrooms.realestatemanager.models;
 
+import androidx.annotation.NonNull;
+import androidx.room.*;
+
+@Entity(foreignKeys = @ForeignKey(entity = Property.class, parentColumns = "propertyId", childColumns = "propertyId", onDelete = ForeignKey.CASCADE),
+        indices = {@Index("propertyId")})
 public class Address {
 
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @ColumnInfo(name = "id", index = true)
+    private long id;
     private String addressId;
+    @ColumnInfo(name = "propertyId")
     private String propertyId;
     private int numberOfWay;
     private String way;
@@ -10,6 +20,24 @@ public class Address {
     private String additionalAddressField;
 
     public Address() {}
+
+    public Address(long id, String addressId, String propertyId, int numberOfWay, String way, int postCode, String additionalAddressField) {
+        this.id = id;
+        this.addressId = addressId;
+        this.propertyId = propertyId;
+        this.numberOfWay = numberOfWay;
+        this.way = way;
+        this.postCode = postCode;
+        this.additionalAddressField = additionalAddressField;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getAddressId() {
         return addressId;

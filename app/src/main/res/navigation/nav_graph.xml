@@ -115,5 +115,8 @@
 
     <fragment android:id="@+id/mapFragment" android:name="com.openclassrooms.realestatemanager.map.MapFragment"
               android:label="Real Estate Manager" tools:layout="@layout/fragment_map"/>
+    <fragment android:id="@+id/myPropertyListView"
+              android:name="com.openclassrooms.realestatemanager.listview.MyPropertyListView"
+              android:label="fragment_my_property_list_view" tools:layout="@layout/fragment_my_property_list_view"/>
 
 </navigation>

@@ -20,6 +20,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentPropertyListViewBinding;
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
@@ -37,6 +38,7 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
     private PropertyViewModel propertyViewModel;
     private NavController navController;
     private Animation fadeInAnim;
+    private String isMyProperty = "all";
 
     public PropertyListView newInstance() {
         return new PropertyListView();
@@ -56,17 +58,35 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         navController = Navigation.findNavController(view);
         fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
         binding.listLayout.setAnimation(fadeInAnim);
+        if (getArguments() != null){
+            isMyProperty = getArguments().getString("MyProperty");
+        }
         this.initPropertyViewModel();
+
         this.initRecyclerView();
-        this.getAllProperty();
+        if (!isMyProperty.equals("MyProperty")){
+            this.getAllProperty();
+        }else {
+            this.getAllPropertyFromRoom();
+            this.initSelectedItem(1);
+        }
+
         this.initFabButton();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        if (!isMyProperty.equals("MyProperty")){
+            this.initSelectedItem(0);
+        }else {
+            this.initSelectedItem(1);
+        }
+    }
+
+    private void initSelectedItem(int index){
         NavigationView navigationView = ((AppCompatActivity)getActivity()).findViewById(R.id.nav_view);
-        Utils.setSelectedNavigationItem(0, navigationView);
+        Utils.setSelectedNavigationItem(index, navigationView);
     }
 
     private void initFabButton(){
@@ -87,6 +107,18 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
 
     private void getAllProperty(){
         propertyViewModel.getAllProperty().observe(getViewLifecycleOwner(), this::setAdapter);
+    }
+
+    private void cleanDb(){
+        propertyViewModel.getAllPropertyFromRoom("kk").observe(getViewLifecycleOwner(),properties -> {
+            for (Property property : properties){
+                propertyViewModel.deleteFromRoom(property.getPropertyId());
+            }
+        });
+    }
+
+    private void getAllPropertyFromRoom(){
+        propertyViewModel.getAllPropertyFromRoom(FirebaseAuth.getInstance().getCurrentUser().getUid()).observe(getViewLifecycleOwner(), this::setAdapter);
     }
 
     private void setAdapter(List<Property> propertyList){

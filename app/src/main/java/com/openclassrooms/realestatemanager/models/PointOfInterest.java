@@ -1,12 +1,37 @@
 package com.openclassrooms.realestatemanager.models;
 
+import androidx.annotation.NonNull;
+import androidx.room.*;
+
+@Entity(foreignKeys = @ForeignKey(entity = Property.class, parentColumns = "propertyId", childColumns = "propertyId", onDelete = ForeignKey.CASCADE),
+        indices = {@Index("propertyId")})
 public class PointOfInterest {
 
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @ColumnInfo(name = "id", index = true)
+    private long id;
     private String pointOfInterestId;
+    @ColumnInfo(name = "propertyId")
     private String propertyId;
     private String pointOfInterestName;
 
     public PointOfInterest() {}
+
+    public PointOfInterest(long id, String pointOfInterestId, String propertyId, String pointOfInterestName) {
+        this.id = id;
+        this.pointOfInterestId = pointOfInterestId;
+        this.propertyId = propertyId;
+        this.pointOfInterestName = pointOfInterestName;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getPointOfInterestId() {
         return pointOfInterestId;

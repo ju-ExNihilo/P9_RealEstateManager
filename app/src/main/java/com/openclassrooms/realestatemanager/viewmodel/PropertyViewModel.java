@@ -7,6 +7,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.openclassrooms.realestatemanager.models.*;
 import com.openclassrooms.realestatemanager.repository.PropertyDataRepository;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 public class PropertyViewModel extends ViewModel {
 
@@ -32,6 +33,10 @@ public class PropertyViewModel extends ViewModel {
 
     public FirestoreRecyclerOptions<PropertyImage> getAllImagesByPropertyId(String propertyId){return propertyDataRepository.getAllImagesByPropertyId(propertyId);}
 
+    /** *********** Room  *********** **/
+    public LiveData<List<Property>> getAllPropertyFromRoom(String agentId){return propertyDataRepository.getAllPropertyFromRoom(agentId);}
+    /** **************************** **/
+
     /** INSERT **/
 
     public void createProperty(Property property){propertyDataRepository.createProperty(property);}
@@ -43,6 +48,8 @@ public class PropertyViewModel extends ViewModel {
     public void insertPointOfInterestToProperty(String propertyId, PointOfInterest pointOfInterest){propertyDataRepository.insertPointOfInterestToProperty(propertyId, pointOfInterest);}
 
     public void insertImageToProperty(String propertyId, PropertyImage propertyImage){propertyDataRepository.insertImageToProperty(propertyId, propertyImage);}
+
+    /** **************************** **/
 
     /** GET ID **/
 
@@ -58,6 +65,8 @@ public class PropertyViewModel extends ViewModel {
 
     public void deleteImage(String propertyId, String propertyImageId){propertyDataRepository.deleteImage(propertyId, propertyImageId);}
 
+    public void deleteFromRoom(String propertyId){propertyDataRepository.deleteFromRoom(propertyId);}
+
     /** UPDATE **/
 
     public void uploadImageInFirebase(String propertyId, Uri uriImage){ propertyDataRepository.uploadImageInFirebase(propertyId, uriImage);}
@@ -68,7 +77,7 @@ public class PropertyViewModel extends ViewModel {
 
     public void getProximityPointOfInterest(String location, String propertyId){propertyDataRepository.getProximityPointOfInterest(location, propertyId);}
 
-    public void propertySale(String propertyId, String documentId, String saleDate){propertyDataRepository.propertySale(propertyId, documentId, saleDate);}
+    public void propertySale(String propertyId, String documentId, String soldDate){propertyDataRepository.propertySale(propertyId, documentId, soldDate);}
 
     public void updateImageDescription(String propertyId, String propertyImageId, String description){
         propertyDataRepository.updateImageDescription(propertyId, propertyImageId, description);

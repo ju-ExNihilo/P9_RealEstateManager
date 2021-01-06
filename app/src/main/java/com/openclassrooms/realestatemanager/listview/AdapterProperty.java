@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.listview;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -10,8 +11,6 @@ import com.openclassrooms.realestatemanager.databinding.ItemPropertyBinding;
 import com.openclassrooms.realestatemanager.models.Property;
 import com.openclassrooms.realestatemanager.utils.Utils;
 
-import java.text.NumberFormat;
-import java.util.Currency;
 import java.util.List;
 
 public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.PropertyViewHolder> {
@@ -38,7 +37,7 @@ public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.Proper
         holder.binding.propertyType.setText(property.getPropertyType());
         holder.binding.propertyPrice.setText(Utils.formatPrice(property.getPropertyPrice(), "USD"));
         holder.binding.propertyTown.setText(property.getPropertyLocatedCity());
-        if (property.isSale()){
+        if (property.isSold()){
             Glide.with(holder.binding.propertyPicture.getContext())
                     .load(R.drawable.sale_pic)
                     .into(holder.binding.propertyPicture);
@@ -49,6 +48,7 @@ public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.Proper
         }
 
         holder.itemView.setOnClickListener(v -> onPropertyClicked.onClickedProperty(property.getPropertyId()));
+        Log.i("DEBUGGG", property.toString());
     }
 
     @Override

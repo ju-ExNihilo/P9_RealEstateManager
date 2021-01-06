@@ -240,7 +240,6 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
         propertyImage.setImageDescription(imageDescription);
         String propertyImageId = propertyViewModel.getPropertyImageId(propertyId);
         propertyImage.setPropertyImageId(propertyImageId);
-        propertyViewModel.insertImageToProperty(propertyId,propertyImage);
         imageList.add(propertyImage);
         photoUri = null;
         dialog.dismiss();

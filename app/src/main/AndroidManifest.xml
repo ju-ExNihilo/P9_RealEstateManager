@@ -39,6 +39,11 @@
                     android:resource="@xml/provider_paths"/>
         </provider>
 
+        <provider
+                android:name=".contentprovider.PropertyContentProvider"
+                android:authorities="com.openclassrooms.realestatemanager.contentprovider"
+                android:exported="true"/>
+
         <activity
                 android:name=".login.LoginActivity"
                 android:theme="@style/AppTheme1">

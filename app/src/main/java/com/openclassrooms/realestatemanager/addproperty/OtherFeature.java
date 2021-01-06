@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
@@ -21,10 +20,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentOtherFeatureBinding;
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
-import com.openclassrooms.realestatemanager.home.HomeActivity;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.PropertyFeature;
-import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.*;
@@ -139,7 +136,7 @@ public class OtherFeature extends Fragment {
         propertyFeature.setEntranceDate(entranceDate);
         if (!propertySurface.isEmpty())
             propertyFeature.setPropertySurface(Float.parseFloat(propertySurface));
-        propertyFeature.setSaleDate("Not Sale");
+        propertyFeature.setSoldDate("Not Sale");
         propertyFeature.setPropertyDescription(propertyDescription);
         propertyFeature.setPropertyId(propertyId);
         propertyFeature.setPropertyFeatureId(propertyFeatureId);

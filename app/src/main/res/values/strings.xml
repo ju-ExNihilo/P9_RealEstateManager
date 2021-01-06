@@ -69,13 +69,13 @@
     <string name="default_image_url">android.resource://com.openclassrooms.realestatemanager/</string>
     <string name="not_sale">Not Sale</string>
     <string name="metric">\" m²\"</string>
-    <string name="sale">Sale</string>
+    <string name="sale">Sold</string>
     <string name="free">Free</string>
     <string name="usd">USD</string>
     <string name="congratulation">Congratulation</string>
     <string name="set_property">Please set property Feature First</string>
     <string name="select_date">Please select a date</string>
-    <string name="sale_maj">SALE</string>
+    <string name="sale_maj">SOLD</string>
     <string name="please_set_address_to_property_for_geolocalisation">Please set Address to property for
         Geolocalisation
     </string>
@@ -100,7 +100,7 @@
     <string name="point_of_interest">Point Of Interest</string>
     <string name="geo_localisation">Geo Localisation</string>
     <string name="update_maj">UPDATE</string>
-    <string name="for_sale_maj">FOR SALE</string>
+    <string name="for_sale_maj">SELL</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

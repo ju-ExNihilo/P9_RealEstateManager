@@ -1,17 +1,48 @@
 package com.openclassrooms.realestatemanager.models;
 
-import java.util.Date;
+import androidx.annotation.NonNull;
+import androidx.room.*;
 
+
+@Entity(foreignKeys = @ForeignKey(entity = Property.class, parentColumns = "propertyId", childColumns = "propertyId", onDelete = ForeignKey.CASCADE),
+        indices = {@Index("propertyId")})
 public class PropertyFeature {
 
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @ColumnInfo(name = "id", index = true)
+    private long id;
     private String propertyFeatureId;
+    @ColumnInfo(name = "propertyId")
     private String propertyId;
     private int numberOfRooms, numberOfBathrooms, numberOfBedrooms;
-    private String entranceDate, saleDate;
+    private String entranceDate, soldDate;
     private float propertySurface;
     private String propertyDescription;
 
     public PropertyFeature() {}
+
+    public PropertyFeature(long id, String propertyFeatureId, String propertyId, int numberOfRooms,
+                           int numberOfBathrooms, int numberOfBedrooms, String entranceDate, String soldDate, float propertySurface, String propertyDescription) {
+        this.id = id;
+        this.propertyFeatureId = propertyFeatureId;
+        this.propertyId = propertyId;
+        this.numberOfRooms = numberOfRooms;
+        this.numberOfBathrooms = numberOfBathrooms;
+        this.numberOfBedrooms = numberOfBedrooms;
+        this.entranceDate = entranceDate;
+        this.soldDate = soldDate;
+        this.propertySurface = propertySurface;
+        this.propertyDescription = propertyDescription;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getPropertyFeatureId() {
         return propertyFeatureId;
@@ -61,12 +92,12 @@ public class PropertyFeature {
         this.entranceDate = entranceDate;
     }
 
-    public String getSaleDate() {
-        return saleDate;
+    public String getSoldDate() {
+        return soldDate;
     }
 
-    public void setSaleDate(String saleDate) {
-        this.saleDate = saleDate;
+    public void setSoldDate(String soldDate) {
+        this.soldDate = soldDate;
     }
 
     public float getPropertySurface() {
@@ -95,7 +126,7 @@ public class PropertyFeature {
                 ", numberOfBathrooms=" + numberOfBathrooms +
                 ", numberOfBedrooms=" + numberOfBedrooms +
                 ", entranceDate=" + entranceDate +
-                ", saleDate=" + saleDate +
+                ", saleDate=" + soldDate +
                 ", propertySurface=" + propertySurface +
                 ", propertyDescription='" + propertyDescription + '\'' +
                 '}';
