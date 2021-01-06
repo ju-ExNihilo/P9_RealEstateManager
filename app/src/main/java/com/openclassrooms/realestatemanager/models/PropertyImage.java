@@ -19,6 +19,14 @@ public class PropertyImage {
 
     public PropertyImage() {}
 
+    public PropertyImage(long id, String propertyImageId, String propertyId, String imageUrl, String imageDescription) {
+        this.id = id;
+        this.propertyImageId = propertyImageId;
+        this.propertyId = propertyId;
+        this.imageUrl = imageUrl;
+        this.imageDescription = imageDescription;
+    }
+
     public long getId() {
         return id;
     }

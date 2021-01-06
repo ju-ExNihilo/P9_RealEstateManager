@@ -89,7 +89,7 @@ public class Utils {
                 .setContentTitle(title)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(desc))
                 .setDefaults(Notification.DEFAULT_SOUND)
-                .setSmallIcon(R.drawable.notif_icon);
+                .setSmallIcon(R.mipmap.ic_launcher_round);
 
         manager.notify(1, builder.build());
     }

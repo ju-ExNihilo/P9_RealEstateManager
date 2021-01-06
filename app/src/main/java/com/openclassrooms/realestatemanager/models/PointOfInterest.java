@@ -18,6 +18,13 @@ public class PointOfInterest {
 
     public PointOfInterest() {}
 
+    public PointOfInterest(long id, String pointOfInterestId, String propertyId, String pointOfInterestName) {
+        this.id = id;
+        this.pointOfInterestId = pointOfInterestId;
+        this.propertyId = propertyId;
+        this.pointOfInterestName = pointOfInterestName;
+    }
+
     public long getId() {
         return id;
     }

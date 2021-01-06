@@ -22,6 +22,20 @@ public class PropertyFeature {
 
     public PropertyFeature() {}
 
+    public PropertyFeature(long id, String propertyFeatureId, String propertyId, int numberOfRooms,
+                           int numberOfBathrooms, int numberOfBedrooms, String entranceDate, String soldDate, float propertySurface, String propertyDescription) {
+        this.id = id;
+        this.propertyFeatureId = propertyFeatureId;
+        this.propertyId = propertyId;
+        this.numberOfRooms = numberOfRooms;
+        this.numberOfBathrooms = numberOfBathrooms;
+        this.numberOfBedrooms = numberOfBedrooms;
+        this.entranceDate = entranceDate;
+        this.soldDate = soldDate;
+        this.propertySurface = propertySurface;
+        this.propertyDescription = propertyDescription;
+    }
+
     public long getId() {
         return id;
     }

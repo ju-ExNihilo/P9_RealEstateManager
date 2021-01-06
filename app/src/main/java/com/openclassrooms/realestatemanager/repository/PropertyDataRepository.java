@@ -171,7 +171,7 @@ public class PropertyDataRepository {
 
     public LiveData<List<Property>> getAllPropertyFromRoom(String agentId){return propertyDatabase.propertyDao().getAllProperty(agentId);}
 
-    public LiveData<List<Property>> getAllPropertyFromRoomForTest(){return propertyDatabase.propertyDao().getAllPropertyProvider();}
+    public LiveData<List<Property>> getAllPropertyFromRoomForTest(){return propertyDatabase.propertyDao().getAllPropertyForTest();}
 
     /** ***************************** **/
 

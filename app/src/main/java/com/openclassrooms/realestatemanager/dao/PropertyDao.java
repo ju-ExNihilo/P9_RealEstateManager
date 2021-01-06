@@ -16,7 +16,7 @@ public interface PropertyDao {
     LiveData<List<Property>> getAllProperty(String agentId);
 
     @Query("SELECT * FROM Property")
-    LiveData<List<Property>> getAllPropertyProvider();
+    LiveData<List<Property>> getAllPropertyForTest();
 
     @Query("SELECT * FROM Property WHERE propertyId = :propertyId")
     LiveData<Property> getAProperty(String propertyId);
@@ -43,12 +43,9 @@ public interface PropertyDao {
     @Query("UPDATE Property SET isSold = :isSold WHERE propertyId = :propertyId")
     void updateSold(boolean isSold, String propertyId);
 
-    @Update
-    int updatePropertyProvider(Property property);
-
     @Query("DELETE FROM Property WHERE propertyId = :propertyId")
     int deleteProperty(String propertyId);
 
     @Query("DELETE FROM Property WHERE id = :propertyId")
-    int deletePropertyProvider(long propertyId);
+    int deletePropertyForTest(long propertyId);
 }

@@ -21,6 +21,16 @@ public class Address {
 
     public Address() {}
 
+    public Address(long id, String addressId, String propertyId, int numberOfWay, String way, int postCode, String additionalAddressField) {
+        this.id = id;
+        this.addressId = addressId;
+        this.propertyId = propertyId;
+        this.numberOfWay = numberOfWay;
+        this.way = way;
+        this.postCode = postCode;
+        this.additionalAddressField = additionalAddressField;
+    }
+
     public long getId() {
         return id;
     }
