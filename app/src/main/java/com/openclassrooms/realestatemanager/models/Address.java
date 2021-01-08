@@ -21,6 +21,7 @@ public class Address {
 
     public Address() {}
 
+    @Ignore
     public Address(long id, String addressId, String propertyId, int numberOfWay, String way, int postCode, String additionalAddressField) {
         this.id = id;
         this.addressId = addressId;

@@ -37,10 +37,9 @@ public class AgentRepository {
 
     public String getCurrentUserId(){return  getCurrentUser().getUid();}
 
-    public MutableLiveData<Agent> getAgentFromFirestore(){
-        String uId = getCurrentUserId();
+    public MutableLiveData<Agent> getAgentFromFirestore(String agentId){
         MutableLiveData<Agent> agent = new MutableLiveData<>();
-        getAgentCollection().document(uId).get().addOnSuccessListener(documentSnapshot -> {
+        getAgentCollection().document(agentId).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()){
                 agent.setValue(documentSnapshot.toObject(Agent.class));
             }else {

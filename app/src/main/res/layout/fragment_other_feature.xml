@@ -41,7 +41,7 @@
 
 
         <TextView
-                android:id="@+id/rooms_title"
+                android:id="@+id/rooms_title_feature"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/rooms"
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rooms_title"
+                app:layout_constraintTop_toBottomOf="@+id/rooms_title_feature"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp">
@@ -86,7 +86,7 @@
                 android:layout_marginEnd="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/bathrooms_edit_text"
+                    android:id="@+id/bathroom_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/bathrooms" android:inputType="number"/>
@@ -102,7 +102,7 @@
                 app:layout_constraintTop_toTopOf="@+id/bathrooms_input">
 
             <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/bedrooms_edit_text"
+                    android:id="@+id/bedroom_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/bedrooms" android:inputType="number"/>
@@ -143,7 +143,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-                android:id="@+id/surface_title"
+                android:id="@+id/surface_title_feature"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/surface"
@@ -164,7 +164,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/surface_title"
+                app:layout_constraintTop_toBottomOf="@+id/surface_title_feature"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp">

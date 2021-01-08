@@ -67,8 +67,8 @@
 
     <!-- Details property -->
     <string name="default_image_url">android.resource://com.openclassrooms.realestatemanager/</string>
-    <string name="not_sale">Not Sale</string>
-    <string name="metric">\" m²\"</string>
+    <string name="not_sale">Not Sold</string>
+    <string name="metric">\ m²</string>
     <string name="sale">Sold</string>
     <string name="free">Free</string>
     <string name="usd">USD</string>
@@ -96,14 +96,19 @@
     <string name="bedrooms_details">Bedrooms :</string>
     <string name="bathrooms_details">Bathrooms :</string>
     <string name="entrance_date">Entrance Date :</string>
-    <string name="sale_date">Sale Date :</string>
+    <string name="sale_date">Sold Date :</string>
     <string name="point_of_interest">Point Of Interest</string>
     <string name="geo_localisation">Geo Localisation</string>
     <string name="update_maj">UPDATE</string>
     <string name="for_sale_maj">SELL</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="surface_update_change">Surface : Min : %1$d  Max : %2$d</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="my_position">my_position</string>
+    <string name="agent">Agent :</string>
+    <string name="unable_find_location">Unable to find location. Please try later</string>
+    <string name="sorry_no_data">Sorry no data found</string>
+    <string name="empty_string">null</string>
+    <string name="default_date">01/01/1900</string>
 
 </resources>

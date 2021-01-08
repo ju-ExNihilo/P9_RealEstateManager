@@ -1,15 +1,10 @@
 package com.openclassrooms.realestatemanager.home;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
@@ -27,7 +22,7 @@ import com.openclassrooms.realestatemanager.databinding.ActivityHomeBinding;
 import com.openclassrooms.realestatemanager.login.LoginActivity;
 import com.openclassrooms.realestatemanager.utils.Utils;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private ActivityHomeBinding binding;
     private NavController navController;
@@ -69,7 +64,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.my_property:
                 Bundle bundle = new Bundle();
-                bundle.putString("MyProperty", "MyProperty");
+                bundle.putString(Utils.MY_PROPERTY, Utils.MY_PROPERTY);
                 navController.navigate(R.id.propertyListView, bundle);
                 Utils.setSelectedNavigationItem(1, binding.navView);
                 break;
@@ -83,6 +78,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+
     private void logout(){
         AuthUI.getInstance()
                 .signOut(this)
@@ -93,7 +89,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setOpenableLayout(binding.layoutDrawer).build();
         NavigationUI.setupWithNavController(binding.toolbar, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
     }
 
     private void iniNavigationView(){
@@ -113,4 +108,5 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(activity, HomeActivity.class);
         ActivityCompat.startActivity(activity, intent, null);
     }
+
 }

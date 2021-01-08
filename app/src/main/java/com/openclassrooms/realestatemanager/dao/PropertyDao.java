@@ -11,12 +11,8 @@ import java.util.List;
 @Dao
 public interface PropertyDao {
 
-    @Transaction
-    @Query("SELECT * FROM Property WHERE agentId = :agentId")
-    LiveData<List<Property>> getAllProperty(String agentId);
-
     @Query("SELECT * FROM Property")
-    LiveData<List<Property>> getAllPropertyForTest();
+    LiveData<List<Property>> getAllProperty();
 
     @Query("SELECT * FROM Property WHERE propertyId = :propertyId")
     LiveData<Property> getAProperty(String propertyId);

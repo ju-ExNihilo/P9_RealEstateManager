@@ -1,9 +1,6 @@
 package com.openclassrooms.realestatemanager.addproperty;
 
-import android.app.DatePickerDialog;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
@@ -12,20 +9,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentOtherFeatureBinding;
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.PropertyFeature;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
-
-import java.util.*;
-
 
 public class OtherFeature extends Fragment {
 
@@ -35,10 +28,7 @@ public class OtherFeature extends Fragment {
     private String propertyId;
     private String propertyFeatureId;
     private Bundle bundle = new Bundle();
-    private DatePickerDialog pickerDate;
     private Animation fadeInAnim;
-
-    public OtherFeature newInstance() {return new OtherFeature();}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,14 +41,14 @@ public class OtherFeature extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        propertyId = getArguments().getString("propertyId");
-        bundle.putString("propertyId", propertyId);
+        propertyId = getArguments().getString(Utils.PROPERTY_ID);
+        bundle.putString(Utils.PROPERTY_ID, propertyId);
         fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.otherFeatureLayout.setAnimation(fadeInAnim);
         this.initPropertyViewModel();
         this.onClickBackBtn();
         this.onClickNextBtn();
-        this.datePicker(binding.dateEditText);
+        Utils.datePicker(binding.dateEditText, getActivity());
         this.initFromFields();
         this.updateLocation();
     }
@@ -67,8 +57,8 @@ public class OtherFeature extends Fragment {
         propertyViewModel.getPropertyFeatureById(propertyId).observe(getViewLifecycleOwner(), propertyFeature -> {
             if (propertyFeature != null){
                 binding.roomsEditText.setText(String.valueOf(propertyFeature.getNumberOfRooms()));
-                binding.bathroomsEditText.setText(String.valueOf(propertyFeature.getNumberOfBathrooms()));
-                binding.bedroomsEditText.setText(String.valueOf(propertyFeature.getNumberOfBedrooms()));
+                binding.bathroomEditText.setText(String.valueOf(propertyFeature.getNumberOfBathrooms()));
+                binding.bedroomEditText.setText(String.valueOf(propertyFeature.getNumberOfBedrooms()));
                 binding.dateEditText.setText(propertyFeature.getEntranceDate());
                 binding.surfaceEditText.setText(String.valueOf(propertyFeature.getPropertySurface()));
                 binding.descriptionEditText.setText(propertyFeature.getPropertyDescription());
@@ -110,8 +100,8 @@ public class OtherFeature extends Fragment {
     private void onClickNextBtn(){
         binding.nextBtn.setOnClickListener(v -> {
             String numberOfRooms = binding.roomsEditText.getText().toString();
-            String numberOfBathrooms = binding.bathroomsEditText.getText().toString();
-            String numberOfBedRooms = binding.bedroomsEditText.getText().toString();
+            String numberOfBathrooms = binding.bathroomEditText.getText().toString();
+            String numberOfBedRooms = binding.bedroomEditText.getText().toString();
             String entranceDate = binding.dateEditText.getText().toString();
             String propertySurface = binding.surfaceEditText.getText().toString();
             String propertyDescription = binding.descriptionEditText.getText().toString();
@@ -136,7 +126,7 @@ public class OtherFeature extends Fragment {
         propertyFeature.setEntranceDate(entranceDate);
         if (!propertySurface.isEmpty())
             propertyFeature.setPropertySurface(Float.parseFloat(propertySurface));
-        propertyFeature.setSoldDate("Not Sale");
+        propertyFeature.setSoldDate(getString(R.string.not_sale));
         propertyFeature.setPropertyDescription(propertyDescription);
         propertyFeature.setPropertyId(propertyId);
         propertyFeature.setPropertyFeatureId(propertyFeatureId);
@@ -144,24 +134,4 @@ public class OtherFeature extends Fragment {
         return propertyFeature;
     }
 
-    /** *********************************** **/
-    /** *********** Utils Method ********* **/
-    /** ********************************* **/
-
-    private void datePicker(TextInputEditText date){
-        date.setInputType(InputType.TYPE_NULL);
-        date.setOnClickListener(v -> {
-            final Calendar calendar = Calendar.getInstance();
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH);
-            int year = calendar.get(Calendar.YEAR);
-            pickerDate = new DatePickerDialog(this.getActivity(),R.style.myDatePickerStyle,
-                    (view, year1, monthOfYear, dayOfMonth) -> {
-                        date.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                    }, year, month, day);
-            pickerDate.show();
-            pickerDate.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#c8a97e"));
-            pickerDate.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#c8a97e"));
-        });
-    }
 }

@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.models;
 import android.content.ContentValues;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -23,6 +24,7 @@ public class Property {
 
     public Property() {}
 
+    @Ignore
     public Property(long id, String propertyId, String agentId, String propertyType, String propertyLocatedCity,
                     float propertyPrice, String propertyPreviewImageUrl, double latitude, double longitude, boolean isSold) {
         this.id = id;

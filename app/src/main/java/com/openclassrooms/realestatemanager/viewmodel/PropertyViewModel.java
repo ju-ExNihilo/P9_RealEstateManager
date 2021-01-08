@@ -19,7 +19,18 @@ public class PropertyViewModel extends ViewModel {
 
     /** GET **/
 
+    /** *********** Search  *********** **/
+    public LiveData<List<Property>> searchMethod(String city, float minPrice, float maxPrice, float minSurface, float maxSurface, String dateStart,
+                                                         List<String> finalPointOfInterest, int finalNumberOfPics){
+        return propertyDataRepository.getDataFromSearch(city, minPrice, maxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest, finalNumberOfPics);
+    }
+    /** **************************** **/
+
     public LiveData<List<Property>> getAllProperty(){return propertyDataRepository.getAllProperty();}
+
+    public LiveData<Integer> getMaxSurface(){return propertyDataRepository.getMaxSurface();}
+
+
 
     public LiveData<Property> getAPropertyById(String propertyId){return propertyDataRepository.getAPropertyById(propertyId);}
 
@@ -34,7 +45,7 @@ public class PropertyViewModel extends ViewModel {
     public FirestoreRecyclerOptions<PropertyImage> getAllImagesByPropertyId(String propertyId){return propertyDataRepository.getAllImagesByPropertyId(propertyId);}
 
     /** *********** Room  *********** **/
-    public LiveData<List<Property>> getAllPropertyFromRoom(String agentId){return propertyDataRepository.getAllPropertyFromRoom(agentId);}
+    public LiveData<List<Property>> getAllPropertyFromRoom(){return propertyDataRepository.getAllPropertyFromRoom();}
     /** **************************** **/
 
     /** INSERT **/

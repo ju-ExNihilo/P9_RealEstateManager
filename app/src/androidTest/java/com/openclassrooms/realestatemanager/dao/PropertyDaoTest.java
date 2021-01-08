@@ -43,7 +43,7 @@ public class PropertyDaoTest {
                 PropertyDatabase.class)
                 .allowMainThreadQueries()
                 .build();
-        numberItem = LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllPropertyForTest()).size();
+        numberItem = LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllProperty()).size();
     }
 
     @After
@@ -60,10 +60,10 @@ public class PropertyDaoTest {
         assertEquals(property.getPropertyType(), PROPERTY_TYPE);
         assertEquals(property.getPropertyLocatedCity(), PROPERTY_CITY);
 
-        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllPropertyForTest()).size(), numberItem + 1);
+        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllProperty()).size(), numberItem + 1);
 
         propertyDatabase.propertyDao().deletePropertyForTest(ID);
-        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllPropertyForTest()).size(), numberItem);
+        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllProperty()).size(), numberItem);
     }
 
     @Test
@@ -72,14 +72,14 @@ public class PropertyDaoTest {
 
         Property property = LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAProperty(PROPERTY_ID));
         assertEquals(property.getPropertyId(), PROPERTY_ID);
-        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllPropertyForTest()).size(), numberItem + 1);
+        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllProperty()).size(), numberItem + 1);
 
         this.propertyDatabase.propertyDao().updatePreviewImageUrl(UPDATED_URL, PROPERTY_ID);
         property = LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAProperty(PROPERTY_ID));
         assertEquals(property.getPropertyPreviewImageUrl(), UPDATED_URL);
 
         propertyDatabase.propertyDao().deletePropertyForTest(ID);
-        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllPropertyForTest()).size(), numberItem);
+        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllProperty()).size(), numberItem);
     }
 
     @Test
@@ -88,14 +88,14 @@ public class PropertyDaoTest {
 
         Property property = LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAProperty(PROPERTY_ID));
         assertEquals(property.getPropertyId(), PROPERTY_ID);
-        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllPropertyForTest()).size(), numberItem + 1);
+        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllProperty()).size(), numberItem + 1);
 
         this.propertyDatabase.propertyDao().updateLatitude(UPDATED_LATITUDE, PROPERTY_ID);
         property = LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAProperty(PROPERTY_ID));
         assertEquals(property.getLatitude(), UPDATED_LATITUDE, 0.0);
 
         propertyDatabase.propertyDao().deletePropertyForTest(ID);
-        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllPropertyForTest()).size(), numberItem);
+        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllProperty()).size(), numberItem);
     }
 
     @Test
@@ -104,14 +104,14 @@ public class PropertyDaoTest {
 
         Property property = LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAProperty(PROPERTY_ID));
         assertEquals(property.getPropertyId(), PROPERTY_ID);
-        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllPropertyForTest()).size(), numberItem + 1);
+        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllProperty()).size(), numberItem + 1);
 
         this.propertyDatabase.propertyDao().updateLongitude(UPDATED_LONGITUDE, PROPERTY_ID);
         property = LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAProperty(PROPERTY_ID));
         assertEquals(property.getLongitude(), UPDATED_LONGITUDE, 0.0);
 
         propertyDatabase.propertyDao().deletePropertyForTest(ID);
-        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllPropertyForTest()).size(), numberItem);
+        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllProperty()).size(), numberItem);
     }
 
     @Test
@@ -120,13 +120,13 @@ public class PropertyDaoTest {
 
         Property property = LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAProperty(PROPERTY_ID));
         assertEquals(property.getPropertyId(), PROPERTY_ID);
-        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllPropertyForTest()).size(), numberItem + 1);
+        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllProperty()).size(), numberItem + 1);
 
         this.propertyDatabase.propertyDao().updateSold(UPDATED_SOLD, PROPERTY_ID);
         property = LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAProperty(PROPERTY_ID));
         assertEquals(property.isSold(), UPDATED_SOLD);
 
         propertyDatabase.propertyDao().deletePropertyForTest(ID);
-        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllPropertyForTest()).size(), numberItem);
+        assertEquals(LiveDataTestUtil.getValue(propertyDatabase.propertyDao().getAllProperty()).size(), numberItem);
     }
 }

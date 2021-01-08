@@ -8,15 +8,274 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".listview.PropertyListView">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/list_property" android:id="@+id/drop_constraint"
+            android:layout_marginTop="8dp">
+
+        <com.google.android.material.card.MaterialCardView
+                android:id="@+id/drop_card"
+                android:visibility="gone"
+                style="@style/CustomCardViewStyle"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="0dp" android:layout_height="match_parent"
+                app:cardElevation="6dp" app:cardMaxElevation="6dp"
+                app:cardForegroundColor="@color/colorTransparent" android:layout_marginBottom="16dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/drop_down_menu"
+                    android:background="@drawable/border_radius_bottom">
+
+                <TextView
+                        android:id="@+id/surface_title_search"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/surface"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:textColor="@color/colorGold"
+                        android:textSize="14sp"
+                        android:background="@drawable/underline_small"/>
+
+
+                <me.bendik.simplerangeview.SimpleRangeView
+                        android:id="@+id/surface_select"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:movable="true"
+                        app:activeThumbColor="@color/colorGold"
+                        app:activeLineColor="@color/colorGold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/surface_title_search"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"/>
+                <TextView
+                        android:text="Price"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/price_title_search"
+                        android:textColor="@color/colorGold"
+                        android:textSize="14sp"
+                        android:background="@drawable/underline_small"
+                        app:layout_constraintTop_toBottomOf="@+id/surface_select"
+                        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/min_price_input"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@+id/max_price_input"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/price_title_search"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp" app:boxBackgroundMode="outline"
+                >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/min_price_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Min" android:inputType="number" android:textSize="12sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/max_price_input"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@+id/min_price_input"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/price_title_search"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/max_price_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Max" android:inputType="number" android:textSize="12sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                        android:text="Point of Interest"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/point_of_interest_title_search"
+                        android:textColor="@color/colorGold"
+                        android:textSize="14sp"
+                        android:background="@drawable/underline_small"
+                        app:layout_constraintTop_toBottomOf="@+id/max_price_input"
+                        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"/>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/point_of_interest_search_input"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/point_of_interest_title_search"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/point_of_interest_search_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:hint="Enter point of interest split with space"
+                            android:inputType="text"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                        android:text="Other Feature"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/other_feature_title_search"
+                        android:textColor="@color/colorGold"
+                        android:textSize="14sp"
+                        android:background="@drawable/underline_small"
+                        app:layout_constraintTop_toBottomOf="@+id/point_of_interest_search_input"
+                        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/town_input"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@+id/nbr_pic_input"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/other_feature_title_search"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/town_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Town" android:inputType="text" android:textSize="12sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/nbr_pic_input"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@+id/town_input"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/other_feature_title_search"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nbr_pic_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Min number pic" android:inputType="number" android:textSize="12sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/date_search_input"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/nbr_pic_input"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/date_search_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:hint="Entrance Date"
+                            android:inputType="date"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/search_btn"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="32dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="10dp"
+                        app:layout_constraintTop_toBottomOf="@+id/date_search_input"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="32dp"
+                        app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        <TextView
+                                android:text="Search"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/back_text"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:textColor="@color/colorGold"
+                                android:textAlignment="center"
+                                android:textSize="18sp"
+                                android:fontFamily="@font/special_elite"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_property"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:paddingBottom="88dp"
             android:clipToPadding="false"
             tools:listitem="@layout/item_property"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/drop_constraint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
