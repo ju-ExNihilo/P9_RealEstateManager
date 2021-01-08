@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity{
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        preferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        preferences = getSharedPreferences(Utils.SHARED_PREFERENCE, MODE_PRIVATE);
         this.initAgentViewModel();
         this.initPropertyViewModel();
         this.onClickGoogleLoginButton();
@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private void initMaxSurface(){
-        propertyViewModel.getMaxSurface().observe(this, integer -> preferences.edit().putInt("MaxSurface", integer).commit());
+        propertyViewModel.getMaxSurface().observe(this, integer -> preferences.edit().putInt(Utils.MAX_SURFACE, integer).commit());
     }
 
 

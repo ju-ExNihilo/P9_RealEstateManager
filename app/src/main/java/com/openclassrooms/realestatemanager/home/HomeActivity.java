@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.my_property:
                 Bundle bundle = new Bundle();
-                bundle.putString("MyProperty", "MyProperty");
+                bundle.putString(Utils.MY_PROPERTY, Utils.MY_PROPERTY);
                 navController.navigate(R.id.propertyListView, bundle);
                 Utils.setSelectedNavigationItem(1, binding.navView);
                 break;

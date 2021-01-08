@@ -119,7 +119,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
                 latLng = new LatLng(latitude, longitude);
                 mapFragment.getMapAsync(MapFragment.this::onMapReady);
             }else {
-                Utils.showSnackBar(binding.mapLayout, "Unable to find location. Please try later");
+                Utils.showSnackBar(binding.mapLayout, getString(R.string.unable_find_location));
             }
         });
 
@@ -170,7 +170,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
     public void onInfoWindowClick(Marker marker) {
         if (!marker.getTag().equals(getString(R.string.my_position))) {
             Bundle bundle = new Bundle();
-            bundle.putString("propertyId", (String) marker.getTag());
+            bundle.putString(Utils.PROPERTY_ID, (String) marker.getTag());
             navController.navigate(R.id.detailsFragment, bundle);
         }
     }

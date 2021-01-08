@@ -27,9 +27,11 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentDetailsBinding;
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.injection.Injection;
+import com.openclassrooms.realestatemanager.models.Agent;
 import com.openclassrooms.realestatemanager.models.PointOfInterest;
 import com.openclassrooms.realestatemanager.models.PropertyImage;
 import com.openclassrooms.realestatemanager.utils.Utils;
+import com.openclassrooms.realestatemanager.viewmodel.AgentViewModel;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
@@ -47,6 +49,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
     private NavController navController;
     private String propertyId;
     private PropertyViewModel propertyViewModel;
+    private AgentViewModel agentViewModel;
     private GoogleMap mMap;
     private LatLng latLng;
     private SupportMapFragment mapFragment;
@@ -67,10 +70,11 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        propertyId = getArguments().getString("propertyId");
+        propertyId = getArguments().getString(Utils.PROPERTY_ID);
         fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.detailsView.setAnimation(fadeInAnim);
         this.configureToolbar();
+        this.initAgentViewModel();
         this.initPropertyViewModel();
         this.initMainFeature();
         this.initPicture();
@@ -97,6 +101,11 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
         propertyViewModel = new ViewModelProvider(this, viewModelFactory).get(PropertyViewModel.class);
     }
 
+    private void initAgentViewModel(){
+        ViewModelFactory viewModelFactory = Injection.provideAgentViewModelFactory();
+        agentViewModel = new ViewModelProvider(this, viewModelFactory).get(AgentViewModel.class);
+    }
+
     /** *********************************** **/
     /** ******* init Fields Method ******* **/
     /** ********************************* **/
@@ -111,6 +120,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
             binding.navigationBar.setVisibility(isAgent ? View.VISIBLE : View.GONE);
             binding.otherFeatureStatus.setText(property.isSold() ? getString(R.string.sale) : getString(R.string.free));
             binding.priceProperty.setText(Utils.formatPrice(property.getPropertyPrice(), getString(R.string.usd)));
+            this.initAgentName(property.getAgentId());
         });
     }
 
@@ -122,6 +132,12 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
                 binding.addressPostcode.setText(String.valueOf(address.getPostCode()));
                 binding.addressAdditional.setText(address.getAdditionalAddressField());
             }
+        });
+    }
+
+    private void initAgentName(String agentId){
+        agentViewModel.getCurrentUserData(agentId).observe(getViewLifecycleOwner(), agent -> {
+            binding.otherFeatureAgent.setText(agent.getAgentName());
         });
     }
 
@@ -215,7 +231,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
 
     private void updateNavigation(){
         Bundle bundle = new Bundle();
-        bundle.putString("propertyId", propertyId);
+        bundle.putString(Utils.PROPERTY_ID, propertyId);
         navController.navigate(R.id.mainFeature, bundle);
     }
 

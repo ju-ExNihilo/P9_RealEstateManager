@@ -64,16 +64,16 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         navController = Navigation.findNavController(view);
         fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
         binding.listLayout.setAnimation(fadeInAnim);
-        preferences = getActivity().getSharedPreferences("MySharedPref", MODE_APPEND);
+        preferences = getActivity().getSharedPreferences(Utils.SHARED_PREFERENCE, MODE_APPEND);
         setHasOptionsMenu(true);
         this.configureToolbar();
         if (getArguments() != null){
-            isMyProperty = getArguments().getString("MyProperty");
+            isMyProperty = getArguments().getString(Utils.MY_PROPERTY);
         }
         this.initPropertyViewModel();
 
         this.initRecyclerView();
-        if (!isMyProperty.equals("MyProperty")){
+        if (!isMyProperty.equals(Utils.MY_PROPERTY)){
             this.getAllProperty();
         }else {
             this.getAllPropertyFromRoom();
@@ -88,7 +88,7 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
     @Override
     public void onResume() {
         super.onResume();
-        if (!isMyProperty.equals("MyProperty")){
+        if (!isMyProperty.equals(Utils.MY_PROPERTY)){
             this.initSelectedItem(0);
         }else {
             this.initSelectedItem(1);
@@ -107,11 +107,11 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
     }
 
     private void initSeekBarForSurface(){
-        int maxSurface = preferences.getInt("MaxSurface", 10000);
+        int maxSurface = preferences.getInt(Utils.MAX_SURFACE, 10000);
         binding.surfaceSelect.setCount(maxSurface);
         binding.surfaceSelect.setEnd(maxSurface);
-        binding.surfaceTitleSearch.setText("Surface : Min : " + binding.surfaceSelect.getStart() + " Max : " + binding.surfaceSelect.getEnd());
-        binding.surfaceSelect.setOnChangeRangeListener((simpleRangeView, i, i1) -> binding.surfaceTitleSearch.setText("Surface : Min : " +i + " Max : " +i1));
+        binding.surfaceTitleSearch.setText(getString(R.string.surface_update_change, binding.surfaceSelect.getStart(), binding.surfaceSelect.getEnd()));
+        binding.surfaceSelect.setOnChangeRangeListener((simpleRangeView, i, i1) -> binding.surfaceTitleSearch.setText(getString(R.string.surface_update_change, i, i1)));
     }
 
     private void searchProperty(){
@@ -122,10 +122,10 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
             String dateStart = binding.dateSearchEditText.getText().toString();
             String numberOfPics = binding.nbrPicEditText.getText().toString();
             String pointOfInterest = binding.pointOfInterestSearchEditText.getText().toString();
-            List<String> finalPointOfInterest = (pointOfInterest.isEmpty()) ? Arrays.asList("null") : Arrays.asList(pointOfInterest.split(" "));
+            List<String> finalPointOfInterest = (pointOfInterest.isEmpty()) ? Arrays.asList(getString(R.string.empty_string)) : Arrays.asList(pointOfInterest.split(" "));
 
-            locatedCity =  (locatedCity.isEmpty()) ? "null" : locatedCity;
-            dateStart =  (dateStart.isEmpty()) ? "01/01/1900" : dateStart;
+            locatedCity =  (locatedCity.isEmpty()) ? getString(R.string.empty_string) : locatedCity;
+            dateStart =  (dateStart.isEmpty()) ? getString(R.string.default_date) : dateStart;
             float finalMinPrice =  (minPrice.isEmpty()) ? 0 : Float.parseFloat(minPrice);
             float finalMaxPrice =  (maxPrice.isEmpty()) ? 0 : Float.parseFloat(maxPrice);
             float minSurface = (float) binding.surfaceSelect.getStart();
@@ -188,14 +188,14 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         if (propertyList != null){
             binding.listProperty.setAdapter(new AdapterProperty(propertyList, this));
         }else {
-            Log.i("DEBUGGGG", "no Data");
+            Utils.showSnackBar(binding.listLayout, getString(R.string.sorry_no_data));
         }
     }
 
     @Override
     public void onClickedProperty(String propertyId) {
         Bundle bundle = new Bundle();
-        bundle.putString("propertyId", propertyId);
+        bundle.putString(Utils.PROPERTY_ID, propertyId);
         navController.navigate(R.id.detailsFragment, bundle);
     }
 }

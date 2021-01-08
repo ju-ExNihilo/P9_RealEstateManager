@@ -57,9 +57,6 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     private Animation fadeInAnim;
 
 
-    public ImagesFeature newInstance() {return new ImagesFeature();}
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,8 +68,8 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        propertyId = getArguments().getString("propertyId");
-        bundle.putString("propertyId", propertyId);
+        propertyId = getArguments().getString(Utils.PROPERTY_ID);
+        bundle.putString(Utils.PROPERTY_ID, propertyId);
         fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.imageFeatureLayout.setAnimation(fadeInAnim);
         alertDialogUtils = new AlertDialogUtils(this, this);
@@ -240,6 +237,7 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
         propertyImage.setImageDescription(imageDescription);
         String propertyImageId = propertyViewModel.getPropertyImageId(propertyId);
         propertyImage.setPropertyImageId(propertyImageId);
+        propertyViewModel.insertImageToProperty(propertyId,propertyImage);
         imageList.add(propertyImage);
         photoUri = null;
         dialog.dismiss();

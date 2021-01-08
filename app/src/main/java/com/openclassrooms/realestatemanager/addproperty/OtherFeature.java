@@ -1,9 +1,6 @@
 package com.openclassrooms.realestatemanager.addproperty;
 
-import android.app.DatePickerDialog;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
@@ -12,11 +9,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentOtherFeatureBinding;
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
@@ -24,11 +19,6 @@ import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.PropertyFeature;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 
 public class OtherFeature extends Fragment {
 
@@ -39,8 +29,6 @@ public class OtherFeature extends Fragment {
     private String propertyFeatureId;
     private Bundle bundle = new Bundle();
     private Animation fadeInAnim;
-
-    public OtherFeature newInstance() {return new OtherFeature();}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,8 +41,8 @@ public class OtherFeature extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        propertyId = getArguments().getString("propertyId");
-        bundle.putString("propertyId", propertyId);
+        propertyId = getArguments().getString(Utils.PROPERTY_ID);
+        bundle.putString(Utils.PROPERTY_ID, propertyId);
         fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.otherFeatureLayout.setAnimation(fadeInAnim);
         this.initPropertyViewModel();
@@ -138,17 +126,12 @@ public class OtherFeature extends Fragment {
         propertyFeature.setEntranceDate(entranceDate);
         if (!propertySurface.isEmpty())
             propertyFeature.setPropertySurface(Float.parseFloat(propertySurface));
-        propertyFeature.setSoldDate("Not Sale");
+        propertyFeature.setSoldDate(getString(R.string.not_sale));
         propertyFeature.setPropertyDescription(propertyDescription);
         propertyFeature.setPropertyId(propertyId);
         propertyFeature.setPropertyFeatureId(propertyFeatureId);
 
         return propertyFeature;
     }
-
-    /** *********************************** **/
-    /** *********** Utils Method ********* **/
-    /** ********************************* **/
-
 
 }

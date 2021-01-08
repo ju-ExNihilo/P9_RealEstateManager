@@ -17,7 +17,7 @@ public class AgentViewModel extends ViewModel {
     /** GET **/
     public FirebaseUser getCurrentUser(){ return agentRepository.getCurrentUser();}
 
-    public LiveData<Agent> getCurrentUserData(){return agentRepository.getAgentFromFirestore();}
+    public LiveData<Agent> getCurrentUserData(String agentId){return agentRepository.getAgentFromFirestore(agentId);}
 
     /** INSERT **/
     public void insertAgent(Agent agent) { agentRepository.insertAgent(agent);}

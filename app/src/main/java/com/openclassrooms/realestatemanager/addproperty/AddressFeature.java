@@ -22,6 +22,7 @@ import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.Address;
 import com.openclassrooms.realestatemanager.repository.PropertyDataRepository;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import fr.juju.googlemaplibrary.model.FinalPlace;
 import fr.juju.googlemaplibrary.repository.GooglePlaceRepository;
@@ -36,8 +37,6 @@ public class AddressFeature extends Fragment {
     private Bundle bundle = new Bundle();
     private Animation fadeInAnim;
 
-    public AddressFeature newInstance() {return new AddressFeature();}
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,8 +47,8 @@ public class AddressFeature extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        propertyId = getArguments().getString("propertyId");
-        bundle.putString("propertyId", propertyId);
+        propertyId = getArguments().getString(Utils.PROPERTY_ID);
+        bundle.putString(Utils.PROPERTY_ID, propertyId);
         fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.addressFeatureLayout.setAnimation(fadeInAnim);
         this.initPropertyViewModel();

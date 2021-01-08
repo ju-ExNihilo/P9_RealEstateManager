@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -36,7 +35,6 @@ import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -45,7 +43,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
-
 
 public class MainFeature extends Fragment implements AlertDialogUtils.OnClickButtonAlertDialog {
 
@@ -58,9 +55,6 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
     private Uri photoUri = null;
     private List<String> propertyTypeList = new LinkedList<>(Arrays.asList("Flat", "House", "Loft", "manor", "castle", "studio apartment"));
     private Animation fadeInAnim;
-
-    public MainFeature newInstance() {return new MainFeature();}
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,7 +72,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
         this.initPropertyViewModel();
         this.configureToolbar();
         alertDialogUtils = new AlertDialogUtils(this);
-        propertyId = getArguments().getString("propertyId");
+        propertyId = getArguments().getString(Utils.PROPERTY_ID);
         if (!propertyId.equals("null")){
             this.initFormFields();
         }else {

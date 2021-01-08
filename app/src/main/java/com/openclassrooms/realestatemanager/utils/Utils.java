@@ -42,6 +42,10 @@ public class Utils {
 
     public static final String PERMS = Manifest.permission.READ_EXTERNAL_STORAGE;
     public static final String PERMS_CAMERA = Manifest.permission.CAMERA;
+    public static final String PROPERTY_ID = "propertyId";
+    public static final String MY_PROPERTY = "MyProperty";
+    public static final String MAX_SURFACE = "MaxSurface";
+    public static final String SHARED_PREFERENCE = "MySharedPref";
     public static final int RC_IMAGE_PERMS = 100;
     public static final int RC_CAMERA_PERMS = 101;
     public static final int RC_CHOOSE_PHOTO = 200;
