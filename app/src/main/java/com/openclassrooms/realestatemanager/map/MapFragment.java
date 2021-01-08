@@ -19,6 +19,7 @@ import androidx.navigation.Navigation;
 import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentMapBinding;
@@ -40,15 +41,13 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
     private NavController navController;
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
+    private FusedLocationProviderClient client;
     private LatLng latLng;
     private double longitude, latitude;
     private int radius;
     private final float[] results = new float[1];
     private static final String PERMS_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final int RC_LOCATION_PERMS = 100;
-
-    public MapFragment() {}
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,10 +64,14 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
         radius = 15000;
         binding.mapLayout.setAnimation(fadeInAnim);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        client = LocationServices.getFusedLocationProviderClient(getActivity());
         this.configureToolbar();
         this.initPropertyViewModel();
         this.getLocationPermissions();
-        binding.focusBtn.setOnClickListener(v -> mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14)));
+        binding.focusBtn.setOnClickListener(v -> {
+            if (latLng != null)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
+        });
     }
 
     @Override
@@ -112,17 +115,17 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
 
     /** Get Current User Location **/
     private void getCurrentLocation() {
-        LocationServices.getFusedLocationProviderClient(getActivity()).getLastLocation().addOnSuccessListener(location -> {
+        Task<Location> task = client.getLastLocation();
+        task.addOnSuccessListener(location -> {
             if (location != null){
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
                 latLng = new LatLng(latitude, longitude);
-                mapFragment.getMapAsync(MapFragment.this::onMapReady);
+                mapFragment.getMapAsync(MapFragment.this);
             }else {
                 Utils.showSnackBar(binding.mapLayout, getString(R.string.unable_find_location));
             }
         });
-
     }
 
     private void getProximityProperty(){

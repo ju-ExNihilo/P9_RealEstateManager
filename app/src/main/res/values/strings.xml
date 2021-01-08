@@ -102,7 +102,7 @@
     <string name="update_maj">UPDATE</string>
     <string name="for_sale_maj">SELL</string>
 
-    <string name="surface_update_change">Surface : Min : %1$d  Max : %2$d</string>
+    <string name="surface_update_change">Surface : Min : %1$d Max : %2$d</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="my_position">my_position</string>
     <string name="agent">Agent :</string>
@@ -110,5 +110,6 @@
     <string name="sorry_no_data">Sorry no data found</string>
     <string name="empty_string">null</string>
     <string name="default_date">01/01/1900</string>
+    <string name="settings">settings</string>
 
 </resources>

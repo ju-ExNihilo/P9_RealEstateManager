@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentOtherFeatureBinding;
@@ -93,7 +94,8 @@ public class OtherFeature extends Fragment {
 
     private void onClickBackBtn(){
         binding.backBtn.setOnClickListener(v -> {
-            navController.navigate(R.id.addressFeature, bundle);
+            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.addressFeature, true).build();
+            navController.navigate(R.id.addressFeature, bundle, navOptions);
         });
     }
 
@@ -109,7 +111,8 @@ public class OtherFeature extends Fragment {
             propertyViewModel.insertFeatureToProperty(propertyId,
                     initPropertyFeature(numberOfRooms, numberOfBathrooms, numberOfBedRooms, entranceDate, propertySurface , propertyDescription));
             //navigation
-            navController.navigate(R.id.imagesFeature, bundle);
+            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.imagesFeature, true).build();
+            navController.navigate(R.id.imagesFeature, bundle, navOptions);
 
         });
     }

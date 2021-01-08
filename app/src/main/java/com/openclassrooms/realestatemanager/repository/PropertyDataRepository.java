@@ -379,26 +379,21 @@ public class PropertyDataRepository {
 
     public MutableLiveData<Integer> getMaxSurface(){
         MutableLiveData<Integer> maxSurface = new MutableLiveData<>();
-        getPropertyCollection().get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                List<Property> propertys = task.getResult().toObjects(Property.class);
-                final int[] max = {0};
-                final int[] c = {0};
-                int n = propertys.size();
-                for (Property property : propertys){
-                    getPropertyFeatureById(property.getPropertyId()).observe(owner, propertyFeature -> {
-                        if (propertyFeature != null){
-                            if (propertyFeature.getPropertySurface() > max[0])
-                                max[0] = (int) propertyFeature.getPropertySurface();
-                            c[0]++;
-                            if (c[0] == n){
-                                maxSurface.setValue(max[0]);
-                            }
-                        }
-                    });
-                }
-            }else {
-                maxSurface.setValue(null);
+        getAllProperty().observe(owner, properties -> {
+            final int[] max = {0};
+            final int[] c = {0};
+            int n = properties.size();
+            for (Property property : properties){
+                getPropertyFeatureById(property.getPropertyId()).observe(owner, propertyFeature -> {
+                    if (propertyFeature != null){
+                        if (propertyFeature.getPropertySurface() > max[0])
+                            max[0] = (int) propertyFeature.getPropertySurface();
+                    }
+                    c[0]++;
+                    if (c[0] == n){
+                        maxSurface.setValue(max[0]);
+                    }
+                });
             }
         });
         return maxSurface;

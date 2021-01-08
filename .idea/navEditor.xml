@@ -100,18 +100,6 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="myPropertyListView">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-408" />
-                            <option name="y" value="392" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="otherFeature">
                     <value>
                       <LayoutPositions>
@@ -165,6 +153,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="settingsFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-420" />
+                            <option name="y" value="427" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

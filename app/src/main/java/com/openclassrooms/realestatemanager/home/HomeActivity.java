@@ -11,6 +11,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -26,6 +27,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private ActivityHomeBinding binding;
     private NavController navController;
+    private NavOptions navOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,17 +57,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 navController.navigateUp();
                 break;
             case R.id.all_property:
-                navController.navigate(R.id.propertyListView);
+                navOptions = new NavOptions.Builder().setPopUpTo(R.id.propertyListView, true).build();
+                navController.navigate(R.id.propertyListView,null, navOptions);
                 Utils.setSelectedNavigationItem(0, binding.navView);
                 break;
             case R.id.map:
-                navController.navigate(R.id.mapFragment);
+                navOptions = new NavOptions.Builder().setPopUpTo(R.id.mapFragment, true).build();
+                navController.navigate(R.id.mapFragment,null, navOptions);
                 Utils.setSelectedNavigationItem(2, binding.navView);
                 break;
+            case R.id.settings:
+                navOptions = new NavOptions.Builder().setPopUpTo(R.id.settingsFragment, true).build();
+                navController.navigate(R.id.settingsFragment,null, navOptions);
+                Utils.setSelectedNavigationItem(3, binding.navView);
+                break;
             case R.id.my_property:
+                navOptions = new NavOptions.Builder().setPopUpTo(R.id.propertyListView, true).build();
                 Bundle bundle = new Bundle();
                 bundle.putString(Utils.MY_PROPERTY, Utils.MY_PROPERTY);
-                navController.navigate(R.id.propertyListView, bundle);
+                navController.navigate(R.id.propertyListView, bundle, navOptions);
                 Utils.setSelectedNavigationItem(1, binding.navView);
                 break;
             case R.id.logout:

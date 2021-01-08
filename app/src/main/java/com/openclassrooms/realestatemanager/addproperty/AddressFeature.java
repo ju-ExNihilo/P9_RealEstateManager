@@ -15,6 +15,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentAddressFeatureBinding;
@@ -72,7 +73,8 @@ public class AddressFeature extends Fragment {
 
     private void onClickBackBtn(){
         binding.backBtn.setOnClickListener(v -> {
-            navController.navigate(R.id.mainFeature, bundle);
+            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.mainFeature, true).build();
+            navController.navigate(R.id.mainFeature, bundle, navOptions);
         });
     }
 
@@ -107,7 +109,8 @@ public class AddressFeature extends Fragment {
                 //insert
                 propertyViewModel.insetAddressToProperty(propertyId, address);
                 //navigation
-                navController.navigate(R.id.otherFeature, bundle);
+                NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.otherFeature, true).build();
+                navController.navigate(R.id.otherFeature, bundle, navOptions);
             }else {
                 Toast.makeText(this.getActivity(), getResources().getString(R.string.need_all_fields), Toast.LENGTH_SHORT).show();
             }

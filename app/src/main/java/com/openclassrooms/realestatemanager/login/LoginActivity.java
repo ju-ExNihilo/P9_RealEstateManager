@@ -82,8 +82,6 @@ public class LoginActivity extends AppCompatActivity{
         propertyViewModel.getMaxSurface().observe(this, integer -> preferences.edit().putInt(Utils.MAX_SURFACE, integer).commit());
     }
 
-
-
     /** Rooting **/
     public void rooting(){
         new Handler().postDelayed(() -> {

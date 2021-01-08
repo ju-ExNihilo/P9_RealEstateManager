@@ -49,7 +49,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
     private FragmentMainFeatureBinding binding;
     private NavController navController;
     private String uriImageSelected;
-    private String propertyId;
+    private String propertyId = "null";
     private PropertyViewModel propertyViewModel;
     private AlertDialogUtils alertDialogUtils;
     private Uri photoUri = null;
@@ -72,7 +72,9 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
         this.initPropertyViewModel();
         this.configureToolbar();
         alertDialogUtils = new AlertDialogUtils(this);
-        propertyId = getArguments().getString(Utils.PROPERTY_ID);
+        if (getArguments() != null){
+            propertyId = getArguments().getString(Utils.PROPERTY_ID);
+        }
         if (!propertyId.equals("null")){
             this.initFormFields();
         }else {

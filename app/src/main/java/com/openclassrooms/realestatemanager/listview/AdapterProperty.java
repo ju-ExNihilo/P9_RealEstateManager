@@ -39,7 +39,7 @@ public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.Proper
         holder.binding.propertyTown.setText(property.getPropertyLocatedCity());
         if (property.isSold()){
             Glide.with(holder.binding.propertyPicture.getContext())
-                    .load(R.drawable.sale_pic)
+                    .load(R.drawable.sold)
                     .into(holder.binding.propertyPicture);
         }else {
             Glide.with(holder.binding.propertyPicture.getContext())

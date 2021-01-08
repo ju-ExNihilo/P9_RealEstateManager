@@ -241,16 +241,25 @@ public class Utils {
                 navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
                 navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
                 navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(3).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
                 break;
             case 1:
                 navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
                 navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
                 navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(3).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
                 break;
             case 2:
                 navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
                 navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
                 navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
+                navigationView.getMenu().getItem(3).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                break;
+            case 3:
+                navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(3).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
                 break;
         }
     }

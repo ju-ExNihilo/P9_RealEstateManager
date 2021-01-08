@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.textfield.TextInputEditText;
@@ -197,7 +198,8 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
 
     private void onClickBackBtn(){
         binding.backBtn.setOnClickListener(v -> {
-            navController.navigate(R.id.otherFeature, bundle);
+            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.otherFeature, true).build();
+            navController.navigate(R.id.otherFeature, bundle, navOptions);
         });
     }
 

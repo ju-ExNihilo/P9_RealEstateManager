@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,22 +68,20 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         preferences = getActivity().getSharedPreferences(Utils.SHARED_PREFERENCE, MODE_APPEND);
         setHasOptionsMenu(true);
         this.configureToolbar();
+        this.initPropertyViewModel();
+        this.initRecyclerView();
+        this.searchProperty();
+        this.initFabButton();
+        Utils.datePicker(binding.dateSearchEditText, getActivity());
         if (getArguments() != null){
             isMyProperty = getArguments().getString(Utils.MY_PROPERTY);
         }
-        this.initPropertyViewModel();
-
-        this.initRecyclerView();
         if (!isMyProperty.equals(Utils.MY_PROPERTY)){
             this.getAllProperty();
         }else {
             this.getAllPropertyFromRoom();
             this.initSelectedItem(1);
         }
-
-        this.initFabButton();
-        this.searchProperty();
-        Utils.datePicker(binding.dateSearchEditText, getActivity());
     }
 
     @Override
@@ -153,7 +152,10 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
     }
 
     private void initFabButton(){
-        binding.floatingActionButton.setOnClickListener(v -> navController.navigate(R.id.mainFeature));
+        binding.floatingActionButton.setOnClickListener(v -> {
+                    NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.mainFeature, true).build();
+                    navController.navigate(R.id.mainFeature, null, navOptions);
+                });
     }
 
     /** Configure user ViewModel **/
