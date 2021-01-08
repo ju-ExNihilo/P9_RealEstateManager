@@ -19,6 +19,7 @@ public class PropertyImage {
 
     public PropertyImage() {}
 
+    @Ignore
     public PropertyImage(long id, String propertyImageId, String propertyId, String imageUrl, String imageDescription) {
         this.id = id;
         this.propertyImageId = propertyImageId;

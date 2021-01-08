@@ -1,9 +1,11 @@
 package com.openclassrooms.realestatemanager.repository;
 
 import android.net.Uri;
+import android.util.Log;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import com.bumptech.glide.util.Util;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
@@ -16,12 +18,17 @@ import com.openclassrooms.realestatemanager.models.*;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import fr.juju.googlemaplibrary.repository.GooglePlaceRepository;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 
 public class PropertyDataRepository {
 
     private final String COLLECTION_PROPERTY = "property";
+    private final String COLLECTION_SEARCH = "featureForSearch";
     private final String COLLECTION_ADDRESS = "address";
     private final String COLLECTION_FEATURE = "propertyFeature";
     private final String COLLECTION_POINT_OF_INTEREST = "pointOfInterest";
@@ -44,6 +51,10 @@ public class PropertyDataRepository {
 
     private CollectionReference getPropertyCollection(){
         return FirebaseFirestore.getInstance().collection(COLLECTION_PROPERTY);
+    }
+
+    private CollectionReference getSearchCollection(){
+        return FirebaseFirestore.getInstance().collection(COLLECTION_SEARCH);
     }
 
     private CollectionReference getSubCollection(String propertyId, String collectionName){
@@ -169,9 +180,8 @@ public class PropertyDataRepository {
 
     /** *********** Room  *********** **/
 
-    public LiveData<List<Property>> getAllPropertyFromRoom(String agentId){return propertyDatabase.propertyDao().getAllProperty(agentId);}
+    public LiveData<List<Property>> getAllPropertyFromRoom(){return propertyDatabase.propertyDao().getAllProperty();}
 
-    public LiveData<List<Property>> getAllPropertyFromRoomForTest(){return propertyDatabase.propertyDao().getAllPropertyForTest();}
 
     /** ***************************** **/
 
@@ -186,6 +196,105 @@ public class PropertyDataRepository {
             }
         });
         return propertyList;
+    }
+
+    public MutableLiveData<Integer> getMaxSurface(){
+        MutableLiveData<Integer> maxSurface = new MutableLiveData<>();
+        getPropertyCollection().get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                List<Property> propertys = task.getResult().toObjects(Property.class);
+                final int[] max = {0};
+                final int[] c = {0};
+                int n = propertys.size();
+                for (Property property : propertys){
+                    getPropertyFeatureById(property.getPropertyId()).observe(owner, propertyFeature -> {
+                        if (propertyFeature.getPropertySurface() > max[0])
+                            max[0] = (int) propertyFeature.getPropertySurface();
+                        c[0]++;
+                        if (c[0] == n){
+                            maxSurface.setValue(max[0]);
+                        }
+                    });
+                }
+
+
+            }else {
+                maxSurface.setValue(null);
+            }
+        });
+        return maxSurface;
+    }
+
+    private MutableLiveData<List<FeatureForSearch>> getSearchList(){
+        MutableLiveData<List<FeatureForSearch>> searchProperty = new MutableLiveData<>();
+        getSearchCollection().get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                searchProperty.setValue(task.getResult().toObjects(FeatureForSearch.class));
+            }else {
+                searchProperty.setValue(null);
+            }
+        });
+        return searchProperty;
+    }
+
+    private MutableLiveData<List<FeatureForSearch>> searchMethod(String city, float minPrice, float maxPrice, float minSurface, float maxSurface, String dateStart,
+                                                                List<String> finalPointOfInterest, int finalNumberOfPics){
+        MutableLiveData<List<FeatureForSearch>> searchProperty = new MutableLiveData<>();
+        List<FeatureForSearch> propertyAdd = new ArrayList<>();
+
+        getSearchList().observe(owner, featureForSearches -> {
+            int n = featureForSearches.size();
+            int c = 0;
+            Date finalDateStart = Utils.getFrenchTodayDate(dateStart);
+            for (FeatureForSearch featureForSearch : featureForSearches){
+                if (featureForSearch.getEntranceDate().after(finalDateStart)){
+                    Log.i("DEBUGGG", "true 1");
+                    if ((featureForSearch.getLocation().equals(city) || city.equals("null"))  && featureForSearch.getPrice() >= minPrice){
+                        Log.i("DEBUGGG", "true 2");
+                        if (featureForSearch.getSurface() >= minSurface && featureForSearch.getSurface() <= maxSurface){
+                            Log.i("DEBUGGG", "true 3");
+                            if (featureForSearch.getPrice() <= maxPrice || maxPrice == 0){
+                                Log.i("DEBUGGG", "true 4");
+                                featureForSearch.getPointOfInterest().retainAll(finalPointOfInterest);
+                                if (featureForSearch.getPointOfInterest().size() > 0 || finalPointOfInterest.equals(Arrays.asList("null"))){
+                                    Log.i("DEBUGGG", "true 5");
+                                    if (featureForSearch.getNumberOfPics() >= finalNumberOfPics || finalNumberOfPics == 0){
+                                        Log.i("DEBUGGG", "true 6");
+                                        propertyAdd.add(featureForSearch);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                c++;
+                if (c == n){
+                    searchProperty.setValue(propertyAdd);
+                }
+            }
+        });
+
+        return searchProperty;
+    }
+
+    public MutableLiveData<List<Property>> getDataFromSearch(String city, float minPrice, float maxPrice, float minSurface, float maxSurface, String dateStart,
+                                                             List<String> finalPointOfInterest, int finalNumberOfPics){
+        MutableLiveData<List<Property>> searchProperty = new MutableLiveData<>();
+        List<Property> propertyAdd = new ArrayList<>();
+        searchMethod(city, minPrice, maxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest, finalNumberOfPics).observe(owner, featureForSearches -> {
+            int n = featureForSearches.size();
+            final int[] c = {0};
+            for (FeatureForSearch featureForSearch : featureForSearches){
+                getAPropertyById(featureForSearch.getPropertyId()).observe(owner, property -> {
+                    propertyAdd.add(property);
+                    c[0]++;
+                    if (c[0] == n){
+                        searchProperty.setValue(propertyAdd);
+                    }
+                });
+            }
+        });
+        return searchProperty;
     }
 
     public MutableLiveData<Property> getAPropertyById(String propertyId){
@@ -226,6 +335,7 @@ public class PropertyDataRepository {
                 .addOnFailureListener(e -> propertyLiveData.setValue(null));
         return propertyLiveData;
     }
+
 
     public MutableLiveData<List<PointOfInterest>> getPointOfInterestById(String propertyId){
         MutableLiveData<List<PointOfInterest>> pointOfInterestLiveData = new MutableLiveData<>();

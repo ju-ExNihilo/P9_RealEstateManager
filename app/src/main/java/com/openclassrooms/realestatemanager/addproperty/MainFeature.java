@@ -13,6 +13,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -74,6 +76,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
         fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.mainFeatureLayout.setAnimation(fadeInAnim);
         this.initPropertyViewModel();
+        this.configureToolbar();
         alertDialogUtils = new AlertDialogUtils(this);
         propertyId = getArguments().getString("propertyId");
         if (!propertyId.equals("null")){
@@ -96,6 +99,11 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
             uriImageSelected = property.getPropertyPreviewImageUrl();
             propertyId = property.getPropertyId();
         });
+    }
+
+    private void configureToolbar(){
+        Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        toolbar.getMenu().clear();
     }
 
     /** *********************************** **/

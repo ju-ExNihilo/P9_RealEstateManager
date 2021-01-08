@@ -7,6 +7,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +65,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
         radius = 15000;
         binding.mapLayout.setAnimation(fadeInAnim);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        this.configureToolbar();
         this.initPropertyViewModel();
         this.getLocationPermissions();
         binding.focusBtn.setOnClickListener(v -> mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14)));
@@ -72,6 +75,11 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
     public void onResume() {
         super.onResume();
         this.getCurrentLocation();
+    }
+
+    private void configureToolbar(){
+        Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        toolbar.getMenu().clear();
     }
 
     /** *********************************** **/

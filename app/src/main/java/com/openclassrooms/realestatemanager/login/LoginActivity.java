@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.view.View;
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.Agent;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.AgentViewModel;
+import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,6 +34,8 @@ public class LoginActivity extends AppCompatActivity{
     private ActivityLoginBinding binding;
     private static final int RC_SIGN_IN = 123;
     private AgentViewModel agentViewModel;
+    private PropertyViewModel propertyViewModel;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +43,12 @@ public class LoginActivity extends AppCompatActivity{
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        preferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         this.initAgentViewModel();
+        this.initPropertyViewModel();
         this.onClickGoogleLoginButton();
         this.onClickMailLoginButton();
+        this.initMaxSurface();
     }
 
     @Override
@@ -64,6 +71,17 @@ public class LoginActivity extends AppCompatActivity{
         ViewModelFactory viewModelFactory = Injection.provideAgentViewModelFactory();
         agentViewModel = new ViewModelProvider(this, viewModelFactory).get(AgentViewModel.class);
     }
+
+    /** Configure user ViewModel **/
+    private void initPropertyViewModel(){
+        ViewModelFactory viewModelFactory = Injection.providePropertyViewModelFactory(this, this);
+        propertyViewModel = new ViewModelProvider(this, viewModelFactory).get(PropertyViewModel.class);
+    }
+
+    private void initMaxSurface(){
+        propertyViewModel.getMaxSurface().observe(this, integer -> preferences.edit().putInt("MaxSurface", integer).commit());
+    }
+
 
 
     /** Rooting **/

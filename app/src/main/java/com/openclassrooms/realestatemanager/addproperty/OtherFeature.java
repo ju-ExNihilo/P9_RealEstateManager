@@ -22,8 +22,11 @@ import com.openclassrooms.realestatemanager.databinding.FragmentOtherFeatureBind
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.PropertyFeature;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -35,7 +38,6 @@ public class OtherFeature extends Fragment {
     private String propertyId;
     private String propertyFeatureId;
     private Bundle bundle = new Bundle();
-    private DatePickerDialog pickerDate;
     private Animation fadeInAnim;
 
     public OtherFeature newInstance() {return new OtherFeature();}
@@ -58,7 +60,7 @@ public class OtherFeature extends Fragment {
         this.initPropertyViewModel();
         this.onClickBackBtn();
         this.onClickNextBtn();
-        this.datePicker(binding.dateEditText);
+        Utils.datePicker(binding.dateEditText, getActivity());
         this.initFromFields();
         this.updateLocation();
     }
@@ -67,8 +69,8 @@ public class OtherFeature extends Fragment {
         propertyViewModel.getPropertyFeatureById(propertyId).observe(getViewLifecycleOwner(), propertyFeature -> {
             if (propertyFeature != null){
                 binding.roomsEditText.setText(String.valueOf(propertyFeature.getNumberOfRooms()));
-                binding.bathroomsEditText.setText(String.valueOf(propertyFeature.getNumberOfBathrooms()));
-                binding.bedroomsEditText.setText(String.valueOf(propertyFeature.getNumberOfBedrooms()));
+                binding.bathroomEditText.setText(String.valueOf(propertyFeature.getNumberOfBathrooms()));
+                binding.bedroomEditText.setText(String.valueOf(propertyFeature.getNumberOfBedrooms()));
                 binding.dateEditText.setText(propertyFeature.getEntranceDate());
                 binding.surfaceEditText.setText(String.valueOf(propertyFeature.getPropertySurface()));
                 binding.descriptionEditText.setText(propertyFeature.getPropertyDescription());
@@ -110,8 +112,8 @@ public class OtherFeature extends Fragment {
     private void onClickNextBtn(){
         binding.nextBtn.setOnClickListener(v -> {
             String numberOfRooms = binding.roomsEditText.getText().toString();
-            String numberOfBathrooms = binding.bathroomsEditText.getText().toString();
-            String numberOfBedRooms = binding.bedroomsEditText.getText().toString();
+            String numberOfBathrooms = binding.bathroomEditText.getText().toString();
+            String numberOfBedRooms = binding.bedroomEditText.getText().toString();
             String entranceDate = binding.dateEditText.getText().toString();
             String propertySurface = binding.surfaceEditText.getText().toString();
             String propertyDescription = binding.descriptionEditText.getText().toString();
@@ -148,20 +150,5 @@ public class OtherFeature extends Fragment {
     /** *********** Utils Method ********* **/
     /** ********************************* **/
 
-    private void datePicker(TextInputEditText date){
-        date.setInputType(InputType.TYPE_NULL);
-        date.setOnClickListener(v -> {
-            final Calendar calendar = Calendar.getInstance();
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH);
-            int year = calendar.get(Calendar.YEAR);
-            pickerDate = new DatePickerDialog(this.getActivity(),R.style.myDatePickerStyle,
-                    (view, year1, monthOfYear, dayOfMonth) -> {
-                        date.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                    }, year, month, day);
-            pickerDate.show();
-            pickerDate.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#c8a97e"));
-            pickerDate.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#c8a97e"));
-        });
-    }
+
 }

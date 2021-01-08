@@ -22,6 +22,7 @@ public class PropertyFeature {
 
     public PropertyFeature() {}
 
+    @Ignore
     public PropertyFeature(long id, String propertyFeatureId, String propertyId, int numberOfRooms,
                            int numberOfBathrooms, int numberOfBedrooms, String entranceDate, String soldDate, float propertySurface, String propertyDescription) {
         this.id = id;

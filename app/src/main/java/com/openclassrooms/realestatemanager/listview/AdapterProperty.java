@@ -48,7 +48,6 @@ public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.Proper
         }
 
         holder.itemView.setOnClickListener(v -> onPropertyClicked.onClickedProperty(property.getPropertyId()));
-        Log.i("DEBUGGG", property.toString());
     }
 
     @Override

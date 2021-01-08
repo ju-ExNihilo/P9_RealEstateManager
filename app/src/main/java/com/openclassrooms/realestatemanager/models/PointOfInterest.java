@@ -18,6 +18,7 @@ public class PointOfInterest {
 
     public PointOfInterest() {}
 
+    @Ignore
     public PointOfInterest(long id, String pointOfInterestId, String propertyId, String pointOfInterestName) {
         this.id = id;
         this.pointOfInterestId = pointOfInterestId;

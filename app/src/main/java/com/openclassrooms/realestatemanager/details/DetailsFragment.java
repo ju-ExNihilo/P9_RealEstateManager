@@ -3,12 +3,15 @@ package com.openclassrooms.realestatemanager.details;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -67,6 +70,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
         propertyId = getArguments().getString("propertyId");
         fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.detailsView.setAnimation(fadeInAnim);
+        this.configureToolbar();
         this.initPropertyViewModel();
         this.initMainFeature();
         this.initPicture();
@@ -77,6 +81,11 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
         this.configureBottomNavigationView();
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    private void configureToolbar(){
+        Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
+        toolbar.getMenu().clear();
     }
 
     /** *********************************** **/
