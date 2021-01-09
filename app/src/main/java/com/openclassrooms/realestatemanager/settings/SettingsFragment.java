@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.settings;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -66,6 +67,7 @@ public class SettingsFragment extends Fragment implements AlertDialogUtils.OnCli
         this.initAgentViewModel();
         binding.settingPointOfInterest.setOnClickListener(v -> initCheckboxesList());
         binding.settingCurrency.setOnClickListener(v -> currencyChoose());
+        binding.settingScope.setOnClickListener(v -> initLocalisationScope("Choose the search scope of app in (Km):"));
     }
 
     private void configureToolbar(){
@@ -89,18 +91,38 @@ public class SettingsFragment extends Fragment implements AlertDialogUtils.OnCli
     }
 
     private void currencyChoose(){
-        alertDialogUtils.showAlertSpinnerDialog(getContext(), "Select currency", "Choose the currency of app", "Validate",
+        alertDialogUtils.showAlertSpinnerDialog(getContext(), "Select currency", "Choose the currency of app :" , "Validate",
                 "Cancel", R.drawable.border_radius_white, R.drawable.sale );
+    }
+
+    private void initLocalisationScope(String message){
+        alertDialogUtils.showAlertInputDialog(getContext(), "Update Scope", message, "Validate",
+                "Cancel", "Scope", InputType.TYPE_CLASS_NUMBER, R.drawable.border_radius_white, R.drawable.location_agent , 1);
+    }
+
+    private void updateScope(TextInputEditText textInputEditText){
+        if (!textInputEditText.getText().toString().isEmpty()){
+            int scope = Integer.parseInt(textInputEditText.getText().toString());
+            if (scope >= 2 && scope <= 25){
+                int finalScope = scope*1000;
+                Utils.showSnackBar(binding.settingsLayout, "Your scope have been updated");
+            }else {
+                initLocalisationScope("The scope must be between 2 and 25 Km");
+            }
+        }else {
+            Utils.showSnackBar(binding.settingsLayout, "Your scope haven't been updated");
+        }
     }
 
     @Override
     public void onClickedPositiveButtonInputDialog(DialogInterface dialog, TextInputEditText textInputEditText, int dialogIdForSwitch) {
-
+        updateScope(textInputEditText);
     }
 
     @Override
     public void positiveButtonDialogClicked(DialogInterface dialog) {
         agentViewModel.updatePointOfInterest(agentViewModel.getCurrentUser().getUid(), pointOfInterests);
+        Utils.showSnackBar(binding.settingsLayout, "Your proximity point of interest have been updated");
         dialog.dismiss();
     }
 
@@ -117,7 +139,7 @@ public class SettingsFragment extends Fragment implements AlertDialogUtils.OnCli
     @Override
     public void positiveSpinnerButtonDialogClicked(DialogInterface dialog, Spinner spinner) {
         preferences.edit().putString(Utils.CURRENCY, spinner.getSelectedItem().toString()).commit();
-        Log.i("DEBUGGG", spinner.getSelectedItem().toString());
+        Utils.showSnackBar(binding.settingsLayout, "The currency have been updated");
     }
 
     @Override

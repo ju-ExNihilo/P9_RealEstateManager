@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.details;
 
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +41,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static android.content.Context.MODE_APPEND;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -55,6 +58,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
     private SupportMapFragment mapFragment;
     private DatePickerDialog pickerDate;
     private Animation fadeInAnim;
+    private SharedPreferences preferences;
 
     public DetailsFragment() {}
 
@@ -73,6 +77,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
         propertyId = getArguments().getString(Utils.PROPERTY_ID);
         fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.detailsView.setAnimation(fadeInAnim);
+        preferences = getActivity().getSharedPreferences(Utils.SHARED_PREFERENCE, MODE_APPEND);
         this.configureToolbar();
         this.initAgentViewModel();
         this.initPropertyViewModel();
@@ -119,7 +124,8 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
                 this.isSold();
             binding.navigationBar.setVisibility(isAgent ? View.VISIBLE : View.GONE);
             binding.otherFeatureStatus.setText(property.isSold() ? getString(R.string.sale) : getString(R.string.free));
-            binding.priceProperty.setText(Utils.formatPrice(property.getPropertyPrice(), getString(R.string.usd)));
+            String currency = preferences.getString(Utils.CURRENCY, "USD");
+            binding.priceProperty.setText(Utils.formatPrice(property.getPropertyPrice(), currency, property.getInsertCurrency()));
             this.initAgentName(property.getAgentId());
         });
     }

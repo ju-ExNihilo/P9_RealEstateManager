@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.openclassrooms.realestatemanager.dao.*;
 import com.openclassrooms.realestatemanager.models.*;
 
-@Database(entities = {Property.class, Address.class, PropertyFeature.class, PointOfInterest.class, PropertyImage.class}, version = 1, exportSchema = false)
+@Database(entities = {Property.class, Address.class, PropertyFeature.class, PointOfInterest.class, PropertyImage.class}, version = 2, exportSchema = false)
 public abstract class PropertyDatabase extends RoomDatabase {
 
     // --- SINGLETON ---
@@ -32,6 +32,7 @@ public abstract class PropertyDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             PropertyDatabase.class, "MyDatabase.db")
                             .addCallback(prepopulateDatabase())
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
@@ -56,6 +57,7 @@ public abstract class PropertyDatabase extends RoomDatabase {
                 contentValues.put("latitude", 6.46123);
                 contentValues.put("longitude", 43.45668);
                 contentValues.put("isSold", false);
+                contentValues.put("insertCurrency", "USD");
 
                 db.insert("Property", OnConflictStrategy.IGNORE, contentValues);
             }

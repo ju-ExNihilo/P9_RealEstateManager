@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.viewmodel;
 
 import android.net.Uri;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -21,8 +22,8 @@ public class PropertyViewModel extends ViewModel {
 
     /** *********** Search  *********** **/
     public LiveData<List<Property>> searchMethod(String city, float minPrice, float maxPrice, float minSurface, float maxSurface, String dateStart,
-                                                         List<String> finalPointOfInterest, int finalNumberOfPics){
-        return propertyDataRepository.getDataFromSearch(city, minPrice, maxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest, finalNumberOfPics);
+                                                         List<String> finalPointOfInterest, int finalNumberOfPics, LifecycleOwner owner1){
+        return propertyDataRepository.getDataFromSearch(city, minPrice, maxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest, finalNumberOfPics, owner1);
     }
     /** **************************** **/
 

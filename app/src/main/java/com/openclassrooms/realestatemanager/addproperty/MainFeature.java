@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.addproperty;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -43,6 +44,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_APPEND;
+import static android.content.Context.MODE_PRIVATE;
 
 public class MainFeature extends Fragment implements AlertDialogUtils.OnClickButtonAlertDialog {
 
@@ -52,6 +55,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
     private String propertyId = "null";
     private PropertyViewModel propertyViewModel;
     private AlertDialogUtils alertDialogUtils;
+    private SharedPreferences preferences;
     private Uri photoUri = null;
     private List<String> propertyTypeList = new LinkedList<>(Arrays.asList("Flat", "House", "Loft", "manor", "castle", "studio apartment"));
     private Animation fadeInAnim;
@@ -69,6 +73,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
         navController = Navigation.findNavController(view);
         fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.mainFeatureLayout.setAnimation(fadeInAnim);
+        preferences = getActivity().getSharedPreferences(Utils.SHARED_PREFERENCE, MODE_APPEND);
         this.initPropertyViewModel();
         this.configureToolbar();
         alertDialogUtils = new AlertDialogUtils(this);
@@ -203,6 +208,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
             String propertyType = binding.typeSpinner.getSelectedItem().toString();
             String propertyPrice = binding.priceEditText.getText().toString();
             if (!locatedCity.isEmpty() && !propertyType.isEmpty() && !propertyPrice.isEmpty() && uriImageSelected != null){
+                String currency = preferences.getString(Utils.CURRENCY, "USD");
                 Property property = new Property();
                 property.setPropertyId(propertyId);
                 property.setPropertyLocatedCity(locatedCity);
@@ -210,6 +216,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
                 property.setPropertyType(propertyType);
                 property.setPropertyPreviewImageUrl(uriImageSelected);
                 property.setSold(false);
+                property.setInsertCurrency(currency);
                 property.setAgentId(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 propertyViewModel.createProperty(property);
                 if (photoUri != null){

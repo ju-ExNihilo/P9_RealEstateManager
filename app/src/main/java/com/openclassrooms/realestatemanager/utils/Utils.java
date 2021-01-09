@@ -59,7 +59,11 @@ public class Utils {
      * @return
      */
     public static int convertDollarToEuro(int dollars){
-        return (int) Math.round(dollars * 0.812);
+        return (int) Math.round(dollars * 0.818);
+    }
+
+    public static int convertEuroToDollar(int euros){
+        return (int) Math.round(euros * 1.222);
     }
 
     /**
@@ -124,7 +128,13 @@ public class Utils {
         return UUID.randomUUID().toString();
     }
 
-    public static String formatPrice(float price, String currency){
+    public static String formatPrice(float price, String currency, String insertCurrency){
+        if (currency.equals("USD") && insertCurrency.equals("EUR")){
+            price = convertDollarToEuro((int) price);
+        }
+        if (currency.equals("EUR") && insertCurrency.equals("USD")){
+            price = convertEuroToDollar((int) price);
+        }
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(0);
         format.setCurrency(Currency.getInstance(currency));

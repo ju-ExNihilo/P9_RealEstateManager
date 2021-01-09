@@ -37,7 +37,7 @@ public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.Proper
     public void onBindViewHolder(@NonNull PropertyViewHolder holder, int position) {
         Property property = propertyList.get(position);
         holder.binding.propertyType.setText(property.getPropertyType());
-        holder.binding.propertyPrice.setText(Utils.formatPrice(property.getPropertyPrice(), currency));
+        holder.binding.propertyPrice.setText(Utils.formatPrice(property.getPropertyPrice(), currency, property.getInsertCurrency()));
         holder.binding.propertyTown.setText(property.getPropertyLocatedCity());
         if (property.isSold()){
             Glide.with(holder.binding.propertyPicture.getContext())

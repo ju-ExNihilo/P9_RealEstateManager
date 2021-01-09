@@ -70,6 +70,7 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         this.configureToolbar();
         this.initPropertyViewModel();
         this.initRecyclerView();
+        this.initSeekBarForSurface();
         this.searchProperty();
         this.initFabButton();
         Utils.datePicker(binding.dateSearchEditText, getActivity());
@@ -92,7 +93,6 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         }else {
             this.initSelectedItem(1);
         }
-        this.initSeekBarForSurface();
     }
 
     private void configureToolbar(){
@@ -131,7 +131,8 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
             float maxSurface = (float) binding.surfaceSelect.getEnd();
             int finalNumberOfPics =  (numberOfPics.isEmpty()) ? 0 : Integer.parseInt(numberOfPics);
 
-            propertyViewModel.searchMethod(locatedCity, finalMinPrice, finalMaxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest, finalNumberOfPics)
+            propertyViewModel.searchMethod(locatedCity, finalMinPrice, finalMaxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest,
+                    finalNumberOfPics, getViewLifecycleOwner())
                     .observe(getViewLifecycleOwner(), this::setAdapter);
             animate(binding.dropCard);
         });
