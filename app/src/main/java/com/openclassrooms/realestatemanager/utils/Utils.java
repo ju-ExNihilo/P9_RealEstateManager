@@ -44,7 +44,10 @@ public class Utils {
     public static final String PERMS_CAMERA = Manifest.permission.CAMERA;
     public static final String PROPERTY_ID = "propertyId";
     public static final String MY_PROPERTY = "MyProperty";
+    public static final String NULL_STRING = "null";
     public static final String MAX_SURFACE = "MaxSurface";
+    public static final String CURRENCY = "currency";
+    public static final String SCOPE = "scope";
     public static final String SHARED_PREFERENCE = "MySharedPref";
     public static final int RC_IMAGE_PERMS = 100;
     public static final int RC_CAMERA_PERMS = 101;
@@ -58,7 +61,11 @@ public class Utils {
      * @return
      */
     public static int convertDollarToEuro(int dollars){
-        return (int) Math.round(dollars * 0.812);
+        return (int) Math.round(dollars * 0.818);
+    }
+
+    public static int convertEuroToDollar(int euros){
+        return (int) Math.round(euros * 1.222);
     }
 
     /**
@@ -67,16 +74,17 @@ public class Utils {
      * @return
      */
     public static String getTodayDate(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(new Date());
     }
 
-    public static String getFrTodayDate(String dateStart){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        return dateFormat.format(dateStart);
+    public static String getFormatDate(int year, int month, int day, Calendar calendar){
+        calendar.set(year, month, day);
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        return formatter.format(calendar.getTime());
     }
 
-    public static Date getFrenchTodayDate(String date)  {
+    public static Date convertStringToDate(String date)  {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date convertedDate = new Date();
         try {
@@ -123,13 +131,22 @@ public class Utils {
         return UUID.randomUUID().toString();
     }
 
-    public static String formatPrice(float price, String currency){
+    public static String formatPrice(float price, String currency, String insertCurrency){
+        if (currency.equals("USD") && insertCurrency.equals("EUR")){
+            price = convertDollarToEuro((int) price);
+        }
+        if (currency.equals("EUR") && insertCurrency.equals("USD")){
+            price = convertEuroToDollar((int) price);
+        }
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(0);
         format.setCurrency(Currency.getInstance(currency));
         String formatPrice = format.format(price);
-
-        return formatPrice.substring(0, formatPrice.length()-2);
+        if (currency.equals("USD")){
+            return formatPrice.substring(0, formatPrice.length()-2);
+        }else {
+            return formatPrice;
+        }
     }
 
     public static void expand(final View v) {
@@ -241,16 +258,25 @@ public class Utils {
                 navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
                 navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
                 navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(3).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
                 break;
             case 1:
                 navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
                 navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
                 navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(3).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
                 break;
             case 2:
                 navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
                 navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
                 navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
+                navigationView.getMenu().getItem(3).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                break;
+            case 3:
+                navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(3).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
                 break;
         }
     }
@@ -275,23 +301,16 @@ public class Utils {
         mSnackbar.show();
     }
 
-    public static void datePicker(TextInputEditText date, Context context){
-        date.setInputType(InputType.TYPE_NULL);
-        date.setOnClickListener(v -> {
-            final Calendar calendar = Calendar.getInstance();
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH);
-            int year = calendar.get(Calendar.YEAR);
-            DatePickerDialog pickerDate = new DatePickerDialog(context,R.style.myDatePickerStyle,
-                    (view, year1, monthOfYear, dayOfMonth) -> {
-                        calendar.set(year1, monthOfYear, dayOfMonth);
-                        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                        String formatedDate = formatter.format(calendar.getTime());
-                        date.setText(formatedDate);
-                    }, year, month, day);
-            pickerDate.show();
-            pickerDate.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#c8a97e"));
-            pickerDate.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#c8a97e"));
-        });
+    public static void animate(View card, TextView title, Context context){
+        if (card.getVisibility() == View.VISIBLE){
+            Utils.collapse(card);
+            title.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null,
+                    context.getResources().getDrawable(R.drawable.arrow_down, null), null );
+        }else {
+            Utils.expand(card);
+            title.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null,
+                    context.getResources().getDrawable(R.drawable.arrow_up, null), null);
+        }
     }
+
 }

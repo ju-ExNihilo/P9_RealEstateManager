@@ -64,7 +64,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"/>
                 <TextView
-                        android:text="Price"
+                        android:text="@string/price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/price_title_search"
@@ -93,7 +93,7 @@
                             android:id="@+id/min_price_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Min" android:inputType="number" android:textSize="12sp"/>
+                            android:hint="@string/min" android:inputType="number" android:textSize="12sp"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -112,11 +112,11 @@
                             android:id="@+id/max_price_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Max" android:inputType="number" android:textSize="12sp"/>
+                            android:hint="@string/max" android:inputType="number" android:textSize="12sp"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                        android:text="Point of Interest"
+                        android:text="@string/point_of_interest"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/point_of_interest_title_search"
@@ -146,12 +146,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
-                            android:hint="Enter point of interest split with space"
+                            android:hint="@string/enter_point_of_interest_split_with_space"
                             android:inputType="text"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                        android:text="Other Feature"
+                        android:text="@string/other_features"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/other_feature_title_search"
@@ -179,7 +179,7 @@
                             android:id="@+id/town_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Town" android:inputType="text" android:textSize="12sp"/>
+                            android:hint="@string/town" android:inputType="text" android:textSize="12sp"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -198,7 +198,7 @@
                             android:id="@+id/nbr_pic_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Min number pic" android:inputType="number" android:textSize="12sp"/>
+                            android:hint="@string/min_number_pic" android:inputType="number" android:textSize="12sp"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -217,9 +217,10 @@
                             android:id="@+id/date_search_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:focusableInTouchMode="false"
                             android:textSize="12sp"
-                            android:hint="Entrance Date"
-                            android:inputType="date"/>
+                            android:hint="@string/entrance_date_of_property"
+                            android:inputType="none"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.cardview.widget.CardView
@@ -239,7 +240,7 @@
                             android:layout_height="match_parent">
 
                         <TextView
-                                android:text="Search"
+                                android:text="@string/search"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/back_text"

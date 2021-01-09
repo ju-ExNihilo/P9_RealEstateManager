@@ -1,13 +1,13 @@
 package com.openclassrooms.realestatemanager.details;
 
-import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,9 +27,9 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentDetailsBinding;
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.injection.Injection;
-import com.openclassrooms.realestatemanager.models.Agent;
 import com.openclassrooms.realestatemanager.models.PointOfInterest;
 import com.openclassrooms.realestatemanager.models.PropertyImage;
+import com.openclassrooms.realestatemanager.utils.AlertDialogUtils;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.AgentViewModel;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
@@ -37,13 +37,11 @@ import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class DetailsFragment extends Fragment implements OnMapReadyCallback {
+import static android.content.Context.MODE_APPEND;
+
+public class DetailsFragment extends Fragment implements OnMapReadyCallback , AlertDialogUtils.OnSelectDateListener{
 
     private FragmentDetailsBinding binding;
     private NavController navController;
@@ -53,11 +51,9 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private LatLng latLng;
     private SupportMapFragment mapFragment;
-    private DatePickerDialog pickerDate;
     private Animation fadeInAnim;
-
-    public DetailsFragment() {}
-
+    private SharedPreferences preferences;
+    private AlertDialogUtils dialogUtils;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +69,8 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
         propertyId = getArguments().getString(Utils.PROPERTY_ID);
         fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.detailsView.setAnimation(fadeInAnim);
+        preferences = getActivity().getSharedPreferences(Utils.SHARED_PREFERENCE, MODE_APPEND);
+        dialogUtils = new AlertDialogUtils(this);
         this.configureToolbar();
         this.initAgentViewModel();
         this.initPropertyViewModel();
@@ -87,6 +85,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
     }
 
+    /** Configure toolbar **/
     private void configureToolbar(){
         Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         toolbar.getMenu().clear();
@@ -119,7 +118,8 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
                 this.isSold();
             binding.navigationBar.setVisibility(isAgent ? View.VISIBLE : View.GONE);
             binding.otherFeatureStatus.setText(property.isSold() ? getString(R.string.sale) : getString(R.string.free));
-            binding.priceProperty.setText(Utils.formatPrice(property.getPropertyPrice(), getString(R.string.usd)));
+            String currency = preferences.getString(Utils.CURRENCY, "USD");
+            binding.priceProperty.setText(Utils.formatPrice(property.getPropertyPrice(), currency, property.getInsertCurrency()));
             this.initAgentName(property.getAgentId());
         });
     }
@@ -222,7 +222,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
                     updateNavigation();
                     break;
                 case R.id.set_sale:
-                    this.datePicker();
+                    dialogUtils.datePicker(getContext());
                     break;
             }
             return true;
@@ -253,25 +253,6 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void datePicker(){
-        propertyViewModel.getAPropertyById(propertyId).observe(getViewLifecycleOwner(), property -> {
-            if (!property.isSold()){
-                final Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int month = calendar.get(Calendar.MONTH);
-                int year = calendar.get(Calendar.YEAR);
-                pickerDate = new DatePickerDialog(this.getActivity(),R.style.myDatePickerStyle,(view, year1, monthOfYear, dayOfMonth) -> {
-                    String saleDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                    setSaleProperty(saleDate);
-                }, year, month, day);
-                pickerDate.show();
-                pickerDate.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#c8a97e"));
-                pickerDate.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#c8a97e"));
-            }
-        });
-
-    }
-
     /** ********************************** **/
     /** ********* Utils Method  ********* **/
     /** ******************************** **/
@@ -296,26 +277,22 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void accordionTransition(){
-        binding.addressTitle.setOnClickListener(v -> animate(binding.cardAddress, binding.addressTitle));
-        binding.mainFeatureTitle.setOnClickListener(v -> animate(binding.cardMainFeature, binding.mainFeatureTitle));
-        binding.descriptionTitle.setOnClickListener(v -> animate(binding.cardDescription, binding.descriptionTitle));
-        binding.otherFeatureTitle.setOnClickListener(v -> animate(binding.otherFeatureCard, binding.otherFeatureTitle));
-        binding.pointOfInterestTitle.setOnClickListener(v -> animate(binding.pointOfInterestCard, binding.pointOfInterestTitle));
+        binding.addressTitle.setOnClickListener(v -> Utils.animate(binding.cardAddress, binding.addressTitle, getContext()));
+        binding.mainFeatureTitle.setOnClickListener(v -> Utils.animate(binding.cardMainFeature, binding.mainFeatureTitle, getContext()));
+        binding.descriptionTitle.setOnClickListener(v -> Utils.animate(binding.cardDescription, binding.descriptionTitle, getContext()));
+        binding.otherFeatureTitle.setOnClickListener(v -> Utils.animate(binding.otherFeatureCard, binding.otherFeatureTitle, getContext()));
+        binding.pointOfInterestTitle.setOnClickListener(v -> Utils.animate(binding.pointOfInterestCard, binding.pointOfInterestTitle, getContext()));
         //Map
         binding.geoLocalisationTitle.setOnClickListener(v -> binding.mapPanel.setVisibility(View.VISIBLE));
         binding.closeMapPanel.setOnClickListener(v -> binding.mapPanel.setVisibility(View.GONE));
     }
 
-    private void animate(View card, TextView title){
-        if (card.getVisibility() == View.VISIBLE){
-            Utils.collapse(card);
-            title.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null,
-                    getResources().getDrawable(R.drawable.arrow_down, null), null );
-        }else {
-            Utils.expand(card);
-            title.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null,
-                    getResources().getDrawable(R.drawable.arrow_up, null), null);
-        }
-    }
+    /** ********************************** **/
+    /** **** Dialog Callback Method  **** **/
+    /** ******************************** **/
 
+    @Override
+    public void onSelectDate(String date) {
+        setSaleProperty(date);
+    }
 }

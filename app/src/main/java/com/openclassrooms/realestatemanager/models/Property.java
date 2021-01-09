@@ -21,6 +21,7 @@ public class Property {
     private String propertyPreviewImageUrl;
     private double latitude, longitude;
     private boolean isSold;
+    private String insertCurrency;
 
     public Property() {}
 
@@ -119,6 +120,10 @@ public class Property {
         this.isSold = sold;
     }
 
+    public String getInsertCurrency() {return insertCurrency;}
+
+    public void setInsertCurrency(String insertCurrency) {this.insertCurrency = insertCurrency;}
+
     public static Property fromContentValues(ContentValues contentValues){
         final Property property = new Property();
         if (contentValues.containsKey("id")) property.setId(contentValues.getAsLong("id"));
@@ -131,13 +136,15 @@ public class Property {
         if (contentValues.containsKey("latitude")) property.setLatitude(contentValues.getAsDouble("latitude"));
         if (contentValues.containsKey("longitude")) property.setLongitude(contentValues.getAsDouble("longitude"));
         if (contentValues.containsKey("isSale")) property.setSold(contentValues.getAsBoolean("isSale"));
+        if (contentValues.containsKey("insertCurrency")) property.setInsertCurrency(contentValues.getAsString("insertCurrency"));
         return property;
     }
 
     @Override
     public String toString() {
         return "Property{" +
-                "propertyId='" + propertyId + '\'' +
+                "id=" + id +
+                ", propertyId='" + propertyId + '\'' +
                 ", agentId='" + agentId + '\'' +
                 ", propertyType='" + propertyType + '\'' +
                 ", propertyLocatedCity='" + propertyLocatedCity + '\'' +
@@ -146,6 +153,7 @@ public class Property {
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", isSold=" + isSold +
+                ", insertCurrency='" + insertCurrency + '\'' +
                 '}';
     }
 }

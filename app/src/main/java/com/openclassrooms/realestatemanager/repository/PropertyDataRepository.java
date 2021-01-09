@@ -351,6 +351,8 @@ public class PropertyDataRepository {
         featureForSearch.setPropertyId(property.getPropertyId());
         featureForSearch.setLocation(property.getPropertyLocatedCity());
         featureForSearch.setPrice(property.getPropertyPrice());
+        featureForSearch.setEntranceDate(new Date());
+        featureForSearch.setPointOfInterest(Arrays.asList("null"));
         return getSearchCollection().document(property.getPropertyId()).set(featureForSearch);
     }
 
@@ -359,7 +361,7 @@ public class PropertyDataRepository {
     }
 
     private Task<Void> updateDatePropertyForSearch(String propertyId, String entranceDate){
-        Date finalDateStart = Utils.getFrenchTodayDate(entranceDate);
+        Date finalDateStart = Utils.convertStringToDate(entranceDate);
         return getSearchCollection().document(propertyId).update("entranceDate", finalDateStart);
     }
 
@@ -379,26 +381,21 @@ public class PropertyDataRepository {
 
     public MutableLiveData<Integer> getMaxSurface(){
         MutableLiveData<Integer> maxSurface = new MutableLiveData<>();
-        getPropertyCollection().get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                List<Property> propertys = task.getResult().toObjects(Property.class);
-                final int[] max = {0};
-                final int[] c = {0};
-                int n = propertys.size();
-                for (Property property : propertys){
-                    getPropertyFeatureById(property.getPropertyId()).observe(owner, propertyFeature -> {
-                        if (propertyFeature != null){
-                            if (propertyFeature.getPropertySurface() > max[0])
-                                max[0] = (int) propertyFeature.getPropertySurface();
-                            c[0]++;
-                            if (c[0] == n){
-                                maxSurface.setValue(max[0]);
-                            }
-                        }
-                    });
-                }
-            }else {
-                maxSurface.setValue(null);
+        getAllProperty().observe(owner, properties -> {
+            final int[] max = {0};
+            final int[] c = {0};
+            int n = properties.size();
+            for (Property property : properties){
+                getPropertyFeatureById(property.getPropertyId()).observe(owner, propertyFeature -> {
+                    if (propertyFeature != null){
+                        if (propertyFeature.getPropertySurface() > max[0])
+                            max[0] = (int) propertyFeature.getPropertySurface();
+                    }
+                    c[0]++;
+                    if (c[0] == n){
+                        maxSurface.setValue(max[0]);
+                    }
+                });
             }
         });
         return maxSurface;
@@ -417,22 +414,29 @@ public class PropertyDataRepository {
     }
 
     private MutableLiveData<List<FeatureForSearch>> searchMethod(String city, float minPrice, float maxPrice, float minSurface, float maxSurface, String dateStart,
-                                                                 List<String> finalPointOfInterest, int finalNumberOfPics){
+                                                                 List<String> finalPointOfInterest, int finalNumberOfPics, LifecycleOwner owner1){
         MutableLiveData<List<FeatureForSearch>> searchProperty = new MutableLiveData<>();
         List<FeatureForSearch> propertyAdd = new ArrayList<>();
-
-        getSearchList().observe(owner, featureForSearches -> {
+        Log.i("DEBUGGG", "ok 0");
+        getSearchList().observe(owner1, featureForSearches -> {
+            Log.i("DEBUGGG", "ok 0.5");
             int n = featureForSearches.size();
             int c = 0;
-            Date finalDateStart = Utils.getFrenchTodayDate(dateStart);
+            Date finalDateStart = Utils.convertStringToDate(dateStart);
             for (FeatureForSearch featureForSearch : featureForSearches){
                 if (featureForSearch.getEntranceDate().after(finalDateStart)){
+                    Log.i("DEBUGGG", "ok 1");
                     if ((featureForSearch.getLocation().equals(city) || city.equals("null"))  && featureForSearch.getPrice() >= minPrice){
+                        Log.i("DEBUGGG", "ok 2");
                         if (featureForSearch.getSurface() >= minSurface && featureForSearch.getSurface() <= maxSurface){
+                            Log.i("DEBUGGG", "ok 3");
                             if (featureForSearch.getPrice() <= maxPrice || maxPrice == 0){
+                                Log.i("DEBUGGG", "ok 4");
                                 featureForSearch.getPointOfInterest().retainAll(finalPointOfInterest);
                                 if (featureForSearch.getPointOfInterest().size() > 0 || finalPointOfInterest.equals(Arrays.asList("null"))){
+                                    Log.i("DEBUGGG", "ok 5");
                                     if (featureForSearch.getNumberOfPics() >= finalNumberOfPics || finalNumberOfPics == 0){
+                                        Log.i("DEBUGGG", "ok 6");
                                         propertyAdd.add(featureForSearch);
                                     }
                                 }
@@ -451,14 +455,14 @@ public class PropertyDataRepository {
     }
 
     public MutableLiveData<List<Property>> getDataFromSearch(String city, float minPrice, float maxPrice, float minSurface, float maxSurface, String dateStart,
-                                                             List<String> finalPointOfInterest, int finalNumberOfPics){
+                                                             List<String> finalPointOfInterest, int finalNumberOfPics, LifecycleOwner owner1){
         MutableLiveData<List<Property>> searchProperty = new MutableLiveData<>();
         List<Property> propertyAdd = new ArrayList<>();
-        searchMethod(city, minPrice, maxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest, finalNumberOfPics).observe(owner, featureForSearches -> {
+        searchMethod(city, minPrice, maxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest, finalNumberOfPics, owner1).observe(owner1, featureForSearches -> {
             int n = featureForSearches.size();
             final int[] c = {0};
             for (FeatureForSearch featureForSearch : featureForSearches){
-                getAPropertyById(featureForSearch.getPropertyId()).observe(owner, property -> {
+                getAPropertyById(featureForSearch.getPropertyId()).observe(owner1, property -> {
                     propertyAdd.add(property);
                     c[0]++;
                     if (c[0] == n){

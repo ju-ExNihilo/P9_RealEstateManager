@@ -1,31 +1,26 @@
 package com.openclassrooms.realestatemanager.addproperty;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentAddressFeatureBinding;
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.Address;
-import com.openclassrooms.realestatemanager.repository.PropertyDataRepository;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
-import fr.juju.googlemaplibrary.model.FinalPlace;
-import fr.juju.googlemaplibrary.repository.GooglePlaceRepository;
 
 public class AddressFeature extends Fragment {
 
@@ -34,8 +29,7 @@ public class AddressFeature extends Fragment {
     private String propertyId;
     private String addressId;
     private PropertyViewModel propertyViewModel;
-    private Bundle bundle = new Bundle();
-    private Animation fadeInAnim;
+    private final Bundle bundle = new Bundle();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,12 +43,27 @@ public class AddressFeature extends Fragment {
         navController = Navigation.findNavController(view);
         propertyId = getArguments().getString(Utils.PROPERTY_ID);
         bundle.putString(Utils.PROPERTY_ID, propertyId);
-        fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        Animation fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.addressFeatureLayout.setAnimation(fadeInAnim);
         this.initPropertyViewModel();
         this.initFormFields();
         this.onClickBackBtn();
         this.onClickNextBtn();
+    }
+
+    /** ****** init form with fields of property if var propertyId get id of property ***** **/
+    private void initFormFields(){
+        propertyViewModel.getPropertyAddressById(propertyId).observe(getViewLifecycleOwner(), address -> {
+            if (address != null){
+                binding.numberAddressEditText.setText(String.valueOf(address.getNumberOfWay()));
+                binding.wayAddressEditText.setText(address.getWay());
+                binding.postcodeAddressEditText.setText(String.valueOf(address.getPostCode()));
+                binding.additionalAddressFieldsEditText.setText(address.getAdditionalAddressField());
+                addressId = address.getAddressId();
+            }else {
+                addressId = propertyViewModel.getAddressId(propertyId);
+            }
+        });
     }
 
     /** *********************************** **/
@@ -72,21 +81,8 @@ public class AddressFeature extends Fragment {
 
     private void onClickBackBtn(){
         binding.backBtn.setOnClickListener(v -> {
-            navController.navigate(R.id.mainFeature, bundle);
-        });
-    }
-
-    private void initFormFields(){
-        propertyViewModel.getPropertyAddressById(propertyId).observe(getViewLifecycleOwner(), address -> {
-            if (address != null){
-                binding.numberAddressEditText.setText(String.valueOf(address.getNumberOfWay()));
-                binding.wayAddressEditText.setText(address.getWay());
-                binding.postcodeAddressEditText.setText(String.valueOf(address.getPostCode()));
-                binding.additionalAddressFieldsEditText.setText(address.getAdditionalAddressField());
-                addressId = address.getAddressId();
-            }else {
-                addressId = propertyViewModel.getAddressId(propertyId);
-            }
+            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.mainFeature, true).build();
+            navController.navigate(R.id.mainFeature, bundle, navOptions);
         });
     }
 
@@ -107,7 +103,8 @@ public class AddressFeature extends Fragment {
                 //insert
                 propertyViewModel.insetAddressToProperty(propertyId, address);
                 //navigation
-                navController.navigate(R.id.otherFeature, bundle);
+                NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.otherFeature, true).build();
+                navController.navigate(R.id.otherFeature, bundle, navOptions);
             }else {
                 Toast.makeText(this.getActivity(), getResources().getString(R.string.need_all_fields), Toast.LENGTH_SHORT).show();
             }

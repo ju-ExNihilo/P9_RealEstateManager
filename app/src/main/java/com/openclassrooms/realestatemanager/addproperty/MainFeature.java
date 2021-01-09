@@ -2,12 +2,16 @@ package com.openclassrooms.realestatemanager.addproperty;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
@@ -17,9 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -35,6 +36,7 @@ import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -43,18 +45,19 @@ import java.util.List;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_APPEND;
 
 public class MainFeature extends Fragment implements AlertDialogUtils.OnClickButtonAlertDialog {
 
     private FragmentMainFeatureBinding binding;
     private NavController navController;
     private String uriImageSelected;
-    private String propertyId;
+    private String propertyId = Utils.NULL_STRING;
     private PropertyViewModel propertyViewModel;
     private AlertDialogUtils alertDialogUtils;
+    private SharedPreferences preferences;
     private Uri photoUri = null;
-    private List<String> propertyTypeList = new LinkedList<>(Arrays.asList("Flat", "House", "Loft", "manor", "castle", "studio apartment"));
-    private Animation fadeInAnim;
+    private final List<String> propertyTypeList = new LinkedList<>(Arrays.asList("Flat", "House", "Loft", "manor", "castle", "studio apartment"));
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,13 +70,16 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        Animation fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.mainFeatureLayout.setAnimation(fadeInAnim);
+        preferences = getActivity().getSharedPreferences(Utils.SHARED_PREFERENCE, MODE_APPEND);
         this.initPropertyViewModel();
         this.configureToolbar();
         alertDialogUtils = new AlertDialogUtils(this);
-        propertyId = getArguments().getString(Utils.PROPERTY_ID);
-        if (!propertyId.equals("null")){
+        if (getArguments() != null){
+            propertyId = getArguments().getString(Utils.PROPERTY_ID);
+        }
+        if (!propertyId.equals(Utils.NULL_STRING)){
             this.initFormFields();
         }else {
             propertyId = propertyViewModel.getPropertyId();
@@ -84,6 +90,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
         this.choosePanelBtnLister();
     }
 
+    /** ****** init form with fields of property if var propertyId get id of property ***** **/
     private void initFormFields(){
         propertyViewModel.getAPropertyById(propertyId).observe(getViewLifecycleOwner(), property -> {
             binding.locatedCityEditText.setText(property.getPropertyLocatedCity());
@@ -95,6 +102,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
         });
     }
 
+    /** ****** configure toolbar Method ***** **/
     private void configureToolbar(){
         Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         toolbar.getMenu().clear();
@@ -201,6 +209,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
             String propertyType = binding.typeSpinner.getSelectedItem().toString();
             String propertyPrice = binding.priceEditText.getText().toString();
             if (!locatedCity.isEmpty() && !propertyType.isEmpty() && !propertyPrice.isEmpty() && uriImageSelected != null){
+                String currency = preferences.getString(Utils.CURRENCY, "USD");
                 Property property = new Property();
                 property.setPropertyId(propertyId);
                 property.setPropertyLocatedCity(locatedCity);
@@ -208,6 +217,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
                 property.setPropertyType(propertyType);
                 property.setPropertyPreviewImageUrl(uriImageSelected);
                 property.setSold(false);
+                property.setInsertCurrency(currency);
                 property.setAgentId(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 propertyViewModel.createProperty(property);
                 if (photoUri != null){
@@ -217,7 +227,7 @@ public class MainFeature extends Fragment implements AlertDialogUtils.OnClickBut
                     propertyViewModel.uploadImageInFirebase(propertyId, uri);
                 }
                 Bundle bundle = new Bundle();
-                bundle.putString("propertyId", propertyId);
+                bundle.putString(Utils.PROPERTY_ID, propertyId);
                 navController.navigate(R.id.addressFeature, bundle);
             }else {
                 Toast.makeText(this.getActivity(), getResources().getString(R.string.need_all_fields), Toast.LENGTH_SHORT).show();

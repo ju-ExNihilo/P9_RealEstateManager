@@ -8,6 +8,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.openclassrooms.realestatemanager.models.Agent;
 
+import java.util.List;
+
 public class AgentRepository {
 
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -47,5 +49,14 @@ public class AgentRepository {
             }
         });
         return agent;
+    }
+
+    /** ***************************** **/
+    /** ******* UPDATE Method  ****** **/
+    /** ***************************** **/
+
+    /** ******** Update pointOfInterests  ****** **/
+    public Task<Void> updatePointOfInterest(String agentId, List<String> pointOfInterests) {
+        return getAgentCollection().document(agentId).update("proximityPointOfInterestChoice", pointOfInterests);
     }
 }
