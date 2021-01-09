@@ -91,8 +91,4 @@ public class PropertyViewModel extends ViewModel {
 
     public void propertySale(String propertyId, String documentId, String soldDate){propertyDataRepository.propertySale(propertyId, documentId, soldDate);}
 
-    public void updateImageDescription(String propertyId, String propertyImageId, String description){
-        propertyDataRepository.updateImageDescription(propertyId, propertyImageId, description);
-    }
-
 }

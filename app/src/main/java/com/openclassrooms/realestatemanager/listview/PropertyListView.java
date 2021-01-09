@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
@@ -42,6 +44,7 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
     private String isMyProperty = Utils.NULL_STRING;
     private SharedPreferences preferences;
     private AlertDialogUtils dialogUtils;
+    private boolean isSearching = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,8 +69,8 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         this.searchProperty();
         this.initFabButton();
         this.initList();
+        this.onBackPress();
         binding.dateSearchEditText.setOnClickListener(v -> dialogUtils.datePicker(getContext()));
-
     }
 
     @Override
@@ -125,6 +128,7 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
                     finalNumberOfPics, getViewLifecycleOwner())
                     .observe(getViewLifecycleOwner(), this::setAdapter);
             animate(binding.dropCard);
+            isSearching = true;
         });
     }
 
@@ -144,10 +148,12 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         binding.listProperty.setLayoutManager(layoutManager);
     }
 
+    /** get property from firebase **/
     private void getAllProperty(){
         propertyViewModel.getAllProperty().observe(getViewLifecycleOwner(), this::setAdapter);
     }
 
+    /** get property from sqlite **/
     private void getAllPropertyFromRoom(){
         propertyViewModel.getAllPropertyFromRoom().observe(getViewLifecycleOwner(), this::setAdapter);
     }
@@ -214,15 +220,37 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
     /** *******  Callback Method  ******* **/
     /** ******************************** **/
 
+
     @Override
     public void onClickedProperty(String propertyId) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.PROPERTY_ID, propertyId);
-        navController.navigate(R.id.detailsFragment, bundle);
+        if (getResources().getBoolean(R.bool.isTablet)){
+            NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.nav_host_fragment_land);
+            navHostFragment.getNavController().navigate(R.id.detailsFragment2, bundle);
+        }else {
+            navController.navigate(R.id.detailsFragment, bundle);
+        }
     }
 
     @Override
     public void onSelectDate(String date) {
         binding.dateSearchEditText.setText(date);
+    }
+
+    private void onBackPress(){
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (isSearching){
+                    initList();
+                    isSearching = false;
+                }else {
+                    getActivity().finish();
+                }
+
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
     }
 }

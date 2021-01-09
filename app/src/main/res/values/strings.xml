@@ -17,7 +17,7 @@
     <!-- Easy Permissions -->
     <string name="popup_title_permission_files_access">We need permissions to access your Picture</string>
     <string name="popup_title_permission_camera_access">We need permissions to access your Camera</string>
-    <string name="popup_title_permission_call">We need your permission to make a phone call</string>
+    <string name="popup_title_permission_location_access">We need your permission to access on your location</string>
     <string name="toast_title_no_image_chosen">You don\'t choose any file</string>
     <string name="toast_title_image_chosen">You image has been added</string>
 
@@ -125,5 +125,8 @@
     <string name="enter_point_of_interest_split_with_space">Enter point of interest split with space</string>
     <string name="max">Max</string>
     <string name="min">Min</string>
+    <string name="real_estate_manager">Real Estate Manager</string>
+    <string name="sign_in_with_mail">Sign In with Mail</string>
+    <string name="sign_in_with_google">Sign In with Google</string>
 
 </resources>

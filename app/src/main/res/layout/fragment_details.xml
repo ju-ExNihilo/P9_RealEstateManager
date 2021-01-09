@@ -11,11 +11,24 @@
         android:paddingBottom="50dp"
         tools:context=".details.DetailsFragment">
 
-        <nl.dionsegijn.konfetti.KonfettiView
+    <ImageView
+            android:src="@drawable/images"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/default_image"
+            android:visibility="gone"
+            android:elevation="15dp"
+            chipcloud:layout_constraintEnd_toEndOf="parent"
+            chipcloud:layout_constraintStart_toStartOf="parent"
+            chipcloud:layout_constraintTop_toTopOf="parent"
+            chipcloud:layout_constraintBottom_toBottomOf="parent"
+            android:scaleType="fitXY"/>
+
+    <nl.dionsegijn.konfetti.KonfettiView
                 android:id="@+id/viewKonfetti"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:elevation="20dp"
+                app:cardElevation="15dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +98,7 @@
         <androidx.viewpager.widget.ViewPager
                 android:layout_width="0dp"
                 android:layout_height="300dp"
-                android:elevation="5dp"
+                app:cardElevation="5dp"
                 app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" android:id="@+id/viewPager"/>
 
@@ -152,7 +165,7 @@
                             android:justificationMode="inter_word"
                             android:singleLine="false"
                             android:lineSpacingExtra="8sp"
-                            android:layout_marginEnd="16dp"/>
+                            android:layout_marginEnd="16dp" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 

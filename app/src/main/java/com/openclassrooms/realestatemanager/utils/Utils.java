@@ -26,10 +26,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.realestatemanager.R;
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
+import java.io.IOException;
+import java.text.*;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
@@ -53,6 +52,7 @@ public class Utils {
     public static final int RC_CAMERA_PERMS = 101;
     public static final int RC_CHOOSE_PHOTO = 200;
     public static final int RC_CAMERA_RESULT = 201;
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     /**
      * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
@@ -74,18 +74,15 @@ public class Utils {
      * @return
      */
     public static String getTodayDate(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(new Date());
     }
 
     public static String getFormatDate(int year, int month, int day, Calendar calendar){
         calendar.set(year, month, day);
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        return formatter.format(calendar.getTime());
+        return dateFormat.format(calendar.getTime());
     }
 
     public static Date convertStringToDate(String date)  {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date convertedDate = new Date();
         try {
             convertedDate = dateFormat.parse(date);
@@ -104,6 +101,11 @@ public class Utils {
     public static Boolean isInternetAvailable(Context context){
         WifiManager wifi = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         return wifi.isWifiEnabled();
+    }
+
+    public static boolean isConnected() throws InterruptedException, IOException {
+        final String command = "ping -c 1 google.com";
+        return Runtime.getRuntime().exec(command).waitFor() == 0;
     }
 
     /**
@@ -138,14 +140,12 @@ public class Utils {
         if (currency.equals("EUR") && insertCurrency.equals("USD")){
             price = convertEuroToDollar((int) price);
         }
-        NumberFormat format = NumberFormat.getCurrencyInstance();
-        format.setMaximumFractionDigits(0);
-        format.setCurrency(Currency.getInstance(currency));
+        NumberFormat format = new DecimalFormat("###,###,###");
         String formatPrice = format.format(price);
         if (currency.equals("USD")){
-            return formatPrice.substring(0, formatPrice.length()-2);
+            return formatPrice + " $";
         }else {
-            return formatPrice;
+            return formatPrice + " €";
         }
     }
 
