@@ -35,9 +35,6 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SettingsFragment extends Fragment implements AlertDialogUtils.OnClickButtonInputDialog, AlertDialogUtils.OnClickItemListAlertDialog,
         AlertDialogUtils.OnClickItemSpinnerAlertDialog,CheckBoxAdapter.OnItemClicked{
 
@@ -67,9 +64,10 @@ public class SettingsFragment extends Fragment implements AlertDialogUtils.OnCli
         this.initAgentViewModel();
         binding.settingPointOfInterest.setOnClickListener(v -> initCheckboxesList());
         binding.settingCurrency.setOnClickListener(v -> currencyChoose());
-        binding.settingScope.setOnClickListener(v -> initLocalisationScope("Choose the search scope of app in (Km):"));
+        binding.settingScope.setOnClickListener(v -> initLocalisationScope(getString(R.string.scope_dialog_title)));
     }
 
+    /** Configure toolbar **/
     private void configureToolbar(){
         Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         toolbar.getMenu().clear();
@@ -81,9 +79,13 @@ public class SettingsFragment extends Fragment implements AlertDialogUtils.OnCli
         agentViewModel = new ViewModelProvider(this, viewModelFactory).get(AgentViewModel.class);
     }
 
+    /** ********************************** **/
+    /** ******** Dialog  Method  ******** **/
+    /** ******************************** **/
+
     private void initCheckboxesList(){
         agentViewModel.getCurrentUserData(agentViewModel.getCurrentUser().getUid()).observe(getViewLifecycleOwner(), agent -> {
-            alertDialogUtils.showAlertListDialog(getContext(), "Select point of Interest", R.drawable.border_radius_white, R.drawable.location_agent,
+            alertDialogUtils.showAlertListDialog(getContext(), getString(R.string.point_of_interest_dialog_title), R.drawable.border_radius_white, R.drawable.location_agent,
                     new CheckBoxAdapter(getContext(), R.layout.item_assignment_dialog_list_layout, pointInterests, agent.getProximityPointOfInterestChoice(),
                             this::onClickedPItem));
             pointOfInterests = agent.getProximityPointOfInterestChoice();
@@ -91,13 +93,13 @@ public class SettingsFragment extends Fragment implements AlertDialogUtils.OnCli
     }
 
     private void currencyChoose(){
-        alertDialogUtils.showAlertSpinnerDialog(getContext(), "Select currency", "Choose the currency of app :" , "Validate",
-                "Cancel", R.drawable.border_radius_white, R.drawable.sale );
+        alertDialogUtils.showAlertSpinnerDialog(getContext(), getString(R.string.select_currency), getString(R.string.select_currency_message),
+                getString(R.string.validate),getString(R.string.cancel), R.drawable.border_radius_white, R.drawable.sale );
     }
 
     private void initLocalisationScope(String message){
-        alertDialogUtils.showAlertInputDialog(getContext(), "Update Scope", message, "Validate",
-                "Cancel", "Scope", InputType.TYPE_CLASS_NUMBER, R.drawable.border_radius_white, R.drawable.location_agent , 1);
+        alertDialogUtils.showAlertInputDialog(getContext(), getString(R.string.update_scope), message, getString(R.string.validate),getString(R.string.cancel),
+                getString(R.string.scope), InputType.TYPE_CLASS_NUMBER, R.drawable.border_radius_white, R.drawable.location_agent , 1);
     }
 
     private void updateScope(TextInputEditText textInputEditText){
@@ -105,14 +107,19 @@ public class SettingsFragment extends Fragment implements AlertDialogUtils.OnCli
             int scope = Integer.parseInt(textInputEditText.getText().toString());
             if (scope >= 2 && scope <= 25){
                 int finalScope = scope*1000;
-                Utils.showSnackBar(binding.settingsLayout, "Your scope have been updated");
+                preferences.edit().putInt(Utils.SCOPE, finalScope).commit();
+                Utils.showSnackBar(binding.settingsLayout, getString(R.string.scope_updated));
             }else {
-                initLocalisationScope("The scope must be between 2 and 25 Km");
+                initLocalisationScope(getString(R.string.scope_update_error));
             }
         }else {
-            Utils.showSnackBar(binding.settingsLayout, "Your scope haven't been updated");
+            Utils.showSnackBar(binding.settingsLayout, getString(R.string.scope_not_update));
         }
     }
+
+    /** ********************************** **/
+    /** **** Dialog Callback Method  **** **/
+    /** ******************************** **/
 
     @Override
     public void onClickedPositiveButtonInputDialog(DialogInterface dialog, TextInputEditText textInputEditText, int dialogIdForSwitch) {
@@ -122,7 +129,7 @@ public class SettingsFragment extends Fragment implements AlertDialogUtils.OnCli
     @Override
     public void positiveButtonDialogClicked(DialogInterface dialog) {
         agentViewModel.updatePointOfInterest(agentViewModel.getCurrentUser().getUid(), pointOfInterests);
-        Utils.showSnackBar(binding.settingsLayout, "Your proximity point of interest have been updated");
+        Utils.showSnackBar(binding.settingsLayout, getString(R.string.point_of_interest_updated));
         dialog.dismiss();
     }
 
@@ -139,7 +146,7 @@ public class SettingsFragment extends Fragment implements AlertDialogUtils.OnCli
     @Override
     public void positiveSpinnerButtonDialogClicked(DialogInterface dialog, Spinner spinner) {
         preferences.edit().putString(Utils.CURRENCY, spinner.getSelectedItem().toString()).commit();
-        Utils.showSnackBar(binding.settingsLayout, "The currency have been updated");
+        Utils.showSnackBar(binding.settingsLayout, getString(R.string.currency_updated));
     }
 
     @Override

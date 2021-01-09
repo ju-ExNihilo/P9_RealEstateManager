@@ -1,15 +1,12 @@
 package com.openclassrooms.realestatemanager.listview;
 
-import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.DatePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,36 +18,30 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.util.Util;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentPropertyListViewBinding;
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.injection.Injection;
-import com.openclassrooms.realestatemanager.models.FeatureForSearch;
 import com.openclassrooms.realestatemanager.models.Property;
+import com.openclassrooms.realestatemanager.utils.AlertDialogUtils;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import static android.content.Context.MODE_APPEND;
 
 
-public class PropertyListView extends Fragment implements AdapterProperty.OnPropertyClicked{
+public class PropertyListView extends Fragment implements AdapterProperty.OnPropertyClicked, AlertDialogUtils.OnSelectDateListener{
 
     private FragmentPropertyListViewBinding binding;
     private PropertyViewModel propertyViewModel;
     private NavController navController;
-    private Animation fadeInAnim;
-    private String isMyProperty = "all";
+    private String isMyProperty = Utils.NULL_STRING;
     private SharedPreferences preferences;
+    private AlertDialogUtils dialogUtils;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,9 +54,10 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
+        Animation fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
         binding.listLayout.setAnimation(fadeInAnim);
         preferences = getActivity().getSharedPreferences(Utils.SHARED_PREFERENCE, MODE_APPEND);
+        dialogUtils = new AlertDialogUtils(this);
         setHasOptionsMenu(true);
         this.configureToolbar();
         this.initPropertyViewModel();
@@ -73,16 +65,9 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         this.initSeekBarForSurface();
         this.searchProperty();
         this.initFabButton();
-        Utils.datePicker(binding.dateSearchEditText, getActivity());
-        if (getArguments() != null){
-            isMyProperty = getArguments().getString(Utils.MY_PROPERTY);
-        }
-        if (!isMyProperty.equals(Utils.MY_PROPERTY)){
-            this.getAllProperty();
-        }else {
-            this.getAllPropertyFromRoom();
-            this.initSelectedItem(1);
-        }
+        this.initList();
+        binding.dateSearchEditText.setOnClickListener(v -> dialogUtils.datePicker(getContext()));
+
     }
 
     @Override
@@ -95,6 +80,7 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         }
     }
 
+    /** Configure toolbar **/
     private void configureToolbar(){
         Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar);
         toolbar.getMenu().clear();
@@ -104,6 +90,10 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
             return false;
         });
     }
+
+    /** ********************************** **/
+    /** ********  Search Method  ******** **/
+    /** ******************************** **/
 
     private void initSeekBarForSurface(){
         int maxSurface = preferences.getInt(Utils.MAX_SURFACE, 10000);
@@ -138,26 +128,9 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         });
     }
 
-    private void animate(View view){
-        if (view.getVisibility() == View.VISIBLE){
-            binding.dropDownMenu.setVisibility(View.INVISIBLE);
-            Utils.collapse(view);
-        }else {
-            Utils.expand(view, binding.dropDownMenu);
-        }
-    }
-
-    private void initSelectedItem(int index){
-        NavigationView navigationView = ((AppCompatActivity)getActivity()).findViewById(R.id.nav_view);
-        Utils.setSelectedNavigationItem(index, navigationView);
-    }
-
-    private void initFabButton(){
-        binding.floatingActionButton.setOnClickListener(v -> {
-                    NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.mainFeature, true).build();
-                    navController.navigate(R.id.mainFeature, null, navOptions);
-                });
-    }
+    /** ********************************** **/
+    /** *******  Init List Method  ****** **/
+    /** ******************************** **/
 
     /** Configure user ViewModel **/
     private void initPropertyViewModel(){
@@ -175,14 +148,6 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         propertyViewModel.getAllProperty().observe(getViewLifecycleOwner(), this::setAdapter);
     }
 
-    private void cleanDb(){
-        propertyViewModel.getAllPropertyFromRoom().observe(getViewLifecycleOwner(),properties -> {
-            for (Property property : properties){
-                propertyViewModel.deleteFromRoom(property.getPropertyId());
-            }
-        });
-    }
-
     private void getAllPropertyFromRoom(){
         propertyViewModel.getAllPropertyFromRoom().observe(getViewLifecycleOwner(), this::setAdapter);
     }
@@ -196,10 +161,68 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         }
     }
 
+    private void initList(){
+        if (getArguments() != null){
+            isMyProperty = getArguments().getString(Utils.MY_PROPERTY);
+        }
+        if (!isMyProperty.equals(Utils.MY_PROPERTY)){
+            this.getAllProperty();
+        }else {
+            this.getAllPropertyFromRoom();
+            this.initSelectedItem(1);
+        }
+    }
+
+    private void initSelectedItem(int index){
+        NavigationView navigationView = ((AppCompatActivity)getActivity()).findViewById(R.id.nav_view);
+        Utils.setSelectedNavigationItem(index, navigationView);
+    }
+
+    /** ********************************** **/
+    /** ******  Navigation Method  ****** **/
+    /** ******************************** **/
+
+    private void initFabButton(){
+        binding.floatingActionButton.setOnClickListener(v -> {
+            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.mainFeature, true).build();
+            navController.navigate(R.id.mainFeature, null, navOptions);
+        });
+    }
+
+    /** ********************************** **/
+    /** *********  Utils Method  ******** **/
+    /** ******************************** **/
+
+    private void animate(View view){
+        if (view.getVisibility() == View.VISIBLE){
+            binding.dropDownMenu.setVisibility(View.INVISIBLE);
+            Utils.collapse(view);
+        }else {
+            Utils.expand(view, binding.dropDownMenu);
+        }
+    }
+
+    private void cleanDb(){
+        propertyViewModel.getAllPropertyFromRoom().observe(getViewLifecycleOwner(),properties -> {
+            for (Property property : properties){
+                propertyViewModel.deleteFromRoom(property.getPropertyId());
+            }
+        });
+    }
+
+    /** ********************************** **/
+    /** *******  Callback Method  ******* **/
+    /** ******************************** **/
+
     @Override
     public void onClickedProperty(String propertyId) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.PROPERTY_ID, propertyId);
         navController.navigate(R.id.detailsFragment, bundle);
+    }
+
+    @Override
+    public void onSelectDate(String date) {
+        binding.dateSearchEditText.setText(date);
     }
 }

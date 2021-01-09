@@ -11,7 +11,6 @@ import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.database.PropertyDatabase;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.*;
@@ -362,7 +361,7 @@ public class PropertyDataRepository {
     }
 
     private Task<Void> updateDatePropertyForSearch(String propertyId, String entranceDate){
-        Date finalDateStart = Utils.getFrenchTodayDate(entranceDate);
+        Date finalDateStart = Utils.convertStringToDate(entranceDate);
         return getSearchCollection().document(propertyId).update("entranceDate", finalDateStart);
     }
 
@@ -423,7 +422,7 @@ public class PropertyDataRepository {
             Log.i("DEBUGGG", "ok 0.5");
             int n = featureForSearches.size();
             int c = 0;
-            Date finalDateStart = Utils.getFrenchTodayDate(dateStart);
+            Date finalDateStart = Utils.convertStringToDate(dateStart);
             for (FeatureForSearch featureForSearch : featureForSearches){
                 if (featureForSearch.getEntranceDate().after(finalDateStart)){
                     Log.i("DEBUGGG", "ok 1");

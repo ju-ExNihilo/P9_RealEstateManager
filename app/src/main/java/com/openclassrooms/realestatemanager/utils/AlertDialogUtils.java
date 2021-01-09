@@ -1,8 +1,10 @@
 package com.openclassrooms.realestatemanager.utils;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.text.InputType;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import androidx.core.app.ActivityCompat;
@@ -14,6 +16,7 @@ import com.openclassrooms.realestatemanager.R;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class AlertDialogUtils {
@@ -22,6 +25,11 @@ public class AlertDialogUtils {
     private OnClickButtonInputDialog onClickButtonInputDialog;
     private OnClickItemListAlertDialog onClickItemListAlertDialog;
     private OnClickItemSpinnerAlertDialog onClickItemSpinnerAlertDialog;
+    private OnSelectDateListener onSelectDateListener;
+
+    public interface OnSelectDateListener {
+        void onSelectDate(String date);
+    }
 
     public interface OnClickButtonAlertDialog {
         void positiveButtonDialogClicked(DialogInterface dialog, int dialogIdForSwitch);
@@ -40,6 +48,10 @@ public class AlertDialogUtils {
     public interface OnClickItemListAlertDialog {
         void positiveButtonDialogClicked(DialogInterface dialog);
         void negativeButtonDialogClicked(DialogInterface dialog);
+    }
+
+    public AlertDialogUtils(OnSelectDateListener onSelectDateListener) {
+        this.onSelectDateListener = onSelectDateListener;
     }
 
     /** Construct **/
@@ -160,6 +172,20 @@ public class AlertDialogUtils {
         dialogBuilder.setIcon(dialogDrawableIcon);
         dialogBuilder.setBackground(ActivityCompat.getDrawable(context, dialogDrawableBackground));
         dialogBuilder.show();
+    }
+
+    public void datePicker(Context context){
+        final Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        DatePickerDialog pickerDate = new DatePickerDialog(context,R.style.myDatePickerStyle,
+                (view, year1, monthOfYear, dayOfMonth) -> {
+                    onSelectDateListener.onSelectDate(Utils.getFormatDate(year1, monthOfYear, dayOfMonth, calendar));
+                }, year, month, day);
+        pickerDate.show();
+        pickerDate.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#c8a97e"));
+        pickerDate.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#c8a97e"));
     }
 
 }

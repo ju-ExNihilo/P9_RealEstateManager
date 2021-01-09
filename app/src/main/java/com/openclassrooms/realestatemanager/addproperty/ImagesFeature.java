@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
@@ -14,9 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
@@ -34,11 +34,13 @@ import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import static android.app.Activity.RESULT_OK;
 
 
@@ -53,9 +55,8 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     private AlertDialogUtils alertDialogUtils;
     private Uri photoUri = null;
     private String uriImageSelected;
-    private List<PropertyImage> imageList = new ArrayList<>();
-    private Bundle bundle = new Bundle();
-    private Animation fadeInAnim;
+    private final List<PropertyImage> imageList = new ArrayList<>();
+    private final Bundle bundle = new Bundle();
 
 
     @Override
@@ -71,7 +72,7 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
         navController = Navigation.findNavController(view);
         propertyId = getArguments().getString(Utils.PROPERTY_ID);
         bundle.putString(Utils.PROPERTY_ID, propertyId);
-        fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        Animation fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.imageFeatureLayout.setAnimation(fadeInAnim);
         alertDialogUtils = new AlertDialogUtils(this, this);
         this.initPropertyViewModel();
@@ -94,6 +95,7 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
         adapter.stopListening();
     }
 
+    /** ****** get proximity point of interest to google Api ***** **/
     private void insertPointOfInterest(){
         propertyViewModel.getAPropertyById(propertyId).observe(getViewLifecycleOwner(), property -> {
             if (property.getLongitude() != 0.0 && property.getLatitude() != 0.0){
@@ -203,14 +205,6 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
         });
     }
 
-    @Override
-    public void onDataChanged() {}
-
-    @Override
-    public void onClickedClearBtn(String propertyImageId) {
-        propertyViewModel.deleteImage(propertyId, propertyImageId);
-    }
-
     /** ********************************* **/
     /** ***** Alert Dialog Method  ***** **/
     /** ******************************* **/
@@ -225,6 +219,10 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
         alertDialogUtils.showAlertDialog(this.getContext(),getString(R.string.image_choise_dialog_title), getString(R.string.image_choise_dialog_text),
                 getString(R.string.gallery), getString(R.string.camera), R.drawable.border_radius_white, R.drawable.camera, 2);
     }
+
+    /** ********************************** **/
+    /** *******  Callback Method  ******* **/
+    /** ******************************** **/
 
     @Override
     public void onClickedPositiveButtonInputDialog(DialogInterface dialog, TextInputEditText textInputEditText, int dialogIdForSwitch) {
@@ -259,5 +257,13 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
     public void negativeButtonDialogClicked(DialogInterface dialog, int dialogIdForSwitch) throws IOException {
         onCameraSelect();
         dialog.dismiss();
+    }
+
+    @Override
+    public void onDataChanged() {}
+
+    @Override
+    public void onClickedClearBtn(String propertyImageId) {
+        propertyViewModel.deleteImage(propertyId, propertyImageId);
     }
 }

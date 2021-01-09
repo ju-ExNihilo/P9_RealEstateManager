@@ -44,8 +44,10 @@ public class Utils {
     public static final String PERMS_CAMERA = Manifest.permission.CAMERA;
     public static final String PROPERTY_ID = "propertyId";
     public static final String MY_PROPERTY = "MyProperty";
+    public static final String NULL_STRING = "null";
     public static final String MAX_SURFACE = "MaxSurface";
     public static final String CURRENCY = "currency";
+    public static final String SCOPE = "scope";
     public static final String SHARED_PREFERENCE = "MySharedPref";
     public static final int RC_IMAGE_PERMS = 100;
     public static final int RC_CAMERA_PERMS = 101;
@@ -72,16 +74,17 @@ public class Utils {
      * @return
      */
     public static String getTodayDate(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(new Date());
     }
 
-    public static String getFrTodayDate(String dateStart){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        return dateFormat.format(dateStart);
+    public static String getFormatDate(int year, int month, int day, Calendar calendar){
+        calendar.set(year, month, day);
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        return formatter.format(calendar.getTime());
     }
 
-    public static Date getFrenchTodayDate(String date)  {
+    public static Date convertStringToDate(String date)  {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date convertedDate = new Date();
         try {
@@ -298,23 +301,16 @@ public class Utils {
         mSnackbar.show();
     }
 
-    public static void datePicker(TextInputEditText date, Context context){
-        date.setInputType(InputType.TYPE_NULL);
-        date.setOnClickListener(v -> {
-            final Calendar calendar = Calendar.getInstance();
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH);
-            int year = calendar.get(Calendar.YEAR);
-            DatePickerDialog pickerDate = new DatePickerDialog(context,R.style.myDatePickerStyle,
-                    (view, year1, monthOfYear, dayOfMonth) -> {
-                        calendar.set(year1, monthOfYear, dayOfMonth);
-                        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                        String formatedDate = formatter.format(calendar.getTime());
-                        date.setText(formatedDate);
-                    }, year, month, day);
-            pickerDate.show();
-            pickerDate.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#c8a97e"));
-            pickerDate.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#c8a97e"));
-        });
+    public static void animate(View card, TextView title, Context context){
+        if (card.getVisibility() == View.VISIBLE){
+            Utils.collapse(card);
+            title.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null,
+                    context.getResources().getDrawable(R.drawable.arrow_down, null), null );
+        }else {
+            Utils.expand(card);
+            title.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null,
+                    context.getResources().getDrawable(R.drawable.arrow_up, null), null);
+        }
     }
+
 }

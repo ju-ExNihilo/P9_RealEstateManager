@@ -18,8 +18,6 @@
     <string name="popup_title_permission_files_access">We need permissions to access your Picture</string>
     <string name="popup_title_permission_camera_access">We need permissions to access your Camera</string>
     <string name="popup_title_permission_call">We need your permission to make a phone call</string>
-    <string name="popup_title_permission_location_access">We need permissions to access to your current location
-    </string>
     <string name="toast_title_no_image_chosen">You don\'t choose any file</string>
     <string name="toast_title_image_chosen">You image has been added</string>
 
@@ -76,9 +74,7 @@
     <string name="set_property">Please set property Feature First</string>
     <string name="select_date">Please select a date</string>
     <string name="sale_maj">SOLD</string>
-    <string name="please_set_address_to_property_for_geolocalisation">Please set Address to property for
-        Geolocalisation
-    </string>
+    <string name="please_set_address_to_property_for_geolocalisation">Please set Address to property for Geolocalisation</string>
     <string name="description">Description</string>
     <string name="main_features">Main Features</string>
     <string name="type">Type :</string>
@@ -111,5 +107,23 @@
     <string name="empty_string">null</string>
     <string name="default_date">01/01/1900</string>
     <string name="settings">settings</string>
+    <string name="entrance_date_search">Entrance Date</string>
+    <string name="select_currency">Select currency</string>
+    <string name="select_currency_message">Choose the currency of app :</string>
+    <string name="update_scope">Update Scope</string>
+    <string name="scope">Scope</string>
+    <string name="scope_updated">Your scope have been updated</string>
+    <string name="scope_update_error">The scope must be between 2 and 25 Km</string>
+    <string name="scope_not_update">Your scope haven\'t been updated</string>
+    <string name="point_of_interest_updated">Your proximity point of interest have been updated</string>
+    <string name="currency_updated">The currency have been updated</string>
+    <string name="point_of_interest_dialog_title">Select point of Interest</string>
+    <string name="scope_dialog_title">Choose the search scope of app in (Km):</string>
+    <string name="min_number_pic">Min number pic</string>
+    <string name="town">Town</string>
+    <string name="search">Search</string>
+    <string name="enter_point_of_interest_split_with_space">Enter point of interest split with space</string>
+    <string name="max">Max</string>
+    <string name="min">Min</string>
 
 </resources>

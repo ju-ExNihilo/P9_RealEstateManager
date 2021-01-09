@@ -1,14 +1,14 @@
 package com.openclassrooms.realestatemanager.addproperty;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
@@ -18,18 +18,19 @@ import com.openclassrooms.realestatemanager.databinding.FragmentOtherFeatureBind
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.PropertyFeature;
+import com.openclassrooms.realestatemanager.utils.AlertDialogUtils;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
-public class OtherFeature extends Fragment {
+public class OtherFeature extends Fragment implements AlertDialogUtils.OnSelectDateListener{
 
     private FragmentOtherFeatureBinding binding;
     private NavController navController;
     private PropertyViewModel propertyViewModel;
     private String propertyId;
     private String propertyFeatureId;
-    private Bundle bundle = new Bundle();
-    private Animation fadeInAnim;
+    private final Bundle bundle = new Bundle();
+    private AlertDialogUtils dialogUtils;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,16 +45,18 @@ public class OtherFeature extends Fragment {
         navController = Navigation.findNavController(view);
         propertyId = getArguments().getString(Utils.PROPERTY_ID);
         bundle.putString(Utils.PROPERTY_ID, propertyId);
-        fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        Animation fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.otherFeatureLayout.setAnimation(fadeInAnim);
+        dialogUtils = new AlertDialogUtils(this);
         this.initPropertyViewModel();
         this.onClickBackBtn();
         this.onClickNextBtn();
-        Utils.datePicker(binding.dateEditText, getActivity());
         this.initFromFields();
         this.updateLocation();
+        binding.dateEditText.setOnClickListener(v -> dialogUtils.datePicker(getContext()));
     }
 
+    /** ****** init form with fields of property if var propertyId get id of property ***** **/
     private void initFromFields(){
         propertyViewModel.getPropertyFeatureById(propertyId).observe(getViewLifecycleOwner(), propertyFeature -> {
             if (propertyFeature != null){
@@ -69,6 +72,10 @@ public class OtherFeature extends Fragment {
             }
         });
     }
+
+    /** ****************************************** **/
+    /** ** Get property location to google Api ** **/
+    /** **************************************** **/
 
     private void updateLocation(){
         propertyViewModel.getPropertyAddressById(propertyId).observe(getViewLifecycleOwner(), address -> {
@@ -117,6 +124,7 @@ public class OtherFeature extends Fragment {
         });
     }
 
+    /** ****** init property feature without null pointer exception ***** **/
     private PropertyFeature initPropertyFeature(String numberOfRooms, String numberOfBathrooms, String numberOfBedRooms,
                                                 String entranceDate, String propertySurface , String propertyDescription){
         PropertyFeature propertyFeature = new PropertyFeature();
@@ -126,7 +134,10 @@ public class OtherFeature extends Fragment {
             propertyFeature.setNumberOfBathrooms(Integer.parseInt(numberOfBathrooms));
         if (!numberOfBedRooms.isEmpty())
             propertyFeature.setNumberOfBedrooms(Integer.parseInt(numberOfBedRooms));
-        propertyFeature.setEntranceDate(entranceDate);
+        if (!entranceDate.isEmpty())
+            propertyFeature.setEntranceDate(entranceDate);
+        else
+            propertyFeature.setEntranceDate(Utils.getTodayDate());
         if (!propertySurface.isEmpty())
             propertyFeature.setPropertySurface(Float.parseFloat(propertySurface));
         propertyFeature.setSoldDate(getString(R.string.not_sale));
@@ -137,4 +148,12 @@ public class OtherFeature extends Fragment {
         return propertyFeature;
     }
 
+    /** ********************************** **/
+    /** *******  Callback Method  ******* **/
+    /** ******************************** **/
+
+    @Override
+    public void onSelectDate(String date) {
+        binding.dateEditText.setText(date);
+    }
 }

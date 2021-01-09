@@ -1,8 +1,10 @@
 package com.openclassrooms.realestatemanager.map;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
@@ -31,6 +33,8 @@ import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static android.content.Context.MODE_APPEND;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -42,6 +46,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
     private FusedLocationProviderClient client;
+    private SharedPreferences preferences;
     private LatLng latLng;
     private double longitude, latitude;
     private int radius;
@@ -61,23 +66,28 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
         super.onViewCreated(view, savedInstanceState);
         Animation fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         navController = Navigation.findNavController(view);
-        radius = 15000;
+        preferences = getActivity().getSharedPreferences(Utils.SHARED_PREFERENCE, MODE_APPEND);
+        radius = preferences.getInt(Utils.SCOPE, 5000);
         binding.mapLayout.setAnimation(fadeInAnim);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         client = LocationServices.getFusedLocationProviderClient(getActivity());
         this.configureToolbar();
         this.initPropertyViewModel();
         this.getLocationPermissions();
-        binding.focusBtn.setOnClickListener(v -> {
-            if (latLng != null)
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
-        });
+        this.setFocusListener();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         this.getCurrentLocation();
+    }
+
+    private void setFocusListener(){
+        binding.focusBtn.setOnClickListener(v -> {
+            if (latLng != null)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
+        });
     }
 
     private void configureToolbar(){
