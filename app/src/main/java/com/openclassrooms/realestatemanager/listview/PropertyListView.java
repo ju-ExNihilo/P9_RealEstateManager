@@ -188,7 +188,8 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
 
     private void setAdapter(List<Property> propertyList){
         if (propertyList != null){
-            binding.listProperty.setAdapter(new AdapterProperty(propertyList, this));
+            String currency = preferences.getString(Utils.CURRENCY, "USD");
+            binding.listProperty.setAdapter(new AdapterProperty(propertyList, this, currency));
         }else {
             Utils.showSnackBar(binding.listLayout, getString(R.string.sorry_no_data));
         }

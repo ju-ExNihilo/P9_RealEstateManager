@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity{
         agentViewModel = new ViewModelProvider(this, viewModelFactory).get(AgentViewModel.class);
     }
 
-    /** Configure user ViewModel **/
+    /** Configure property ViewModel **/
     private void initPropertyViewModel(){
         ViewModelFactory viewModelFactory = Injection.providePropertyViewModelFactory(this, this);
         propertyViewModel = new ViewModelProvider(this, viewModelFactory).get(PropertyViewModel.class);

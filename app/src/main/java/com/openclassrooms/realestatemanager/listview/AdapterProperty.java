@@ -19,10 +19,12 @@ public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.Proper
 
     private final List<Property> propertyList;
     private final OnPropertyClicked onPropertyClicked;
+    private final String currency;
 
-    public AdapterProperty(List<Property> propertyList, OnPropertyClicked onPropertyClicked) {
+    public AdapterProperty(List<Property> propertyList, OnPropertyClicked onPropertyClicked, String currency) {
         this.propertyList = propertyList;
         this.onPropertyClicked = onPropertyClicked;
+        this.currency = currency;
     }
 
     @NonNull
@@ -35,7 +37,7 @@ public class AdapterProperty extends RecyclerView.Adapter<AdapterProperty.Proper
     public void onBindViewHolder(@NonNull PropertyViewHolder holder, int position) {
         Property property = propertyList.get(position);
         holder.binding.propertyType.setText(property.getPropertyType());
-        holder.binding.propertyPrice.setText(Utils.formatPrice(property.getPropertyPrice(), "USD"));
+        holder.binding.propertyPrice.setText(Utils.formatPrice(property.getPropertyPrice(), currency));
         holder.binding.propertyTown.setText(property.getPropertyLocatedCity());
         if (property.isSold()){
             Glide.with(holder.binding.propertyPicture.getContext())

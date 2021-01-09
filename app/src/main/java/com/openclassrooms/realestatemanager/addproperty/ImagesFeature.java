@@ -43,7 +43,7 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDataChange, PropertyImageAdapter.OnClearBtnClicked,
-        AlertDialogUtils.OnClickButtonInpuDialog, AlertDialogUtils.OnClickButtonAlertDialog{
+        AlertDialogUtils.OnClickButtonInputDialog, AlertDialogUtils.OnClickButtonAlertDialog{
 
     private FragmentImagesFeatureBinding binding;
     private NavController navController;

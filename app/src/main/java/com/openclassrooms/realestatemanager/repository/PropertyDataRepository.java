@@ -11,6 +11,7 @@ import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.database.PropertyDatabase;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.*;
@@ -351,6 +352,8 @@ public class PropertyDataRepository {
         featureForSearch.setPropertyId(property.getPropertyId());
         featureForSearch.setLocation(property.getPropertyLocatedCity());
         featureForSearch.setPrice(property.getPropertyPrice());
+        featureForSearch.setEntranceDate(new Date());
+        featureForSearch.setPointOfInterest(Arrays.asList("null"));
         return getSearchCollection().document(property.getPropertyId()).set(featureForSearch);
     }
 

@@ -6,6 +6,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.openclassrooms.realestatemanager.models.Agent;
 import com.openclassrooms.realestatemanager.repository.AgentRepository;
 
+import java.util.List;
+
 public class AgentViewModel extends ViewModel {
 
     private AgentRepository agentRepository;
@@ -21,4 +23,7 @@ public class AgentViewModel extends ViewModel {
 
     /** INSERT **/
     public void insertAgent(Agent agent) { agentRepository.insertAgent(agent);}
+
+    /** UPDATE **/
+    public void updatePointOfInterest(String agentId, List<String> pointOfInterests){agentRepository.updatePointOfInterest(agentId, pointOfInterests);}
 }

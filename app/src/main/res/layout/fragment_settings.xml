@@ -23,7 +23,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView3" app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="50dp" android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp" app:cardCornerRadius="10dp" app:cardElevation="6dp"
-                android:id="@+id/cardView">
+                android:id="@+id/setting_currency">
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -42,10 +42,10 @@
         <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="70dp"
-                app:layout_constraintTop_toBottomOf="@+id/cardView" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/setting_currency" app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="24dp" android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp" app:cardCornerRadius="10dp" app:cardElevation="6dp"
-                android:id="@+id/cardView2">
+                android:id="@+id/setting_point_of_interest">
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -64,10 +64,12 @@
         <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="70dp"
-                app:layout_constraintTop_toBottomOf="@+id/cardView2" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/setting_point_of_interest"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="24dp" app:cardCornerRadius="10dp"
                 app:cardElevation="6dp" android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp">
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
+                android:id="@+id/setting_scope">
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
