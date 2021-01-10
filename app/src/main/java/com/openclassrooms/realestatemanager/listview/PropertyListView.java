@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.listview;
 
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,8 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentPropertyListViewBinding.inflate(inflater, container, false);
+        if (getResources().getBoolean(R.bool.isTablet))
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         return binding.getRoot();
     }
 

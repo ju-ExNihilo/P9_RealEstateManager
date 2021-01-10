@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity{
 
     private void initMaxSurface(){
         propertyViewModel.getMaxSurface().observe(this, integer -> preferences.edit().putInt(Utils.MAX_SURFACE, integer).commit());
+
     }
 
     /** Rooting **/
@@ -105,7 +106,7 @@ public class LoginActivity extends AppCompatActivity{
 
     private void handleResponseAfterSignIn(IdpResponse response) {
         if (response != null) {
-            if (this.getCurrentUser() != null){
+            if (agentViewModel.getCurrentUser() != null){
                 this.insertAgentInFireStore();
                 HomeActivity.navigate(this);
             }else {
@@ -129,9 +130,9 @@ public class LoginActivity extends AppCompatActivity{
 
     /** Create user for FireStore **/
     private void insertAgentInFireStore(){
-        if (this.getCurrentUser() != null){
-            String username = this.getCurrentUser().getDisplayName();
-            String uid = this.getCurrentUser().getUid();
+        if (agentViewModel.getCurrentUser() != null){
+            String username = agentViewModel.getCurrentUser().getDisplayName();
+            String uid = agentViewModel.getCurrentUser().getUid();
             List<String> defaultProximityPointOfInterest = Arrays.asList("park", "school", "museum", "shopping_mall");
             Agent agent = new Agent();
             agent.setAgentId(uid);
@@ -140,10 +141,6 @@ public class LoginActivity extends AppCompatActivity{
             agentViewModel.insertAgent(agent);
         }
     }
-
-
-    /** Get Current User **/
-    private FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser();}
 
     /** Used to navigate to this activity **/
     public static void navigate(FragmentActivity activity) {
