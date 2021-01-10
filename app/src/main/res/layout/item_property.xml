@@ -12,7 +12,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:elevation="15dp"
+            app:cardElevation="15dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/border_radius_white"
@@ -25,12 +25,11 @@
             <ImageView
                     android:layout_width="176dp"
                     android:layout_height="0dp"
-                    android:elevation="8dp"
                     app:srcCompat="@mipmap/ic_launcher" android:id="@+id/propertyPicture"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="8dp"
                     android:paddingTop="3dp"
-                    android:paddingBottom="3dp"/>
+                    android:paddingBottom="3dp" android:scaleType="fitXY"/>
             <TextView
                     tools:text="Flat"
                     android:layout_width="0dp"

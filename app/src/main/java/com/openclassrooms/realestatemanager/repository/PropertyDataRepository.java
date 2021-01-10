@@ -460,16 +460,21 @@ public class PropertyDataRepository {
         List<Property> propertyAdd = new ArrayList<>();
         searchMethod(city, minPrice, maxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest, finalNumberOfPics, owner1).observe(owner1, featureForSearches -> {
             int n = featureForSearches.size();
-            final int[] c = {0};
-            for (FeatureForSearch featureForSearch : featureForSearches){
-                getAPropertyById(featureForSearch.getPropertyId()).observe(owner1, property -> {
-                    propertyAdd.add(property);
-                    c[0]++;
-                    if (c[0] == n){
-                        searchProperty.setValue(propertyAdd);
-                    }
-                });
+            if (n > 0){
+                final int[] c = {0};
+                for (FeatureForSearch featureForSearch : featureForSearches){
+                    getAPropertyById(featureForSearch.getPropertyId()).observe(owner1, property -> {
+                        propertyAdd.add(property);
+                        c[0]++;
+                        if (c[0] == n){
+                            searchProperty.setValue(propertyAdd);
+                        }
+                    });
+                }
+            }else {
+                searchProperty.setValue(propertyAdd);
             }
+
         });
         return searchProperty;
     }

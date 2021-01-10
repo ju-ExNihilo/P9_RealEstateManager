@@ -66,23 +66,29 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback , Al
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        propertyId = getArguments().getString(Utils.PROPERTY_ID);
         fadeInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         binding.detailsView.setAnimation(fadeInAnim);
-        preferences = getActivity().getSharedPreferences(Utils.SHARED_PREFERENCE, MODE_APPEND);
-        dialogUtils = new AlertDialogUtils(this);
-        this.configureToolbar();
-        this.initAgentViewModel();
-        this.initPropertyViewModel();
-        this.initMainFeature();
-        this.initPicture();
-        this.initAddress();
-        this.initOtherFeature();
-        this.accordionTransition();
-        this.initPointOfInterest();
-        this.configureBottomNavigationView();
-        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if (getArguments() != null){
+            propertyId = getArguments().getString(Utils.PROPERTY_ID);
+            preferences = getActivity().getSharedPreferences(Utils.SHARED_PREFERENCE, MODE_APPEND);
+            dialogUtils = new AlertDialogUtils(this);
+            this.configureToolbar();
+            this.initAgentViewModel();
+            this.initPropertyViewModel();
+            this.initMainFeature();
+            this.initPicture();
+            this.initAddress();
+            this.initOtherFeature();
+            this.accordionTransition();
+            this.initPointOfInterest();
+            this.configureBottomNavigationView();
+            mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+            binding.defaultImage.setVisibility(View.GONE);
+        }else {
+            binding.defaultImage.setVisibility(View.VISIBLE);
+        }
+
     }
 
     /** Configure toolbar **/

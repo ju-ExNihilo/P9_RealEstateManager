@@ -27,7 +27,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="0dp" android:layout_height="match_parent"
                 app:cardElevation="6dp" app:cardMaxElevation="6dp"
-                app:cardForegroundColor="@color/colorTransparent" android:layout_marginBottom="16dp">
+                app:cardForegroundColor="@color/colorTransparent"
+                android:layout_marginBottom="16dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -283,9 +284,8 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
             app:srcCompat="@drawable/add_property"
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/floating_action_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="10dp"
