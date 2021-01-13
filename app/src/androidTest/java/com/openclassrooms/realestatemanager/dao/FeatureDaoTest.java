@@ -5,7 +5,6 @@ import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.openclassrooms.realestatemanager.database.PropertyDatabase;
-import com.openclassrooms.realestatemanager.models.Address;
 import com.openclassrooms.realestatemanager.models.Property;
 import com.openclassrooms.realestatemanager.models.PropertyFeature;
 import com.openclassrooms.realestatemanager.utils.LiveDataTestUtil;
@@ -53,7 +52,7 @@ public class FeatureDaoTest {
     }
 
     @Test
-    public void insertGetAndDeleteAddress() throws InterruptedException {
+    public void insertGetAndDeleteFeature() throws InterruptedException {
         this.propertyDatabase.propertyFeatureDao().insertPropertyFeature(FEATURE_DEMO);
 
         PropertyFeature propertyFeature = LiveDataTestUtil.getValue(propertyDatabase.propertyFeatureDao().getAPropertyFeature(PROPERTY_ID));

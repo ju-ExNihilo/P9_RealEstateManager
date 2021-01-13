@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager.contentprovider;
 
 import android.content.ContentProvider;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.openclassrooms.realestatemanager.database.PropertyDatabase;
 import com.openclassrooms.realestatemanager.models.Property;
-import com.openclassrooms.realestatemanager.models.PropertyRelation;
 
 public class PropertyContentProvider extends ContentProvider {
 

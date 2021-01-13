@@ -5,7 +5,6 @@ import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.openclassrooms.realestatemanager.database.PropertyDatabase;
-import com.openclassrooms.realestatemanager.models.Address;
 import com.openclassrooms.realestatemanager.models.Property;
 import com.openclassrooms.realestatemanager.models.PropertyImage;
 import com.openclassrooms.realestatemanager.utils.LiveDataTestUtil;
@@ -52,7 +51,7 @@ public class PropertyImageDaoTest {
     }
 
     @Test
-    public void insertGetAndDeleteAddress() throws InterruptedException {
+    public void insertGetAndDeleteImage() throws InterruptedException {
         this.propertyDatabase.propertyImageDao().insertPropertyImage(PROPERTY_IMAGE_DEMO);
 
         PropertyImage propertyImage = LiveDataTestUtil.getValue(propertyDatabase.propertyImageDao().getAPropertyImage(PROPERTY_ID));

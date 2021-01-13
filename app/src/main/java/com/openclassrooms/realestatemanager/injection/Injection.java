@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager.injection;
 
 import android.content.Context;
-import android.util.Log;
 import androidx.lifecycle.LifecycleOwner;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.database.PropertyDatabase;

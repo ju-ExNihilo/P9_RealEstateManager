@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.openclassrooms.realestatemanager.R;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class CheckBoxAdapter extends ArrayAdapter<String> {
@@ -40,20 +42,19 @@ public class CheckBoxAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.item_assignment_dialog_list_layout, parent, false);
+        convertView = inflater.inflate(R.layout.item_assignment_dialog_list_layout, parent, false);
         String item = pointOfInterest.get(position);
-        CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkbox_point_of_interest);
+
+        CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkbox_point_of_interests);
         checkBox.setText(item);
         checkBox.setTag(item + "id");
         if (userPointOfInterest.contains(item))
             checkBox.setChecked(true);
 
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> onItemClicked.onClickedPItem(item, isChecked));
-        return rowView;
+        return convertView;
     }
 
     @Override
-    public int getCount() {
-        return pointOfInterest.size();
-    }
+    public int getCount() {return pointOfInterest.size();}
 }

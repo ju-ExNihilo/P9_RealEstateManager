@@ -158,7 +158,6 @@ public class AlertDialogUtils {
         dialogBuilder.setIcon(dialogDrawableIcon);
         ContextCompat.getDrawable(context, dialogDrawableBackground);
         dialogBuilder.setBackground(ActivityCompat.getDrawable(context, dialogDrawableBackground));
-        dialogBuilder.setView(R.layout.item_assignment_dialog_list_layout);
 
         dialogBuilder.setAdapter(arrayAdapter, null);
         dialogBuilder.setPositiveButton("Validate", (dialog, which) -> onClickItemListAlertDialog.positiveButtonDialogClicked(dialog));

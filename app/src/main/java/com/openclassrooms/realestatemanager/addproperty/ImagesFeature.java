@@ -80,7 +80,7 @@ public class ImagesFeature extends Fragment implements PropertyImageAdapter.OnDa
         binding.addImageBtn.setOnClickListener(v -> this.onClickAddFile());
         this.onClickValidateBtn();
         this.onClickBackBtn();
-        //this.insertPointOfInterest();
+        this.insertPointOfInterest();
     }
 
     @Override

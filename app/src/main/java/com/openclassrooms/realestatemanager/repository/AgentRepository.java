@@ -59,4 +59,9 @@ public class AgentRepository {
     public Task<Void> updatePointOfInterest(String agentId, List<String> pointOfInterests) {
         return getAgentCollection().document(agentId).update("proximityPointOfInterestChoice", pointOfInterests);
     }
+
+    /** **** Delete user after test  **** **/
+    public Task<Void> deleteAgent(String userId){
+        return getAgentCollection().document(userId).delete();
+    }
 }

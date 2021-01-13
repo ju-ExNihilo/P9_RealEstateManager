@@ -1,36 +1,32 @@
 package com.openclassrooms.realestatemanager.utils;
 
 import android.Manifest;
-import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.core.app.NotificationCompat;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.realestatemanager.R;
 
 import java.io.IOException;
-import java.text.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Currency;
 import java.util.Date;
 import java.util.UUID;
 /**
@@ -124,7 +120,7 @@ public class Utils {
                 .setContentTitle(title)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(desc))
                 .setDefaults(Notification.DEFAULT_SOUND)
-                .setSmallIcon(R.mipmap.ic_launcher_round);
+                .setSmallIcon(R.drawable.ic_stat_name);
 
         manager.notify(1, builder.build());
     }
@@ -255,28 +251,28 @@ public class Utils {
     public static void setSelectedNavigationItem(int id, NavigationView navigationView){
         switch (id){
             case 0:
-                navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
-                navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
-                navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
-                navigationView.getMenu().getItem(3).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(0).setChecked(true);
+                navigationView.getMenu().getItem(1).setChecked(false);
+                navigationView.getMenu().getItem(2).setChecked(false);
+                navigationView.getMenu().getItem(3).setChecked(false);
                 break;
             case 1:
-                navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
-                navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
-                navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
-                navigationView.getMenu().getItem(3).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(0).setChecked(false);
+                navigationView.getMenu().getItem(1).setChecked(true);
+                navigationView.getMenu().getItem(2).setChecked(false);
+                navigationView.getMenu().getItem(3).setChecked(false);
                 break;
             case 2:
-                navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
-                navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
-                navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
-                navigationView.getMenu().getItem(3).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
+                navigationView.getMenu().getItem(0).setChecked(false);
+                navigationView.getMenu().getItem(1).setChecked(false);
+                navigationView.getMenu().getItem(2).setChecked(true);
+                navigationView.getMenu().getItem(3).setChecked(false);
                 break;
             case 3:
-                navigationView.getMenu().getItem(0).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
-                navigationView.getMenu().getItem(1).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
-                navigationView.getMenu().getItem(2).setIconTintList(ColorStateList.valueOf(Color.parseColor("#757575")));
-                navigationView.getMenu().getItem(3).setIconTintList(ColorStateList.valueOf(Color.parseColor("#c8a97e")));
+                navigationView.getMenu().getItem(0).setChecked(false);
+                navigationView.getMenu().getItem(1).setChecked(false);
+                navigationView.getMenu().getItem(2).setChecked(false);
+                navigationView.getMenu().getItem(3).setChecked(true);
                 break;
         }
     }

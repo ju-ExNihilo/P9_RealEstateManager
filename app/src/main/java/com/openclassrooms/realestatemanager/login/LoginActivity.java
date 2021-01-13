@@ -2,23 +2,21 @@ package com.openclassrooms.realestatemanager.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityLoginBinding;
 import com.openclassrooms.realestatemanager.factory.ViewModelFactory;
 import com.openclassrooms.realestatemanager.home.HomeActivity;
-import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.injection.Injection;
 import com.openclassrooms.realestatemanager.models.Agent;
 import com.openclassrooms.realestatemanager.utils.Utils;
@@ -48,7 +46,6 @@ public class LoginActivity extends AppCompatActivity{
         this.initPropertyViewModel();
         this.onClickGoogleLoginButton();
         this.onClickMailLoginButton();
-        this.initMaxSurface();
     }
 
     @Override
@@ -86,7 +83,9 @@ public class LoginActivity extends AppCompatActivity{
     /** Rooting **/
     public void rooting(){
         new Handler().postDelayed(() -> {
+            binding.loadingPanel.setVisibility(View.VISIBLE);
             if (FirebaseAuth.getInstance().getCurrentUser() != null){
+                this.initMaxSurface();
                 HomeActivity.navigate(this);
             }else {
                 binding.loadingPanel.setVisibility(View.GONE);
@@ -110,10 +109,10 @@ public class LoginActivity extends AppCompatActivity{
                 this.insertAgentInFireStore();
                 HomeActivity.navigate(this);
             }else {
-                Utils.showSnackBar(binding.scrollView, getString(R.string.error_unknown_error));
+                Utils.showSnackBar(binding.loginActivity, getString(R.string.error_unknown_error));
             }
         } else {
-            Utils.showSnackBar(binding.scrollView, getString(R.string.error_authentication_canceled));
+            Utils.showSnackBar(binding.loginActivity, getString(R.string.error_authentication_canceled));
         }
     }
 

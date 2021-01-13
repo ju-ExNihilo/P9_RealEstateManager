@@ -2,21 +2,15 @@ package com.openclassrooms.realestatemanager.provider;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.database.Cursor;
-import android.net.Uri;
-import android.util.Log;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.room.Room;
-import androidx.test.InstrumentationRegistry;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.openclassrooms.realestatemanager.contentprovider.PropertyContentProvider;
 import com.openclassrooms.realestatemanager.database.PropertyDatabase;
 import com.openclassrooms.realestatemanager.injection.Injection;
-import com.openclassrooms.realestatemanager.models.Property;
-import com.openclassrooms.realestatemanager.models.PropertyRelation;
 import com.openclassrooms.realestatemanager.repository.PropertyDataRepository;
 import com.openclassrooms.realestatemanager.utils.LiveDataTestUtil;
 import org.junit.After;
@@ -24,8 +18,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -54,7 +46,7 @@ public class PropertyContentProviderTest {
                 .build();
         mContentResolver = ApplicationProvider.getApplicationContext().getContentResolver();
         this.configurePropertyRepository();
-        numberItems = LiveDataTestUtil.getValue(this.propertyDataRepository.getAllPropertyFromRoomForTest()).size();
+        numberItems = LiveDataTestUtil.getValue(this.propertyDataRepository.getAllPropertyFromRoom()).size();
     }
 
     @After

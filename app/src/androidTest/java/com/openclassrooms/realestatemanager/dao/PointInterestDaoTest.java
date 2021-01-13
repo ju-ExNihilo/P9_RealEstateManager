@@ -5,7 +5,6 @@ import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.openclassrooms.realestatemanager.database.PropertyDatabase;
-import com.openclassrooms.realestatemanager.models.Address;
 import com.openclassrooms.realestatemanager.models.PointOfInterest;
 import com.openclassrooms.realestatemanager.models.Property;
 import com.openclassrooms.realestatemanager.utils.LiveDataTestUtil;
@@ -50,7 +49,7 @@ public class PointInterestDaoTest {
     }
 
     @Test
-    public void insertGetAndDeleteAddress() throws InterruptedException {
+    public void insertGetAndDeletePointOfInterest() throws InterruptedException {
         this.propertyDatabase.pointOfInterestDao().insertPointOfInterest(POINT_INTEREST_DEMO);
 
         PointOfInterest pointOfInterest = LiveDataTestUtil.getValue(propertyDatabase.pointOfInterestDao().getAPointOfInterest(PROPERTY_ID));

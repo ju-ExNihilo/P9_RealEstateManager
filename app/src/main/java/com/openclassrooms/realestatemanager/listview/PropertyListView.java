@@ -31,6 +31,7 @@ import com.openclassrooms.realestatemanager.utils.AlertDialogUtils;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,7 +72,6 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         this.initSeekBarForSurface();
         this.searchProperty();
         this.initFabButton();
-        this.initList();
         this.onBackPress();
         binding.dateSearchEditText.setOnClickListener(v -> dialogUtils.datePicker(getContext()));
     }
@@ -79,10 +79,10 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
     @Override
     public void onResume() {
         super.onResume();
-        if (!isMyProperty.equals(Utils.MY_PROPERTY)){
-            this.initSelectedItem(0);
-        }else {
-            this.initSelectedItem(1);
+        try {
+            this.initList();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -127,9 +127,20 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
             float maxSurface = (float) binding.surfaceSelect.getEnd();
             int finalNumberOfPics =  (numberOfPics.isEmpty()) ? 0 : Integer.parseInt(numberOfPics);
 
-            propertyViewModel.searchMethod(locatedCity, finalMinPrice, finalMaxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest,
-                    finalNumberOfPics, getViewLifecycleOwner())
-                    .observe(getViewLifecycleOwner(), this::setAdapter);
+            try {
+                if (Utils.isConnected()){
+                    propertyViewModel.searchMethod(locatedCity, finalMinPrice, finalMaxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest,
+                            finalNumberOfPics, getViewLifecycleOwner())
+                            .observe(getViewLifecycleOwner(), this::setAdapter);
+                }else {
+                    propertyViewModel.searchMethodFromRoom(locatedCity, finalMinPrice, finalMaxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest,
+                            finalNumberOfPics, getViewLifecycleOwner())
+                            .observe(getViewLifecycleOwner(), this::setAdapter);
+                }
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
+
             animate(binding.dropCard);
             isSearching = true;
         });
@@ -170,12 +181,13 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
         }
     }
 
-    private void initList(){
+    private void initList() throws IOException, InterruptedException {
         if (getArguments() != null){
             isMyProperty = getArguments().getString(Utils.MY_PROPERTY);
         }
-        if (!isMyProperty.equals(Utils.MY_PROPERTY)){
+        if (!isMyProperty.equals(Utils.MY_PROPERTY) && Utils.isConnected()){
             this.getAllProperty();
+            this.initSelectedItem(0);
         }else {
             this.getAllPropertyFromRoom();
             this.initSelectedItem(1);
@@ -246,7 +258,11 @@ public class PropertyListView extends Fragment implements AdapterProperty.OnProp
             @Override
             public void handleOnBackPressed() {
                 if (isSearching){
-                    initList();
+                    try {
+                        initList();
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     isSearching = false;
                 }else {
                     getActivity().finish();

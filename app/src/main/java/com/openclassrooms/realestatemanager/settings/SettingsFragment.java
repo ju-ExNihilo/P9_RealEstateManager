@@ -4,21 +4,17 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.realestatemanager.R;
@@ -29,7 +25,6 @@ import com.openclassrooms.realestatemanager.utils.AlertDialogUtils;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.AgentViewModel;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,8 +38,8 @@ public class SettingsFragment extends Fragment implements AlertDialogUtils.OnCli
     private AlertDialogUtils alertDialogUtils;
     private List<String> pointOfInterests;
     private SharedPreferences preferences;
-    List<String> pointInterests = Arrays.asList("school", "hospital", "museum", "park", "shopping_mall", "theatre", "airport");
-    //, "bank", "police", "doctor", "train_station", "university", "post_office", "pharmacy", "parking"
+    List<String> pointInterests = Arrays.asList("school", "hospital", "museum", "park", "shopping_mall", "theatre",
+            "airport", "bank", "police", "doctor", "train_station", "university", "post_office", "pharmacy", "parking");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

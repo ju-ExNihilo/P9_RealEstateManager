@@ -8,8 +8,6 @@ import com.openclassrooms.realestatemanager.repository.PropertyDataRepository;
 import com.openclassrooms.realestatemanager.viewmodel.AgentViewModel;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
-import java.util.concurrent.Executor;
-
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private PropertyDataRepository propertyDataRepository;

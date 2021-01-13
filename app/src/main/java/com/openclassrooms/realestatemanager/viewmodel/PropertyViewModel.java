@@ -8,7 +8,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.openclassrooms.realestatemanager.models.*;
 import com.openclassrooms.realestatemanager.repository.PropertyDataRepository;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 public class PropertyViewModel extends ViewModel {
 
@@ -24,6 +23,11 @@ public class PropertyViewModel extends ViewModel {
     public LiveData<List<Property>> searchMethod(String city, float minPrice, float maxPrice, float minSurface, float maxSurface, String dateStart,
                                                          List<String> finalPointOfInterest, int finalNumberOfPics, LifecycleOwner owner1){
         return propertyDataRepository.getDataFromSearch(city, minPrice, maxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest, finalNumberOfPics, owner1);
+    }
+
+    public LiveData<List<Property>> searchMethodFromRoom(String city, float minPrice, float maxPrice, float minSurface, float maxSurface, String dateStart,
+                                                 List<String> finalPointOfInterest, int finalNumberOfPics, LifecycleOwner owner1) {
+        return propertyDataRepository.searchMethodFromRoom(city, minPrice, maxPrice, minSurface, maxSurface, dateStart, finalPointOfInterest, finalNumberOfPics, owner1);
     }
     /** **************************** **/
 
@@ -56,8 +60,6 @@ public class PropertyViewModel extends ViewModel {
     public void insetAddressToProperty(String propertyId, Address address){propertyDataRepository.insertAddressToProperty(propertyId, address);}
 
     public void insertFeatureToProperty(String propertyId, PropertyFeature propertyFeature){propertyDataRepository.insertFeatureToProperty(propertyId, propertyFeature);}
-
-    public void insertPointOfInterestToProperty(String propertyId, PointOfInterest pointOfInterest){propertyDataRepository.insertPointOfInterestToProperty(propertyId, pointOfInterest);}
 
     public void insertImageToProperty(String propertyId, PropertyImage propertyImage){propertyDataRepository.insertImageToProperty(propertyId, propertyImage);}
 

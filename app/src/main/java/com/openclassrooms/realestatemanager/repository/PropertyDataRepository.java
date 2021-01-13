@@ -413,13 +413,53 @@ public class PropertyDataRepository {
         return searchProperty;
     }
 
+    public MutableLiveData<List<Property>> searchMethodFromRoom(String city, float minPrice, float maxPrice, float minSurface, float maxSurface, String dateStart,
+                                                                 List<String> finalPointOfInterest, int finalNumberOfPics, LifecycleOwner owner1){
+        MutableLiveData<List<Property>> searchProperty = new MutableLiveData<>();
+        List<Property> propertyAdd = new ArrayList<>();
+        propertyDatabase.propertyDao().getAllPropertyForSearch().observe(owner1, propertyRelations -> {
+            int n = propertyRelations.size();
+            int c = 0;
+            Date finalDateStart = Utils.convertStringToDate(dateStart);
+            for (PropertyRelation propertyRelation : propertyRelations){
+                Date entranceDate = Utils.convertStringToDate(propertyRelation.getPropertyFeatures().get(0).getEntranceDate());
+                if (entranceDate.after(finalDateStart)){
+                    Log.i("DEBUGGG", "ok 1");
+                    if ((propertyRelation.getProperty().getPropertyLocatedCity().equals(city) || city.equals("null"))
+                            && propertyRelation.getProperty().getPropertyPrice() >= minPrice){
+                        Log.i("DEBUGGG", "ok 2");
+                        if (propertyRelation.getPropertyFeatures().get(0).getPropertySurface() >= minSurface &&
+                                propertyRelation.getPropertyFeatures().get(0).getPropertySurface() <= maxSurface){
+                            Log.i("DEBUGGG", "ok 3");
+                            if (propertyRelation.getProperty().getPropertyPrice() <= maxPrice || maxPrice == 0){
+                                Log.i("DEBUGGG", "ok 4");
+                                propertyRelation.getPointOfInterests().retainAll(finalPointOfInterest);
+                                if (propertyRelation.getPointOfInterests().size() > 0 || finalPointOfInterest.equals(Arrays.asList("null"))){
+                                    Log.i("DEBUGGG", "ok 5");
+                                    if (propertyRelation.getPropertyImages().size() >= finalNumberOfPics){
+                                        Log.i("DEBUGGG", "ok 6");
+                                        propertyAdd.add(propertyRelation.getProperty());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                c++;
+                if (c == n){
+                    searchProperty.setValue(propertyAdd);
+                }
+            }
+        });
+
+        return searchProperty;
+    }
+
     private MutableLiveData<List<FeatureForSearch>> searchMethod(String city, float minPrice, float maxPrice, float minSurface, float maxSurface, String dateStart,
                                                                  List<String> finalPointOfInterest, int finalNumberOfPics, LifecycleOwner owner1){
         MutableLiveData<List<FeatureForSearch>> searchProperty = new MutableLiveData<>();
         List<FeatureForSearch> propertyAdd = new ArrayList<>();
-        Log.i("DEBUGGG", "ok 0");
         getSearchList().observe(owner1, featureForSearches -> {
-            Log.i("DEBUGGG", "ok 0.5");
             int n = featureForSearches.size();
             int c = 0;
             Date finalDateStart = Utils.convertStringToDate(dateStart);

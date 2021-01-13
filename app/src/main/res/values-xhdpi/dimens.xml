@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="login_image">200dp</dimen>
+    <dimen name="login_title">30sp</dimen>
+    <dimen name="login_margin_top">60dp</dimen>
+    <dimen name="login_card_text_size">17sp</dimen>
+    <dimen name="login_card_height">45dp</dimen>
+    <!-- Property Item -->
+    <dimen name="list_image">150dp</dimen>
+    <dimen name="list_type_size">20sp</dimen>
+    <dimen name="list_town_size">12sp</dimen>
+    <dimen name="list_price_size">20sp</dimen>
+    <dimen name="list_card_height">130dp</dimen>
+    <!-- Settings -->
+    <dimen name="settings_image_height">300dp</dimen>
+    <dimen name="settings_card_height">60dp</dimen>
+    <dimen name="settings_card_text_size">18sp</dimen>
+</resources>
